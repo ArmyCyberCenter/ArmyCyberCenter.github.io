@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns
+     http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  
+  <!-- Attribute Keys -->
+  <key id="d0" for="node" attr.name="label" attr.type="string"/>
+  <key id="d1" for="node" attr.name="type" attr.type="string"/>
+  <key id="d2" for="node" attr.name="risk_level" attr.type="string"/>
+  <key id="d3" for="node" attr.name="category" attr.type="string"/>
+  <key id="d4" for="edge" attr.name="relationship" attr.type="string"/>
+  <key id="d5" for="edge" attr.name="details" attr.type="string"/>
+  <key id="d6" for="edge" attr.name="risk_indicator" attr.type="string"/>
+
+  <graph id="G" edgedefault="directed">
+
+    <!-- ============================================== -->
+    <!-- CENTER NODES - PRIMARY INVESTIGATION TARGETS -->
+    <!-- ============================================== -->
+    <node id="n1">
+      <data key="d0">นายปฏิกร พิทักษ์ฉนวน</data>
+      <data key="d1">Person</data>
+      <data key="d2">Critical</data>
+      <data key="d3">Central_Figure</data>
+    </node>
+    <node id="n2">
+      <data key="d0">บริษัท เปรม กรุ๊ป เอ็นจิเนียริ่ง จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Critical</data>
+      <data key="d3">Central_Hub</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- PRAM GROUP INTERNAL KEY PEOPLE -->
+    <!-- ============================================== -->
+    <node id="n3">
+      <data key="d0">นายพีรพล จันทร์ขำ</data>
+      <data key="d1">Person</data>
+      <data key="d2">High</data>
+      <data key="d3">Executive</data>
+    </node>
+    <node id="n4">
+      <data key="d0">นายธนเทพ พิทักษ์ฉนวน</data>
+      <data key="d1">Person</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Family_Member</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- PHOENIX CLUSTER (THE "PREM" LEGACY LINK) -->
+    <!-- ============================================== -->
+    <node id="n5">
+      <data key="d0">บริษัท ฟีนิกซ์ คอร์ปเอเซีย จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Affiliated_Entity</data>
+    </node>
+    <node id="n6">
+      <data key="d0">นางสาวสุวรรณี อยู่นิรันดร</data>
+      <data key="d1">Person</data>
+      <data key="d2">High</data>
+      <data key="d3">Key_Connector</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- PREM ENGINEERING (DISSOLVED PARTNERSHIP) -->
+    <!-- ============================================== -->
+    <node id="n7">
+      <data key="d0">ห้างหุ้นส่วนจำกัด เปรม เอ็นจิเนียริ่ง</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Dissolved_Entity</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- K TECHNOLOGY CLUSTER (PROCUREMENT "SUPPORT BIDDER") -->
+    <!-- ============================================== -->
+    <node id="n8">
+      <data key="d0">นายจีรพงษ์ ใจหลัก</data>
+      <data key="d1">Person</data>
+      <data key="d2">High</data>
+      <data key="d3">Key_Connector</data>
+    </node>
+    <node id="n9">
+      <data key="d0">บริษัท เค เทคโนโลยี โซลูชั่น จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Support_Bidder</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- KRUNGTHEP BREW HOUSE & SYSTRONICS CLUSTER -->
+    <!-- ============================================== -->
+    <node id="n10">
+      <data key="d0">บริษัท กรุงเทพบริวเฮาส์ จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Affiliated_Entity</data>
+    </node>
+    <node id="n11">
+      <data key="d0">นายเกรียงศักดิ์ อิ่มศรี</data>
+      <data key="d1">Person</data>
+      <data key="d2">High</data>
+      <data key="d3">Key_Connector</data>
+    </node>
+    <node id="n12">
+      <data key="d0">บริษัท ซิสทรอนิกส์ จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Critical</data>
+      <data key="d3">Procurement_Ring_Member</data>
+    </node>
+    <node id="n13">
+      <data key="d0">นายอัศวรรณ์ เรืองชู</data>
+      <data key="d1">Person</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Shareholder</data>
+    </node>
+    <node id="n14">
+      <data key="d0">นายจิรวัฒน์ บุญวัฒนโสภณ</data>
+      <data key="d1">Person</data>
+      <data key="d2">Low</data>
+      <data key="d3">Shareholder</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- DPS GROUND SERVICES CLUSTER -->
+    <!-- ============================================== -->
+    <node id="n15">
+      <data key="d0">บริษัท บริการภาคพื้น ดีพีเอส จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Affiliated_Entity</data>
+    </node>
+    <node id="n16">
+      <data key="d0">บริษัท แดนไทย อีควิปเม้นท์ จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Affiliated_Entity</data>
+    </node>
+    <node id="n17">
+      <data key="d0">นายศาศวัต เด่นแดนโดม</data>
+      <data key="d1">Person</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Director</data>
+    </node>
+    <node id="n18">
+      <data key="d0">นายลือชา การณ์เมือง</data>
+      <data key="d1">Person</data>
+      <data key="d2">Low</data>
+      <data key="d3">Director</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- FAVORITE TECHNOLOGY CLUSTER -->
+    <!-- ============================================== -->
+    <node id="n19">
+      <data key="d0">บริษัท เฟเวอร์ริท เทคโนโลยี จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Affiliated_Entity</data>
+    </node>
+    <node id="n20">
+      <data key="d0">นายนุชา มนตรีเศวตกุล</data>
+      <data key="d1">Person</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Director</data>
+    </node>
+    <node id="n21">
+      <data key="d0">นางนุจนาจ รุมเมิล-อีริคเซ่น</data>
+      <data key="d1">Person</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Major_Shareholder</data>
+    </node>
+    <node id="n22">
+      <data key="d0">นางสาววชิราพรรณ อารมณ์ชื่น</data>
+      <data key="d1">Person</data>
+      <data key="d2">Low</data>
+      <data key="d3">Shareholder</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- PROCUREMENT NETWORK: VALIDATORS & LOSERS -->
+    <!-- ============================================== -->
+    <node id="n23">
+      <data key="d0">บริษัท เอ็กซ์เปิร์ท เอ็นจิเนียริ่ง แอนด์ คอมมูนิเคชั่น จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Support_Bidder</data>
+    </node>
+    <node id="n24">
+      <data key="d0">บริษัท ไอ-ทรี ครีเอชั่น จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Validator</data>
+    </node>
+    <node id="n25">
+      <data key="d0">บริษัท ทีเอ ซิสเต็มส์ (ประเทศไทย) จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Validator</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- EXTENDED NETWORK - ADDITIONAL ENTITIES FROM REFERENCES -->
+    <!-- ============================================== -->
+    
+    <!-- CCTV/Traffic System Cluster -->
+    <node id="n26">
+      <data key="d0">บริษัท จีเนียส ทราฟฟิค ซีสเต็ม จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Procurement_Competitor</data>
+    </node>
+    <node id="n27">
+      <data key="d0">บริษัท วิชั่น แอนด์ ซีเคียวริตี้ ซีสเต็ม จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Procurement_Competitor</data>
+    </node>
+
+    <!-- Technology Solutions Cluster -->
+    <node id="n28">
+      <data key="d0">บริษัท บีทามส์ โซลูชั่น จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">IT_Vendor</data>
+    </node>
+    <node id="n29">
+      <data key="d0">บริษัท เน็ตเซอร์พลัส จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">IT_Vendor</data>
+    </node>
+
+    <!-- Engineering/Innovation Cluster -->
+    <node id="n30">
+      <data key="d0">บริษัท ไคเนติคส์ คอร์ปอเรชั่น จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">High</data>
+      <data key="d3">Procurement_Competitor</data>
+    </node>
+    <node id="n31">
+      <data key="d0">บริษัท ที เอช พี ซี จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Procurement_Competitor</data>
+    </node>
+
+    <!-- Education Technology Cluster -->
+    <node id="n32">
+      <data key="d0">บริษัท ทีซีเอ็ม เทคโนโลยี จำกัด</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">Education_Vendor</data>
+    </node>
+
+    <!-- Oil/Energy Sector Cluster -->
+    <node id="n33">
+      <data key="d0">บริษัท เอสโซ่ (ประเทศไทย) จำกัด (มหาชน)</data>
+      <data key="d1">Company</data>
+      <data key="d2">Low</data>
+      <data key="d3">Client_Entity</data>
+    </node>
+    <node id="n34">
+      <data key="d0">บริษัท บางจาก คอร์ปอเรชั่น จำกัด (มหาชน)</data>
+      <data key="d1">Company</data>
+      <data key="d2">Low</data>
+      <data key="d3">Client_Entity</data>
+    </node>
+    <node id="n35">
+      <data key="d0">บริษัท พีทีที โกลบอล เคมิคอล จำกัด (มหาชน)</data>
+      <data key="d1">Company</data>
+      <data key="d2">Low</data>
+      <data key="d3">Client_Entity</data>
+    </node>
+    <node id="n36">
+      <data key="d0">บริษัท สตาร์ ปิโตรเลียม รีไฟน์นิ่ง จำกัด (มหาชน)</data>
+      <data key="d1">Company</data>
+      <data key="d2">Low</data>
+      <data key="d3">Client_Entity</data>
+    </node>
+
+    <!-- Government Agencies (Procurement Clients) -->
+    <node id="n37">
+      <data key="d0">กรมสรรพสามิต</data>
+      <data key="d1">Government</data>
+      <data key="d2">Low</data>
+      <data key="d3">Procurement_Client</data>
+    </node>
+    <node id="n38">
+      <data key="d0">กรุงเทพมหานคร</data>
+      <data key="d1">Government</data>
+      <data key="d2">Low</data>
+      <data key="d3">Procurement_Client</data>
+    </node>
+    <node id="n39">
+      <data key="d0">สำนักงานคณะกรรมการกำกับหลักทรัพย์และตลาดหลักทรัพย์</data>
+      <data key="d1">Government</data>
+      <data key="d2">Low</data>
+      <data key="d3">Procurement_Client</data>
+    </node>
+    <node id="n40">
+      <data key="d0">สำนักงานปลัดกระทรวงมหาดไทย</data>
+      <data key="d1">Government</data>
+      <data key="d2">Low</data>
+      <data key="d3">Procurement_Client</data>
+    </node>
+    <node id="n41">
+      <data key="d0">กรมทางหลวงชนบท</data>
+      <data key="d1">Government</data>
+      <data key="d2">Low</data>
+      <data key="d3">Procurement_Client</data>
+    </node>
+
+    <!-- Additional Procurement Participants -->
+    <node id="n42">
+      <data key="d0">บริษัท โปรเอ็น คอร์ป จำกัด (มหาชน)</data>
+      <data key="d1">Company</data>
+      <data key="d2">Medium</data>
+      <data key="d3">IT_Vendor</data>
+    </node>
+
+    <!-- ============================================== -->
+    <!-- EDGES: OWNERSHIP & DIRECTORSHIP RELATIONSHIPS -->
+    <!-- ============================================== -->
+
+    <!-- Patikorn's Direct Holdings -->
+    <edge source="n1" target="n2">
+      <data key="d4">Shareholder</data>
+      <data key="d5">97.8% Ownership - Majority Control</data>
+      <data key="d6">Critical_Control</data>
+    </edge>
+    <edge source="n1" target="n5">
+      <data key="d4">Former_Director</data>
+      <data key="d5">Resigned 2023 - Historical Connection</data>
+      <data key="d6">Historical_Link</data>
+    </edge>
+    <edge source="n1" target="n10">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">50% Ownership - Joint Control</data>
+      <data key="d6">Significant_Control</data>
+    </edge>
+    <edge source="n1" target="n15">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">1% Ownership - Board Influence</data>
+      <data key="d6">Minor_Stake</data>
+    </edge>
+
+    <!-- Pram Group Internal Structure -->
+    <edge source="n3" target="n2">
+      <data key="d4">CEO</data>
+      <data key="d5">Current CEO / 0.1% Shareholder - Executive Control</data>
+      <data key="d6">Executive_Control</data>
+    </edge>
+    <edge source="n4" target="n2">
+      <data key="d4">Shareholder</data>
+      <data key="d5">2.1% Ownership - Family Stake</data>
+      <data key="d6">Family_Connection</data>
+    </edge>
+
+    <!-- Pram Group Downstream Investments -->
+    <edge source="n2" target="n15">
+      <data key="d4">Shareholder</data>
+      <data key="d5">29% Ownership in DPS Ground Services</data>
+      <data key="d6">Significant_Investment</data>
+    </edge>
+    <edge source="n2" target="n19">
+      <data key="d4">Shareholder</data>
+      <data key="d5">25% Ownership in Favorite Technology</data>
+      <data key="d6">Significant_Investment</data>
+    </edge>
+
+    <!-- The "Phoenix/Prem" Bridge (Indirect Collusion Link) -->
+    <edge source="n3" target="n5">
+      <data key="d4">Shareholder</data>
+      <data key="d5">2% Ownership - Cross-Company Link</data>
+      <data key="d6">Cross_Ownership</data>
+    </edge>
+    <edge source="n6" target="n5">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">98% Ownership - Majority Control</data>
+      <data key="d6">Critical_Control</data>
+    </edge>
+    <edge source="n6" target="n7">
+      <data key="d4">Partner</data>
+      <data key="d5">50% Equity in Dissolved Partnership</data>
+      <data key="d6">Historical_Link</data>
+    </edge>
+    <edge source="n8" target="n7">
+      <data key="d4">Partner</data>
+      <data key="d5">50% Equity in Dissolved Partnership</data>
+      <data key="d6">Historical_Link</data>
+    </edge>
+    <edge source="n8" target="n9">
+      <data key="d4">Director_Shareholder</data>
+      <data key="d5">Controls K Technology Solution</data>
+      <data key="d6">Critical_Control</data>
+    </edge>
+
+    <!-- The "Systronics" Bridge (Procurement Ring) -->
+    <edge source="n1" target="n10">
+      <data key="d4">Director</data>
+      <data key="d5">Joint Director with Kriangsak</data>
+      <data key="d6">Board_Connection</data>
+    </edge>
+    <edge source="n11" target="n10">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">25% Ownership in Krungthep Brew House</data>
+      <data key="d6">Significant_Control</data>
+    </edge>
+    <edge source="n11" target="n12">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">50% Ownership in Systronics</data>
+      <data key="d6">Critical_Control</data>
+    </edge>
+    <edge source="n13" target="n12">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">42% Ownership in Systronics</data>
+      <data key="d6">Significant_Control</data>
+    </edge>
+    <edge source="n14" target="n12">
+      <data key="d4">Shareholder</data>
+      <data key="d5">8% Ownership in Systronics</data>
+      <data key="d6">Minor_Stake</data>
+    </edge>
+
+    <!-- Favorite Technology Internal -->
+    <edge source="n20" target="n19">
+      <data key="d4">Director</data>
+      <data key="d5">นุชา มนตรีเศวตกุล - Director</data>
+      <data key="d6">Board_Position</data>
+    </edge>
+    <edge source="n21" target="n19">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">65% Ownership - Majority Control</data>
+      <data key="d6">Critical_Control</data>
+    </edge>
+    <edge source="n22" target="n19">
+      <data key="d4">Shareholder_Director</data>
+      <data key="d5">10% Ownership</data>
+      <data key="d6">Minor_Stake</data>
+    </edge>
+
+    <!-- DPS Ground Services Internal -->
+    <edge source="n16" target="n15">
+      <data key="d4">Major_Shareholder</data>
+      <data key="d5">49% Ownership - Near Majority</data>
+      <data key="d6">Significant_Control</data>
+    </edge>
+    <edge source="n17" target="n15">
+      <data key="d4">Director_Shareholder</data>
+      <data key="d5">6% Ownership</data>
+      <data key="d6">Minor_Stake</data>
+    </edge>
+    <edge source="n18" target="n15">
+      <data key="d4">Director</data>
+      <data key="d5">Board Member</data>
+      <data key="d6">Board_Position</data>
+    </edge>
+
+    <!-- ============================================== -->
+    <!-- EDGES: PROCUREMENT CONFLICTS & COLLUSION PATTERNS -->
+    <!-- ============================================== -->
+
+    <!-- Connection: Pram Group vs Systronics (Frenemies) -->
+    <edge source="n2" target="n12">
+      <data key="d4">Procurement_Collusion_Risk</data>
+      <data key="d5">Price Clustering/Shared Bids in 28+ Projects - CCTV and Traffic Systems</data>
+      <data key="d6">Critical_Risk</data>
+    </edge>
+    <edge source="n12" target="n2">
+      <data key="d4">Procurement_Collusion_Risk</data>
+      <data key="d5">Reciprocal Bidding Pattern - Alternating Winners</data>
+      <data key="d6">Critical_Risk</data>
+    </edge>
+
+    <!-- Connection: Pram Group vs K Tech (The Loser) -->
+    <edge source="n9" target="n2">
+      <data key="d4">Procurement_Support_Bidder</data>
+      <data key="d5">K Tech lost 100% of bids against Pram (9 Projects) - Suspicious Pattern</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+
+    <!-- Connection: Pram Group vs Expert Eng (The Loser) -->
+    <edge source="n23" target="n2">
+      <data key="d4">Procurement_Support_Bidder</data>
+      <data key="d5">Expert Eng lost 100% of bids against Pram (6 Projects)</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+
+    <!-- Connection: Validators -->
+    <edge source="n24" target="n2">
+      <data key="d4">Bid_Validator</data>
+      <data key="d5">I-3 Creation bids alongside Pram - Legitimizing Presence</data>
+      <data key="d6">Medium_Risk</data>
+    </edge>
+    <edge source="n25" target="n2">
+      <data key="d4">Bid_Validator</data>
+      <data key="d5">TA System bids alongside Pram - Legitimizing Presence</data>
+      <data key="d6">Medium_Risk</data>
+    </edge>
+
+    <!-- ============================================== -->
+    <!-- EDGES: EXTENDED PROCUREMENT NETWORK FROM REFERENCES -->
+    <!-- ============================================== -->
+
+    <!-- CCTV/Traffic System Procurement Ring -->
+    <edge source="n12" target="n26">
+      <data key="d4">Procurement_Competitor</data>
+      <data key="d5">Competed in BKK CCTV Project - Price Clustering Detected</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+    <edge source="n12" target="n27">
+      <data key="d4">Procurement_Competitor</data>
+      <data key="d5">Competed in BKK CCTV Project - Close Price Margins</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+    <edge source="n26" target="n27">
+      <data key="d4">Procurement_Price_Clustering</data>
+      <data key="d5">Price difference less than 0.3% in multiple bids</data>
+      <data key="d6">Critical_Risk</data>
+    </edge>
+
+    <!-- BKK CCTV Project Connections (Reference [4]) -->
+    <edge source="n26" target="n38">
+      <data key="d4">Procurement_Winner</data>
+      <data key="d5">Won BKK CCTV Maintenance Contract - 88.6M THB</data>
+      <data key="d6">Contract_Award</data>
+    </edge>
+    <edge source="n27" target="n38">
+      <data key="d4">Procurement_Bidder</data>
+      <data key="d5">Bid 88.87M THB - Lost by narrow margin</data>
+      <data key="d6">Close_Bid</data>
+    </edge>
+    <edge source="n12" target="n38">
+      <data key="d4">Procurement_Bidder</data>
+      <data key="d5">Bid 88.86M THB - Third place</data>
+      <data key="d6">Close_Bid</data>
+    </edge>
+
+    <!-- Environmental Innovation Center Project (Reference [6]) -->
+    <edge source="n30" target="n23">
+      <data key="d4">Procurement_Competitor</data>
+      <data key="d5">Environmental Innovation Center - Price Clustering</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+    <edge source="n30" target="n31">
+      <data key="d4">Procurement_Price_Clustering</data>
+      <data key="d5">Bid prices within 0.2% range - Suspicious Pattern</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+    <edge source="n23" target="n31">
+      <data key="d4">Procurement_Price_Clustering</data>
+      <data key="d5">Three-way price clustering detected</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+
+    <!-- SEC Visualization Software Procurement (References [1], [2], [7], [9]) -->
+    <edge source="n28" target="n39">
+      <data key="d4">Procurement_Winner</data>
+      <data key="d5">Won SEC Visualization Software - Multiple Years</data>
+      <data key="d6">Repeat_Winner</data>
+    </edge>
+    <edge source="n29" target="n39">
+      <data key="d4">Procurement_Bidder</data>
+      <data key="d5">Lost to BEtimes despite lower price - Suspicious</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+    <edge source="n28" target="n29">
+      <data key="d4">Procurement_Collusion_Risk</data>
+      <data key="d5">Winner selected despite higher price - Abnormal Pattern</data>
+      <data key="d6">Critical_Risk</data>
+    </edge>
+    <edge source="n28" target="n40">
+      <data key="d4">Procurement_Winner</data>
+      <data key="d5">Won MOI Contract - 300K THB</data>
+      <data key="d6">Contract_Award</data>
+    </edge>
+
+    <!-- Excise Department Projects (References [3], [11]) -->
+    <edge source="n2" target="n37">
+      <data key="d4">Procurement_Winner</data>
+      <data key="d5">Won Excise Dept Electronic System - 28M THB</data>
+      <data key="d6">Major_Contract</data>
+    </edge>
+    <edge source="n12" target="n37">
+      <data key="d4">Procurement_Bidder</data>
+      <data key="d5">Bid on Excise Oil Monitoring System - 53.62M THB</data>
+      <data key="d6">Close_Bid</data>
+    </edge>
+
+    <!-- Oil/Energy Sector Connections -->
+    <edge source="n2" target="n33">
+      <data key="d4">Project_Client</data>
+      <data key="d5">Oil Monitoring System Installation - Esso Thailand</data>
+      <data key="d6">Client_Relationship</data>
+    </edge>
+    <edge source="n2" target="n34">
+      <data key="d4">Project_Client</data>
+      <data key="d5">Oil Distribution Monitoring - Bangchak</data>
+      <data key="d6">Client_Relationship</data>
+    </edge>
+    <edge source="n2" target="n35">
+      <data key="d4">Project_Client</data>
+      <data key="d5">Refinery Monitoring System - PTTGC</data>
+      <data key="d6">Client_Relationship</data>
+    </edge>
+    <edge source="n2" target="n36">
+      <data key="d4">Project_Client</data>
+      <data key="d5">Refinery Monitoring System - Star Petroleum</data>
+      <data key="d6">Client_Relationship</data>
+    </edge>
+
+    <!-- Education Technology Procurement (References [8], [10]) -->
+    <edge source="n32" target="n41">
+      <data key="d4">Procurement_Winner</data>
+      <data key="d5">STEM Education Materials - Multiple Schools</data>
+      <data key="d6">Repeat_Winner</data>
+    </edge>
+
+    <!-- ============================================== -->
+    <!-- EDGES: HIDDEN CONNECTIONS (INDIRECT COLLUSION) -->
+    <!-- ============================================== -->
+
+    <!-- Patikorn -> Kriangsak -> Systronics Chain -->
+    <edge source="n1" target="n11">
+      <data key="d4">Business_Associate</data>
+      <data key="d5">Joint Directorship in Krungthep Brew House</data>
+      <data key="d6">Hidden_Connection</data>
+    </edge>
+
+    <!-- Suwanee -> Jeerapong -> K Technology Chain -->
+    <edge source="n6" target="n8">
+      <data key="d4">Former_Partner</data>
+      <data key="d5">Co-Partners in Dissolved Prem Engineering</data>
+      <data key="d6">Historical_Connection</data>
+    </edge>
+
+    <!-- Peerapol Bridge (Pram <-> Phoenix) -->
+    <edge source="n3" target="n6">
+      <data key="d4">Business_Associate</data>
+      <data key="d5">Connected via Phoenix Corp Asia shareholding</data>
+      <data key="d6">Indirect_Connection</data>
+    </edge>
+
+    <!-- K Technology -> Pram Group (Support Bidder Pattern) -->
+    <edge source="n6" target="n9">
+      <data key="d4">Indirect_Control</data>
+      <data key="d5">Suwanee connected to K Tech via Jeerapong</data>
+      <data key="d6">Hidden_Connection</data>
+    </edge>
+
+    <!-- Systronics -> Expert Engineering Connection -->
+    <edge source="n12" target="n23">
+      <data key="d4">Procurement_Pattern</data>
+      <data key="d5">Frequent co-bidders with price clustering</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+
+    <!-- ============================================== -->
+    <!-- EDGES: CROSS-CLUSTER COLLUSION INDICATORS -->
+    <!-- ============================================== -->
+
+    <!-- Pram Group <-> Genius Traffic (CCTV Ring) -->
+    <edge source="n2" target="n26">
+      <data key="d4">Procurement_Network</data>
+      <data key="d5">Shared government CCTV/Traffic contracts</data>
+      <data key="d6">Network_Connection</data>
+    </edge>
+
+    <!-- Systronics <-> Vision Security (CCTV Ring) -->
+    <edge source="n12" target="n27">
+      <data key="d4">Procurement_Network</data>
+      <data key="d5">Coordinated bidding in BKK CCTV projects</data>
+      <data key="d6">Network_Connection</data>
+    </edge>
+
+    <!-- Kinetics <-> Expert Engineering (Innovation Projects) -->
+    <edge source="n30" target="n23">
+      <data key="d4">Procurement_Pattern</data>
+      <data key="d5">Price clustering in Environmental Innovation Center</data>
+      <data key="d6">High_Risk</data>
+    </edge>
+
+    <!-- PROEN Connection -->
+    <edge source="n42" target="n37">
+      <data key="d4">Procurement_Bidder</data>
+      <data key="d5">Centralized Log System Project</data>
+      <data key="d6">Contract_Participation</data>
+    </edge>
+
+    <!-- ============================================== -->
+    <!-- EDGES: RISK INDICATORS FROM REFERENCES -->
+    <!-- ============================================== -->
+
+    <!-- Risk: Price Below Other Bidders Abnormally -->
+    <edge source="n29" target="n28">
+      <data key="d4">Risk_Indicator</data>
+      <data key="d5">เสนอราคาต่ำกว่าผู้เสนอรายอื่นผิดปกติ - Lost despite lower price</data>
+      <data key="d6">Procurement_Anomaly</data>
+    </edge>
+
+    <!-- Risk: Less than 3 Bidders -->
+    <edge source="n2" target="n37">
+      <data key="d4">Risk_Indicator</data>
+      <data key="d5">มีผู้เสนอราคาน้อยกว่า 3 ราย - Limited Competition</data>
+      <data key="d6">Competition_Risk</data>
+    </edge>
+
+    <!-- Risk: Contract Value Higher than Winning Bid -->
+    <edge source="n28" target="n39">
+      <data key="d4">Risk_Indicator</data>
+      <data key="d5">มูลค่าสัญญาสูงกว่าราคาประมูลชนะ - Contract Inflation</data>
+      <data key="d6">Financial_Risk</data>
+    </edge>
+
+    <!-- Risk: Price Clustering -->
+    <edge source="n30" target="n31">
+      <data key="d4">Risk_Indicator</data>
+      <data key="d5">เสนอราคาเกาะกลุ่ม - Coordinated Pricing</data>
+      <data key="d6">Collusion_Risk</data>
+    </edge>
+
+    <!-- Risk: Price Close to Reference Price -->
+    <edge source="n23" target="n30">
+      <data key="d4">Risk_Indicator</data>
+      <data key="d5">เสนอราคาใกล้ราคากลาง - Suspiciously Close to Reference</data>
+      <data key="d6">Information_Leak_Risk</data>
+    </edge>
+
+  </graph>
+</graphml>
