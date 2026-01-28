@@ -43,6 +43,7 @@
             .grid { display: grid; }
             .grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
             .grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+            .grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
             .grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
             .w-full { width: 100%; } .h-full { height: 100%; } .min-h-screen { min-height: 100vh; }
             .m-4 { margin: 1rem; } .mt-2 { margin-top: 0.5rem; } .mt-4 { margin-top: 1rem; }
@@ -53,6 +54,7 @@
             @media (min-width: 768px) {
                 .md\:grid-cols-2 { grid-template-columns: repeat(2, 1fr); }
                 .md\:grid-cols-3 { grid-template-columns: repeat(3, 1fr); }
+                .md\:grid-cols-4 { grid-template-columns: repeat(4, 1fr); }
                 .md\:grid-cols-6 { grid-template-columns: repeat(6, 1fr); }
                 .md\:flex-row { flex-direction: row; }
             }
@@ -132,6 +134,14 @@
             .risk-box { padding: 0.75rem; border-radius: 8px; border: 1px solid; }
             .risk-box-critical { background: rgba(239, 68, 68, 0.08); border-color: rgba(239, 68, 68, 0.25); }
             .risk-box-high { background: rgba(249, 115, 22, 0.08); border-color: rgba(249, 115, 22, 0.25); }
+            .timeline-item { position: relative; padding-left: 1.5rem; padding-bottom: 1rem; border-left: 2px solid var(--glass-border); }
+            .timeline-item:last-child { border-left-color: transparent; }
+            .timeline-item::before { content: ''; position: absolute; left: -5px; top: 0; width: 8px; height: 8px; border-radius: 50%; background: var(--neon-core); }
+            .timeline-item.risk::before { background: var(--risk-critical); box-shadow: 0 0 8px var(--risk-critical); }
+            .procurement-card { background: rgba(0,0,0,0.2); border-radius: 8px; padding: 0.75rem; margin-bottom: 0.5rem; border-left: 3px solid var(--neon-core); }
+            .procurement-card.won { border-left-color: var(--accent-emerald); }
+            .procurement-card.lost { border-left-color: var(--risk-high); }
+            .procurement-card.risk { border-left-color: var(--risk-critical); }
         }
         @layer utilities {
             .font-display { font-family: 'Orbitron', sans-serif; }
@@ -141,7 +151,7 @@
             .font-medium { font-weight: 500; } .font-semibold { font-weight: 600; } .font-bold { font-weight: 700; }
             .tracking-wide { letter-spacing: 0.025em; } .tracking-wider { letter-spacing: 0.1em; }
             .uppercase { text-transform: uppercase; }
-            .text-center { text-align: center; }
+            .text-center { text-align: center; } .text-right { text-align: right; }
             .text-silver { color: var(--silver); } .text-muted { color: var(--titanium); }
             .text-neon { color: var(--neon-core); } .text-violet { color: var(--accent-violet); }
             .text-gold { color: var(--accent-gold); } .text-peach { color: var(--peach-fuzz); }
@@ -176,8 +186,8 @@
             <span lang="th">กำลังเริ่มต้น NEXUS INTEL v12.0...</span>
         </div>
         <div class="text-xs text-muted font-mono">
-            <span lang="en">Loading 42 entities, 60+ connections</span>
-            <span lang="th">โหลด 42 หน่วยงาน, 60+ การเชื่อมต่อ</span>
+            <span lang="en">Loading 42 entities, 85+ procurement records, 70+ connections</span>
+            <span lang="th">โหลด 42 หน่วยงาน, 85+ รายการจัดซื้อ, 70+ การเชื่อมต่อ</span>
         </div>
     </div>
     <div class="relative z-10 min-h-screen">
@@ -188,8 +198,8 @@
                     <div>
                         <h1 class="font-display text-lg font-bold tracking-wider text-silver">NEXUS // <span class="text-gold">INTEL</span> <span class="text-xs text-muted font-mono">v12.0</span></h1>
                         <p class="text-xs text-muted tracking-wide">
-                            <span lang="en">EXTENDED NETWORK • 42 ENTITIES • 60+ CONNECTIONS</span>
-                            <span lang="th">เครือข่ายขยาย • 42 หน่วยงาน • 60+ การเชื่อมต่อ</span>
+                            <span lang="en">EXTENDED NETWORK • 42 ENTITIES • 85+ PROCUREMENTS • 70+ CONNECTIONS</span>
+                            <span lang="th">เครือข่ายขยาย • 42 หน่วยงาน • 85+ จัดซื้อจัดจ้าง • 70+ การเชื่อมต่อ</span>
                         </p>
                     </div>
                 </div>
@@ -225,12 +235,12 @@
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="high">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Links</span><span lang="th">เชื่อมโยง</span></div>
-                    <div class="text-2xl font-display font-bold text-silver" id="stat-connections">60+</div>
+                    <div class="text-2xl font-display font-bold text-silver" id="stat-connections">70+</div>
                     <div class="text-xs text-muted"><span lang="en">Relationships</span><span lang="th">ความสัมพันธ์</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="critical">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Collusion</span><span lang="th">สมคบคิด</span></div>
-                    <div class="text-2xl font-display font-bold text-danger" id="stat-collusion">12</div>
+                    <div class="text-2xl font-display font-bold text-danger" id="stat-collusion">15</div>
                     <div class="text-xs text-muted"><span lang="en">Risk Links</span><span lang="th">ลิงก์เสี่ยง</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="medium">
@@ -239,13 +249,13 @@
                     <div class="text-xs text-muted"><span lang="en">Agencies</span><span lang="th">หน่วยงาน</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="high">
-                    <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Support Bid</span><span lang="th">ผู้สนับสนุน</span></div>
-                    <div class="text-2xl font-display font-bold text-warning" id="stat-support">4</div>
-                    <div class="text-xs text-muted"><span lang="en">100% Loss</span><span lang="th">แพ้ 100%</span></div>
+                    <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Procurements</span><span lang="th">จัดซื้อจัดจ้าง</span></div>
+                    <div class="text-2xl font-display font-bold text-warning" id="stat-procurements">85+</div>
+                    <div class="text-xs text-muted"><span lang="en">Records</span><span lang="th">รายการ</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="critical">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Contracts</span><span lang="th">สัญญา</span></div>
-                    <div class="text-xl font-display font-bold text-danger" id="stat-contracts">4.87B+</div>
+                    <div class="text-xl font-display font-bold text-danger" id="stat-contracts">1.87B+</div>
                     <div class="text-xs text-muted"><span lang="en">THB Total</span><span lang="th">บาทรวม</span></div>
                 </div>
             </section>
@@ -296,6 +306,29 @@
                     <div class="chart-container"><canvas id="barChart"></canvas></div>
                 </div>
             </section>
+            <!-- NEW: Procurement Timeline Section -->
+            <section class="glass-panel p-4 mb-6 reveal">
+                <div class="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
+                    <div>
+                        <h3 class="font-display text-base font-bold tracking-wide text-silver mb-1"><span lang="en">PROCUREMENT TIMELINE (85+ Records)</span><span lang="th">ไทม์ไลน์จัดซื้อจัดจ้าง (85+ รายการ)</span></h3>
+                        <p class="text-xs text-muted"><span lang="en">Key contracts involving Pram Group & Systronics</span><span lang="th">สัญญาสำคัญที่เกี่ยวข้องกับ Pram Group และ Systronics</span></p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button class="btn btn-ghost" onclick="APP.showProcurementTab('all')"><span lang="en">All</span><span lang="th">ทั้งหมด</span></button>
+                        <button class="btn btn-ghost" onclick="APP.showProcurementTab('risk')"><span lang="en">Risk Only</span><span lang="th">เสี่ยงเท่านั้น</span></button>
+                    </div>
+                </div>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div>
+                        <div class="text-xs text-muted uppercase tracking-wider font-display mb-3"><span lang="en">Major Contracts (Pram Group)</span><span lang="th">สัญญาหลัก (Pram Group)</span></div>
+                        <div id="procurement-pram" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                    <div>
+                        <div class="text-xs text-muted uppercase tracking-wider font-display mb-3"><span lang="en">Co-Bidding Patterns</span><span lang="th">รูปแบบการประมูลร่วม</span></div>
+                        <div id="procurement-cobid" style="max-height: 300px; overflow-y: auto;"></div>
+                    </div>
+                </div>
+            </section>
             <section class="glass-panel p-4 mb-6 reveal">
                 <div class="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
                     <div>
@@ -343,16 +376,24 @@
                     </div>
                     <div class="risk-box risk-box-high">
                         <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#3: BKK CCTV Three-Way Clustering</span><span lang="th">#3: ราคาเกาะกลุ่ม 3 ทาง CCTV กทม.</span></div>
-                        <p class="text-sm text-silver"><span lang="en">Genius (88.6M), Vision (88.87M), Systronics (88.86M). Price diff <strong class="text-danger">&lt;0.3%</strong> - statistically improbable.</span><span lang="th">Genius (88.6M), Vision (88.87M), Systronics (88.86M) ราคาต่าง <strong class="text-danger">&lt;0.3%</strong> - ไม่น่าจะเป็นไปได้ทางสถิติ</span></p>
+                        <p class="text-sm text-silver"><span lang="en">Genius (88.6M), Vision (88.87M), Systronics (88.86M). Price diff <strong class="text-danger"><0.3%</strong> - statistically improbable.</span><span lang="th">Genius (88.6M), Vision (88.87M), Systronics (88.86M) ราคาต่าง <strong class="text-danger"><0.3%</strong> - ไม่น่าจะเป็นไปได้ทางสถิติ</span></p>
                     </div>
                     <div class="risk-box risk-box-high">
-                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#4: Prem Engineering Name Legacy</span><span lang="th">#4: มรดกชื่อเปรม เอ็นจิเนียริ่ง</span></div>
+                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#4: Sole-Source End-of-Year Contracts</span><span lang="th">#4: สัญญาเฉพาะเจาะจงท้ายปีงบประมาณ</span></div>
+                        <p class="text-sm text-silver"><span lang="en">Multiple <strong class="text-warning">sole-source contracts</strong> awarded to Pram Group at fiscal year-end (Sep-Oct). Total: <strong class="text-danger">97.57M THB</strong> in FY2567 alone.</span><span lang="th">หลาย <strong class="text-warning">สัญญาเฉพาะเจาะจง</strong> ให้ Pram Group ท้ายปีงบประมาณ (ก.ย.-ต.ค.) รวม: <strong class="text-danger">97.57 ล้านบาท</strong> ในปี 2567</span></p>
+                    </div>
+                    <div class="risk-box risk-box-high">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#5: Prem Engineering Name Legacy</span><span lang="th">#5: มรดกชื่อเปรม เอ็นจิเนียริ่ง</span></div>
                         <p class="text-sm text-silver"><span lang="en">Phonetic: "<strong class="text-gold">Pram</strong>" vs dissolved "<strong class="text-gold">Prem</strong>". Partnership links Suwanee → Jeerapong → K Tech.</span><span lang="th">เสียงคล้าย: "<strong class="text-gold">เปรม กรุ๊ป</strong>" vs "<strong class="text-gold">เปรม เอ็นจิเนียริ่ง</strong>" ที่เลิก ห้างหุ้นส่วนเชื่อม สุวรรณี → จีรพงษ์ → K Tech</span></p>
+                    </div>
+                    <div class="risk-box risk-box-critical">
+                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#6: Contract Inflation Pattern</span><span lang="th">#6: รูปแบบสัญญาสูงกว่าราคาประมูล</span></div>
+                        <p class="text-sm text-silver"><span lang="en">Multiple projects show <strong class="text-danger">contract value higher than winning bid</strong>. Detected in SEC, Excise Dept projects.</span><span lang="th">หลายโครงการแสดง <strong class="text-danger">มูลค่าสัญญาสูงกว่าราคาประมูลชนะ</strong> พบในโครงการ ก.ล.ต., กรมสรรพสามิต</span></p>
                     </div>
                 </div>
             </section>
             <footer class="text-center py-6 border-t border-glass">
-                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.0 • GraphML Extended • For Investigation Only</span><span lang="th">NEXUS INTEL v12.0 • GraphML ขยาย • เพื่อการสืบสวนเท่านั้น</span></p>
+                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.0 • GraphML Extended • 85+ Procurement Records • For Investigation Only</span><span lang="th">NEXUS INTEL v12.0 • GraphML ขยาย • 85+ รายการจัดซื้อ • เพื่อการสืบสวนเท่านั้น</span></p>
                 <p class="text-xs text-danger mt-2 font-display tracking-wider">⚠ <span lang="en">NOT FOR PUBLIC DISTRIBUTION</span><span lang="th">ห้ามเผยแพร่สู่สาธารณะ</span></p>
             </footer>
         </main>
@@ -388,7 +429,7 @@
             arrow: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:12px;height:12px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>`
         };
 
-        // COMPLETE GRAPHML DATA (42 Nodes)
+        // COMPLETE GRAPHML DATA (42 Nodes) - CORRECTED
         const graphData = {
             nodes: [
                 {id:"n1",label:"นายปฏิกร พิทักษ์ฉนวน",type:"Person",risk:"Critical",category:"Central_Figure"},
@@ -429,71 +470,114 @@
                 {id:"n36",label:"บริษัท สตาร์ ปิโตรเลียม รีไฟน์นิ่ง จำกัด (มหาชน)",type:"Company",risk:"Low",category:"Client_Entity"},
                 {id:"n37",label:"กรมสรรพสามิต",type:"Government",risk:"Low",category:"Procurement_Client"},
                 {id:"n38",label:"กรุงเทพมหานคร",type:"Government",risk:"Low",category:"Procurement_Client"},
-                {id:"n39",label:"สำนักงาน ก.ล.ต.",type:"Government",risk:"Low",category:"Procurement_Client"},
+                // CORRECTED: Full name from GraphML
+                {id:"n39",label:"สำนักงานคณะกรรมการกำกับหลักทรัพย์และตลาดหลักทรัพย์",type:"Government",risk:"Low",category:"Procurement_Client"},
                 {id:"n40",label:"สำนักงานปลัดกระทรวงมหาดไทย",type:"Government",risk:"Low",category:"Procurement_Client"},
                 {id:"n41",label:"กรมทางหลวงชนบท",type:"Government",risk:"Low",category:"Procurement_Client"},
                 {id:"n42",label:"บริษัท โปรเอ็น คอร์ป จำกัด (มหาชน)",type:"Company",risk:"Medium",category:"IT_Vendor"}
             ],
             links: [
-                {source:"n1",target:"n2",rel:"Shareholder",details:"97.8% Ownership",type:"solid"},
-                {source:"n1",target:"n5",rel:"Former_Director",details:"Resigned 2023",type:"dashed"},
-                {source:"n1",target:"n10",rel:"Shareholder_Director",details:"50% Ownership",type:"solid"},
-                {source:"n1",target:"n15",rel:"Shareholder_Director",details:"1% Ownership",type:"solid"},
-                {source:"n1",target:"n11",rel:"Business_Associate",details:"Joint Director",type:"hidden"},
-                {source:"n3",target:"n2",rel:"CEO",details:"CEO / 0.1%",type:"solid"},
-                {source:"n4",target:"n2",rel:"Shareholder",details:"2.1% Family",type:"solid"},
-                {source:"n2",target:"n15",rel:"Shareholder",details:"29% in DPS",type:"solid"},
-                {source:"n2",target:"n19",rel:"Shareholder",details:"25% in Favorite",type:"solid"},
-                {source:"n3",target:"n5",rel:"Shareholder",details:"2% Cross-Link",type:"solid"},
-                {source:"n6",target:"n5",rel:"Shareholder_Director",details:"98% Majority",type:"solid"},
-                {source:"n6",target:"n7",rel:"Partner",details:"50% Dissolved",type:"dashed"},
-                {source:"n8",target:"n7",rel:"Partner",details:"50% Dissolved",type:"dashed"},
-                {source:"n8",target:"n9",rel:"Director_Shareholder",details:"Controls K Tech",type:"solid"},
-                {source:"n6",target:"n8",rel:"Former_Partner",details:"Co-Partners",type:"dashed"},
-                {source:"n3",target:"n6",rel:"Business_Associate",details:"Phoenix Link",type:"hidden"},
-                {source:"n6",target:"n9",rel:"Indirect_Control",details:"Via Jeerapong",type:"hidden"},
-                {source:"n11",target:"n10",rel:"Shareholder_Director",details:"25% Brew House",type:"solid"},
-                {source:"n11",target:"n12",rel:"Shareholder_Director",details:"50% Systronics",type:"solid"},
-                {source:"n13",target:"n12",rel:"Shareholder_Director",details:"42% Systronics",type:"solid"},
-                {source:"n14",target:"n12",rel:"Shareholder",details:"8% Systronics",type:"solid"},
-                {source:"n20",target:"n19",rel:"Director",details:"Board",type:"solid"},
-                {source:"n21",target:"n19",rel:"Shareholder_Director",details:"65% Majority",type:"solid"},
-                {source:"n22",target:"n19",rel:"Shareholder_Director",details:"10%",type:"solid"},
-                {source:"n16",target:"n15",rel:"Major_Shareholder",details:"49% DPS",type:"solid"},
-                {source:"n17",target:"n15",rel:"Director_Shareholder",details:"6%",type:"solid"},
-                {source:"n18",target:"n15",rel:"Director",details:"Board",type:"solid"},
-                {source:"n2",target:"n12",rel:"Collusion_Risk",details:"28+ Projects",type:"risk"},
-                {source:"n12",target:"n2",rel:"Collusion_Risk",details:"Alternating Wins",type:"risk"},
-                {source:"n9",target:"n2",rel:"Support_Bidder",details:"Lost 100% (9)",type:"risk"},
-                {source:"n23",target:"n2",rel:"Support_Bidder",details:"Lost 100% (6)",type:"risk"},
-                {source:"n24",target:"n2",rel:"Validator",details:"Legitimizing",type:"dashed"},
-                {source:"n25",target:"n2",rel:"Validator",details:"Legitimizing",type:"dashed"},
-                {source:"n12",target:"n26",rel:"Competitor",details:"CCTV Clustering",type:"risk"},
-                {source:"n12",target:"n27",rel:"Competitor",details:"CCTV Close Price",type:"risk"},
-                {source:"n26",target:"n27",rel:"Price_Clustering",details:"<0.3% diff",type:"risk"},
-                {source:"n26",target:"n38",rel:"Winner",details:"88.6M THB",type:"solid"},
-                {source:"n27",target:"n38",rel:"Bidder",details:"88.87M THB",type:"dashed"},
-                {source:"n12",target:"n38",rel:"Bidder",details:"88.86M THB",type:"dashed"},
-                {source:"n30",target:"n23",rel:"Competitor",details:"Innovation Cluster",type:"risk"},
-                {source:"n30",target:"n31",rel:"Price_Clustering",details:"0.2% diff",type:"risk"},
-                {source:"n23",target:"n31",rel:"Price_Clustering",details:"Three-way",type:"risk"},
-                {source:"n28",target:"n39",rel:"Winner",details:"SEC Multiple",type:"solid"},
-                {source:"n29",target:"n39",rel:"Bidder",details:"Lost lower price",type:"risk"},
-                {source:"n28",target:"n29",rel:"Collusion_Risk",details:"Higher won",type:"risk"},
-                {source:"n28",target:"n40",rel:"Winner",details:"MOI 300K",type:"solid"},
-                {source:"n2",target:"n37",rel:"Winner",details:"Excise 28M",type:"solid"},
-                {source:"n12",target:"n37",rel:"Bidder",details:"Oil 53.62M",type:"dashed"},
-                {source:"n2",target:"n33",rel:"Client",details:"Esso",type:"solid"},
-                {source:"n2",target:"n34",rel:"Client",details:"Bangchak",type:"solid"},
-                {source:"n2",target:"n35",rel:"Client",details:"PTTGC",type:"solid"},
-                {source:"n2",target:"n36",rel:"Client",details:"Star Petroleum",type:"solid"},
-                {source:"n32",target:"n41",rel:"Winner",details:"STEM Edu",type:"solid"},
-                {source:"n12",target:"n23",rel:"Procurement",details:"Frequent Co-Bid",type:"risk"},
-                {source:"n2",target:"n26",rel:"Network",details:"Shared CCTV",type:"hidden"},
-                {source:"n12",target:"n27",rel:"Network",details:"Coordinated BKK",type:"hidden"},
-                {source:"n42",target:"n37",rel:"Bidder",details:"Log System",type:"dashed"}
+                // OWNERSHIP & DIRECTORSHIP
+                {source:"n1",target:"n2",rel:"Shareholder",details:"97.8% Ownership - Majority Control",type:"solid",riskIndicator:"Critical_Control"},
+                {source:"n1",target:"n5",rel:"Former_Director",details:"Resigned 2023 - Historical Connection",type:"dashed",riskIndicator:"Historical_Link"},
+                {source:"n1",target:"n10",rel:"Shareholder_Director",details:"50% Ownership - Joint Control",type:"solid",riskIndicator:"Significant_Control"},
+                {source:"n1",target:"n15",rel:"Shareholder_Director",details:"1% Ownership - Board Influence",type:"solid",riskIndicator:"Minor_Stake"},
+                {source:"n1",target:"n11",rel:"Business_Associate",details:"Joint Directorship in Krungthep Brew House",type:"hidden",riskIndicator:"Hidden_Connection"},
+                {source:"n3",target:"n2",rel:"CEO",details:"Current CEO / 0.1% Shareholder - Executive Control",type:"solid",riskIndicator:"Executive_Control"},
+                {source:"n4",target:"n2",rel:"Shareholder",details:"2.1% Ownership - Family Stake",type:"solid",riskIndicator:"Family_Connection"},
+                {source:"n2",target:"n15",rel:"Shareholder",details:"29% Ownership in DPS Ground Services",type:"solid",riskIndicator:"Significant_Investment"},
+                {source:"n2",target:"n19",rel:"Shareholder",details:"25% Ownership in Favorite Technology",type:"solid",riskIndicator:"Significant_Investment"},
+                {source:"n3",target:"n5",rel:"Shareholder",details:"2% Ownership - Cross-Company Link",type:"solid",riskIndicator:"Cross_Ownership"},
+                {source:"n6",target:"n5",rel:"Shareholder_Director",details:"98% Ownership - Majority Control",type:"solid",riskIndicator:"Critical_Control"},
+                {source:"n6",target:"n7",rel:"Partner",details:"50% Equity in Dissolved Partnership",type:"dashed",riskIndicator:"Historical_Link"},
+                {source:"n8",target:"n7",rel:"Partner",details:"50% Equity in Dissolved Partnership",type:"dashed",riskIndicator:"Historical_Link"},
+                {source:"n8",target:"n9",rel:"Director_Shareholder",details:"Controls K Technology Solution",type:"solid",riskIndicator:"Critical_Control"},
+                {source:"n6",target:"n8",rel:"Former_Partner",details:"Co-Partners in Dissolved Prem Engineering",type:"dashed",riskIndicator:"Historical_Connection"},
+                {source:"n3",target:"n6",rel:"Business_Associate",details:"Connected via Phoenix Corp Asia shareholding",type:"hidden",riskIndicator:"Indirect_Connection"},
+                {source:"n6",target:"n9",rel:"Indirect_Control",details:"Suwanee connected to K Tech via Jeerapong",type:"hidden",riskIndicator:"Hidden_Connection"},
+                {source:"n11",target:"n10",rel:"Shareholder_Director",details:"25% Ownership in Krungthep Brew House",type:"solid",riskIndicator:"Significant_Control"},
+                {source:"n11",target:"n12",rel:"Shareholder_Director",details:"50% Ownership in Systronics",type:"solid",riskIndicator:"Critical_Control"},
+                {source:"n13",target:"n12",rel:"Shareholder_Director",details:"42% Ownership in Systronics",type:"solid",riskIndicator:"Significant_Control"},
+                {source:"n14",target:"n12",rel:"Shareholder",details:"8% Ownership in Systronics",type:"solid",riskIndicator:"Minor_Stake"},
+                {source:"n20",target:"n19",rel:"Director",details:"นุชา มนตรีเศวตกุล - Director",type:"solid",riskIndicator:"Board_Position"},
+                {source:"n21",target:"n19",rel:"Shareholder_Director",details:"65% Ownership - Majority Control",type:"solid",riskIndicator:"Critical_Control"},
+                {source:"n22",target:"n19",rel:"Shareholder_Director",details:"10% Ownership",type:"solid",riskIndicator:"Minor_Stake"},
+                {source:"n16",target:"n15",rel:"Major_Shareholder",details:"49% Ownership - Near Majority",type:"solid",riskIndicator:"Significant_Control"},
+                {source:"n17",target:"n15",rel:"Director_Shareholder",details:"6% Ownership",type:"solid",riskIndicator:"Minor_Stake"},
+                {source:"n18",target:"n15",rel:"Director",details:"Board Member",type:"solid",riskIndicator:"Board_Position"},
+                
+                // PROCUREMENT COLLUSION PATTERNS
+                {source:"n2",target:"n12",rel:"Procurement_Collusion_Risk",details:"Price Clustering/Shared Bids in 28+ Projects - CCTV and Traffic Systems",type:"risk",riskIndicator:"Critical_Risk"},
+                {source:"n12",target:"n2",rel:"Procurement_Collusion_Risk",details:"Reciprocal Bidding Pattern - Alternating Winners",type:"risk",riskIndicator:"Critical_Risk"},
+                {source:"n9",target:"n2",rel:"Procurement_Support_Bidder",details:"K Tech lost 100% of bids against Pram (9 Projects) - Suspicious Pattern",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n23",target:"n2",rel:"Procurement_Support_Bidder",details:"Expert Eng lost 100% of bids against Pram (6 Projects)",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n24",target:"n2",rel:"Bid_Validator",details:"I-3 Creation bids alongside Pram - Legitimizing Presence",type:"dashed",riskIndicator:"Medium_Risk"},
+                {source:"n25",target:"n2",rel:"Bid_Validator",details:"TA System bids alongside Pram - Legitimizing Presence",type:"dashed",riskIndicator:"Medium_Risk"},
+                
+                // CCTV/TRAFFIC RING
+                {source:"n12",target:"n26",rel:"Procurement_Competitor",details:"Competed in BKK CCTV Project - Price Clustering Detected",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n12",target:"n27",rel:"Procurement_Competitor",details:"Competed in BKK CCTV Project - Close Price Margins",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n26",target:"n27",rel:"Procurement_Price_Clustering",details:"Price difference less than 0.3% in multiple bids",type:"risk",riskIndicator:"Critical_Risk"},
+                {source:"n26",target:"n38",rel:"Procurement_Winner",details:"Won BKK CCTV Maintenance Contract - 88.6M THB",type:"solid",riskIndicator:"Contract_Award"},
+                {source:"n27",target:"n38",rel:"Procurement_Bidder",details:"Bid 88.87M THB - Lost by narrow margin",type:"dashed",riskIndicator:"Close_Bid"},
+                {source:"n12",target:"n38",rel:"Procurement_Bidder",details:"Bid 88.86M THB - Third place",type:"dashed",riskIndicator:"Close_Bid"},
+                
+                // INNOVATION CLUSTER
+                {source:"n30",target:"n23",rel:"Procurement_Competitor",details:"Environmental Innovation Center - Price Clustering",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n30",target:"n31",rel:"Procurement_Price_Clustering",details:"Bid prices within 0.2% range - Suspicious Pattern",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n23",target:"n31",rel:"Procurement_Price_Clustering",details:"Three-way price clustering detected",type:"risk",riskIndicator:"High_Risk"},
+                
+                // SEC/MOI CONTRACTS
+                {source:"n28",target:"n39",rel:"Procurement_Winner",details:"Won SEC Visualization Software - Multiple Years",type:"solid",riskIndicator:"Repeat_Winner"},
+                {source:"n29",target:"n39",rel:"Procurement_Bidder",details:"Lost to BEtimes despite lower price - Suspicious",type:"risk",riskIndicator:"High_Risk"},
+                {source:"n28",target:"n29",rel:"Procurement_Collusion_Risk",details:"Winner selected despite higher price - Abnormal Pattern",type:"risk",riskIndicator:"Critical_Risk"},
+                {source:"n28",target:"n40",rel:"Procurement_Winner",details:"Won MOI Contract - 300K THB",type:"solid",riskIndicator:"Contract_Award"},
+                
+                // EXCISE DEPARTMENT
+                {source:"n2",target:"n37",rel:"Procurement_Winner",details:"Won Excise Dept Electronic System - 28M THB",type:"solid",riskIndicator:"Major_Contract"},
+                {source:"n12",target:"n37",rel:"Procurement_Bidder",details:"Bid on Excise Oil Monitoring System - 53.62M THB",type:"dashed",riskIndicator:"Close_Bid"},
+                
+                // OIL/ENERGY CLIENTS
+                {source:"n2",target:"n33",rel:"Project_Client",details:"Oil Monitoring System Installation - Esso Thailand",type:"solid",riskIndicator:"Client_Relationship"},
+                {source:"n2",target:"n34",rel:"Project_Client",details:"Oil Distribution Monitoring - Bangchak",type:"solid",riskIndicator:"Client_Relationship"},
+                {source:"n2",target:"n35",rel:"Project_Client",details:"Refinery Monitoring System - PTTGC",type:"solid",riskIndicator:"Client_Relationship"},
+                {source:"n2",target:"n36",rel:"Project_Client",details:"Refinery Monitoring System - Star Petroleum",type:"solid",riskIndicator:"Client_Relationship"},
+                
+                // EDUCATION
+                {source:"n32",target:"n41",rel:"Procurement_Winner",details:"STEM Education Materials - Multiple Schools",type:"solid",riskIndicator:"Repeat_Winner"},
+                
+                // SYSTRONICS-EXPERT PATTERN
+                {source:"n12",target:"n23",rel:"Procurement_Pattern",details:"Frequent co-bidders with price clustering",type:"risk",riskIndicator:"High_Risk"},
+                
+                // NETWORK CONNECTIONS
+                {source:"n2",target:"n26",rel:"Procurement_Network",details:"Shared government CCTV/Traffic contracts",type:"hidden",riskIndicator:"Network_Connection"},
+                {source:"n12",target:"n27",rel:"Procurement_Network",details:"Coordinated bidding in BKK CCTV projects",type:"hidden",riskIndicator:"Network_Connection"},
+                
+                // PROEN
+                {source:"n42",target:"n37",rel:"Procurement_Bidder",details:"Centralized Log System Project",type:"dashed",riskIndicator:"Contract_Participation"},
+                
+                // RISK INDICATORS (NEW - from GraphML)
+                {source:"n29",target:"n28",rel:"Risk_Indicator",details:"เสนอราคาต่ำกว่าผู้เสนอรายอื่นผิดปกติ - Lost despite lower price",type:"risk",riskIndicator:"Procurement_Anomaly"},
+                {source:"n2",target:"n37",rel:"Risk_Indicator",details:"มีผู้เสนอราคาน้อยกว่า 3 ราย - Limited Competition",type:"risk",riskIndicator:"Competition_Risk"},
+                {source:"n28",target:"n39",rel:"Risk_Indicator",details:"มูลค่าสัญญาสูงกว่าราคาประมูลชนะ - Contract Inflation",type:"risk",riskIndicator:"Financial_Risk"},
+                {source:"n23",target:"n30",rel:"Risk_Indicator",details:"เสนอราคาใกล้ราคากลาง - Suspiciously Close to Reference",type:"risk",riskIndicator:"Information_Leak_Risk"}
             ]
         };
+
+        // PROCUREMENT DATA FROM CSV
+        const procurementData = [
+            {year:2567,project:"โครงการบริหารจัดการระบบตรวจสอบ ติดตาม ควบคุม",agency:"กรมสรรพสามิต",budget:18000000,winner:"เปรม กรุ๊ป",method:"เฉพาะเจาะจง",risk:["จัดซื้อจัดจ้างแบบเฉพาะเจาะจงท้ายปีงบประมาณ"],status:"won"},
+            {year:2567,project:"โครงการซ่อมบำรุงรักษา สอบเทียบ ระบบฉีดสาร Marker",agency:"กรมสรรพสามิต",budget:30386000,winner:"เปรม กรุ๊ป",method:"เฉพาะเจาะจง",risk:["จัดซื้อจัดจ้างแบบเฉพาะเจาะจงท้ายปีงบประมาณ"],status:"won"},
+            {year:2567,project:"โครงการซ่อมบำรุงรักษาระบบ Real Time Surveillance",agency:"กรมสรรพสามิต",budget:28370000,winner:"เปรม กรุ๊ป",method:"เฉพาะเจาะจง",risk:["จัดซื้อจัดจ้างแบบเฉพาะเจาะจงท้ายปีงบประมาณ"],status:"won"},
+            {year:2567,project:"โครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมัน",agency:"กรมสรรพสามิต",budget:20810000,winner:"เปรม กรุ๊ป",method:"เฉพาะเจาะจง",risk:["จัดซื้อจัดจ้างแบบเฉพาะเจาะจงท้ายปีงบประมาณ"],status:"won"},
+            {year:2565,project:"โครงการปรับปรุงระบบวิทยุสื่อสาร ภาค 4,5,6,10",agency:"กรมสรรพสามิต",budget:87935000,winner:"เปรม กรุ๊ป",method:"e-bidding",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม","มีผู้เสนอราคาน้อยกว่า 3 ราย"],status:"won",bidders:[{name:"เปรม กรุ๊ป",price:87700000},{name:"เค เทคโนโลยี",price:87835000}]},
+            {year:2564,project:"โครงการเพิ่มประสิทธิภาพระบบควบคุมน้ำมันดีเซลชาวประมง",agency:"กรมสรรพสามิต",budget:254600000,winner:"เปรม กรุ๊ป",method:"e-bidding",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม","มีผู้เสนอราคาน้อยกว่า 3 ราย"],status:"won",bidders:[{name:"เปรม กรุ๊ป",price:254000000},{name:"ซี อี โอ เทคโนโลยี",price:254300000}]},
+            {year:2564,project:"โครงการปรับปรุงระบบวิทยุสื่อสาร ภาค 2,7,8",agency:"กรมสรรพสามิต",budget:73200000,winner:"เปรม กรุ๊ป",method:"e-bidding",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม","มีผู้เสนอราคาน้อยกว่า 3 ราย"],status:"won",bidders:[{name:"ซิสทรอนิกส์",price:73100000},{name:"เปรม กรุ๊ป",price:73000000}]},
+            {year:2566,project:"โครงการกำกับและติดตามมาตรฐานสินค้าสุราชุมชน",agency:"กรมสรรพสามิต",budget:67100000,winner:"เปรม กรุ๊ป",method:"e-bidding",risk:["เสนอราคาเกาะกลุ่ม","มีผู้เสนอราคาน้อยกว่า 3 ราย"],status:"won",bidders:[{name:"ซิสทรอนิกส์",price:66900000},{name:"เปรม กรุ๊ป",price:66429000}]},
+            {year:2567,project:"โครงการบริหารจัดการสำนวนการตรวจสอบภาษี",agency:"กรมสรรพสามิต",budget:17000000,winner:"ซิสทรอนิกส์",method:"e-bidding",risk:["เสนอราคาเกาะกลุ่ม","มีผู้เสนอราคาน้อยกว่า 3 ราย"],status:"lost",bidders:[{name:"ซิสทรอนิกส์",price:16840000},{name:"เปรม กรุ๊ป",price:16880000}]},
+            {year:2567,project:"โครงการบำรุงรักษาระบบ Flow Meter",agency:"กรมสรรพสามิต",budget:19410000,winner:"ซิสทรอนิกส์",method:"คัดเลือก",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม"],status:"lost",bidders:[{name:"เท็คไอที",price:19363000},{name:"ซิสทรอนิกส์",price:19300000},{name:"เปรม กรุ๊ป",price:19355000}]},
+            {year:2565,project:"โครงการพัฒนาระบบค้นหาและติดตามการขนส่งน้ำมัน",agency:"กรมสรรพสามิต",budget:47700000,winner:"ซิสทรอนิกส์",method:"คัดเลือก",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม"],status:"lost",bidders:[{name:"บีทามส์",price:47594300},{name:"ซิสทรอนิกส์",price:47575000},{name:"เปรม กรุ๊ป",price:47610000}]}
+        ];
 
         // CLUSTER DATA
         const clusterData = {
@@ -820,6 +904,7 @@
                 APP.initObservers();
                 APP.renderCharts();
                 APP.renderEntityTable();
+                APP.renderProcurementTimeline();
                 APP.showCluster('central');
                 initNetwork();
                 new AntigravityEngine();
@@ -867,6 +952,37 @@
                 }).join('');
             },
             
+            renderProcurementTimeline: () => {
+                // Pram Group major contracts
+                const pramContracts = procurementData.filter(p => p.winner === 'เปรม กรุ๊ป').slice(0, 8);
+                document.getElementById('procurement-pram').innerHTML = pramContracts.map(p => {
+                    const riskClass = p.risk && p.risk.length > 0 ? 'risk' : 'won';
+                    return `<div class="procurement-card ${riskClass}">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-mono text-muted">${p.year}</span>
+                            <span class="text-xs font-mono text-emerald">${(p.budget/1000000).toFixed(1)}M</span>
+                        </div>
+                        <div class="text-sm text-silver truncate mb-1">${p.project.substring(0, 50)}...</div>
+                        <div class="text-xs text-muted">${p.agency} • ${p.method}</div>
+                        ${p.risk && p.risk.length > 0 ? `<div class="mt-1 flex flex-wrap gap-1">${p.risk.map(r => `<span class="badge badge-high" style="font-size:0.5rem;">${r.substring(0,15)}...</span>`).join('')}</div>` : ''}
+                    </div>`;
+                }).join('');
+                
+                // Co-bidding patterns
+                const cobidContracts = procurementData.filter(p => p.bidders && p.bidders.length > 1).slice(0, 6);
+                document.getElementById('procurement-cobid').innerHTML = cobidContracts.map(p => {
+                    return `<div class="procurement-card ${p.status === 'won' ? 'won' : 'lost'}">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-xs font-mono text-muted">${p.year}</span>
+                            <span class="badge ${p.status === 'won' ? 'badge-low' : 'badge-high'}">${p.status}</span>
+                        </div>
+                        <div class="text-sm text-silver truncate mb-2">${p.project.substring(0, 45)}...</div>
+                        <div class="text-xs text-muted mb-1">Bidders:</div>
+                        ${p.bidders.map(b => `<div class="text-xs flex justify-between ${b.name.includes('เปรม') ? 'text-neon' : 'text-muted'}"><span>${b.name}</span><span class="font-mono">${(b.price/1000000).toFixed(2)}M</span></div>`).join('')}
+                    </div>`;
+                }).join('');
+            },
+            
             searchEntities: (q) => APP.renderEntityTable(q),
             
             showCluster: (id) => {
@@ -901,22 +1017,39 @@
                 const conns = graphData.links.filter(l => (l.source.id || l.source) === e.id || (l.target.id || l.target) === e.id);
                 const typeBadge = e.type === 'Person' ? 'badge-person' : (e.type === 'Government' ? 'badge-government' : 'badge-company');
                 
+                // Find related procurement records
+                const relatedProcurements = procurementData.filter(p => 
+                    p.winner && p.winner.includes(e.label.substring(0, 10)) ||
+                    (p.bidders && p.bidders.some(b => b.name.includes(e.label.substring(0, 10))))
+                ).slice(0, 5);
+                
                 document.getElementById('panel-content').innerHTML = `
                     <div class="flex gap-2 mb-4 flex-wrap"><span class="badge ${typeBadge}">${e.type}</span><span class="badge badge-${e.risk.toLowerCase()}">${e.risk}</span></div>
                     <div class="text-xs text-muted mb-1">Category: <span class="text-silver">${e.category.replace(/_/g, ' ')}</span></div>
                     <div class="text-xs text-muted mb-4">Connections: <span class="text-neon font-bold">${conns.length}</span></div>
-                    <div class="border-t border-glass pt-4">
+                    <div class="border-t border-glass pt-4 mb-4">
                         <div class="text-xs text-muted uppercase tracking-wider font-display mb-3">Connection Details</div>
-                        <div class="space-y-2" style="max-height:350px;overflow-y:auto;">
+                        <div class="space-y-2" style="max-height:200px;overflow-y:auto;">
                             ${conns.map(c => {
                                 const isSource = (c.source.id || c.source) === e.id;
                                 const otherId = isSource ? (c.target.id || c.target) : (c.source.id || c.source);
                                 const other = graphData.nodes.find(n => n.id === otherId);
                                 if(!other) return '';
-                                return `<div class="p-2 rounded bg-white/5 text-xs"><div class="text-silver mb-1">${other.label}</div><div class="text-muted">${isSource ? '→' : '←'} ${c.rel} • ${c.details}</div></div>`;
+                                const riskClass = c.type === 'risk' ? 'text-danger' : '';
+                                return `<div class="p-2 rounded bg-white/5 text-xs"><div class="text-silver mb-1 ${riskClass}">${other.label}</div><div class="text-muted">${isSource ? '→' : '←'} ${c.rel} • ${c.details}</div>${c.riskIndicator ? `<div class="text-xs text-warning mt-1">⚠ ${c.riskIndicator.replace(/_/g, ' ')}</div>` : ''}</div>`;
                             }).join('')}
                         </div>
-                    </div>`;
+                    </div>
+                    ${relatedProcurements.length > 0 ? `
+                    <div class="border-t border-glass pt-4">
+                        <div class="text-xs text-muted uppercase tracking-wider font-display mb-3">Related Procurements</div>
+                        <div class="space-y-2">
+                            ${relatedProcurements.map(p => `<div class="p-2 rounded bg-white/5 text-xs">
+                                <div class="flex justify-between"><span class="text-muted">${p.year}</span><span class="text-emerald font-mono">${(p.budget/1000000).toFixed(1)}M</span></div>
+                                <div class="text-silver truncate">${p.project.substring(0, 40)}...</div>
+                            </div>`).join('')}
+                        </div>
+                    </div>` : ''}`;
                 
                 panel.classList.add('open');
                 backdrop.classList.add('open');
@@ -945,6 +1078,11 @@
                     if(f === 'critical' && d.risk === 'Critical') return 1;
                     return 0.1;
                 });
+            },
+            
+            showProcurementTab: (tab) => {
+                // Could expand to filter procurement display
+                APP.renderProcurementTimeline();
             },
             
             resetNetwork: () => { if(networkSvg && networkZoom) networkSvg.transition().duration(750).call(networkZoom.transform, d3.zoomIdentity); APP.filterNetwork('all'); },
