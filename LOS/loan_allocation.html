@@ -12,12 +12,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        /* === NEXUS MICRO-FRAMEWORK v13.0 === */
+        /* === NEXUS MICRO-FRAMEWORK v14.0 === */
         @layer base, layout, components, utilities, animations;
 
         @layer base {
             :root {
-                /* Void Palette */
+                /* Dark Mode - Void Palette */
                 --space-void: #000000;
                 --space-deep: #0a0a0a;
                 --space-surface: #111111;
@@ -62,6 +62,11 @@
                 --glass-border: rgba(255, 255, 255, 0.08);
                 --glass-border-hover: rgba(255, 255, 255, 0.18);
                 
+                /* Text Colors */
+                --text-primary: #f5f5f7;
+                --text-secondary: #86868b;
+                --text-tertiary: #424245;
+                
                 /* Motion */
                 --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
                 --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -71,6 +76,37 @@
                 --font-ui: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
                 --font-thai: 'Sarabun', 'Inter', sans-serif;
                 --font-mono: 'JetBrains Mono', 'SF Mono', monospace;
+            }
+            
+            /* Light Mode Variables */
+            [data-theme="light"] {
+                --space-void: #ffffff;
+                --space-deep: #f5f5f7;
+                --space-surface: #ffffff;
+                --space-elevated: #f5f5f7;
+                
+                --titanium: #6e6e73;
+                --silver: #1d1d1f;
+                --platinum: #86868b;
+                --graphite: #d2d2d7;
+                
+                --glass-bg: rgba(255, 255, 255, 0.72);
+                --glass-border: rgba(0, 0, 0, 0.08);
+                --glass-border-hover: rgba(0, 0, 0, 0.15);
+                
+                --text-primary: #1d1d1f;
+                --text-secondary: #6e6e73;
+                --text-tertiary: #86868b;
+                
+                --tier-1-dim: rgba(255, 215, 0, 0.2);
+                --tier-2-dim: rgba(142, 142, 147, 0.2);
+                --tier-3-dim: rgba(205, 127, 50, 0.2);
+                --tier-4-dim: rgba(0, 113, 227, 0.15);
+                --tier-none-dim: rgba(142, 142, 147, 0.15);
+                
+                --success-dim: rgba(48, 209, 88, 0.2);
+                --danger-dim: rgba(255, 69, 58, 0.2);
+                --warning-dim: rgba(255, 214, 10, 0.25);
             }
             
             * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -84,11 +120,12 @@
             
             body { 
                 background: var(--space-void); 
-                color: var(--silver); 
+                color: var(--text-primary); 
                 font-family: var(--font-ui);
                 line-height: 1.5;
                 overflow-x: hidden;
                 min-height: 100vh;
+                transition: background 0.3s ease, color 0.3s ease;
             }
             
             /* Deep-State i18n */
@@ -247,6 +284,8 @@
             .text-success { color: var(--success); }
             .text-danger { color: var(--danger); }
             .text-warning { color: var(--warning); }
+            .text-primary { color: var(--text-primary); }
+            .text-secondary { color: var(--text-secondary); }
             
             /* Buttons */
             .btn {
@@ -278,7 +317,7 @@
             }
             .btn-secondary {
                 background: var(--space-elevated);
-                color: var(--silver);
+                color: var(--text-primary);
                 border: 1px solid var(--glass-border);
             }
             .btn-secondary:hover:not(:disabled) {
@@ -290,8 +329,8 @@
                 color: var(--titanium);
             }
             .btn-ghost:hover:not(:disabled) {
-                color: var(--silver);
-                background: rgba(255,255,255,0.05);
+                color: var(--text-primary);
+                background: rgba(128,128,128,0.1);
             }
             .btn-sm {
                 padding: 0.375rem 0.75rem;
@@ -300,6 +339,25 @@
             .btn-lg {
                 padding: 0.875rem 1.75rem;
                 font-size: 1rem;
+            }
+            
+            /* Theme Toggle Button */
+            .theme-toggle {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background: var(--space-elevated);
+                border: 1px solid var(--glass-border);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                transition: all 0.3s var(--ease-out);
+                font-size: 1.25rem;
+            }
+            .theme-toggle:hover {
+                background: var(--glass-border-hover);
+                transform: rotate(15deg);
             }
             
             /* Form Elements */
@@ -322,7 +380,7 @@
                 padding: 0.625rem 0.875rem;
                 font-family: var(--font-mono);
                 font-size: 0.875rem;
-                color: var(--silver);
+                color: var(--text-primary);
                 transition: all 0.2s var(--ease-out);
                 width: 100%;
             }
@@ -357,6 +415,7 @@
                 border-radius: 12px;
                 cursor: pointer;
                 transition: all 0.3s var(--ease-out);
+                flex-shrink: 0;
             }
             .toggle::after {
                 content: '';
@@ -379,6 +438,7 @@
             .toggle.disabled {
                 opacity: 0.4;
                 cursor: not-allowed;
+                pointer-events: none;
             }
             .toggle-sm {
                 width: 36px;
@@ -415,6 +475,9 @@
             .badge-warning { background: var(--warning-dim); color: var(--warning); border-color: rgba(255,214,10,0.3); }
             .badge-neon { background: rgba(0,113,227,0.15); color: var(--neon-glow); border-color: rgba(0,113,227,0.3); }
             
+            /* Light mode badge adjustments */
+            [data-theme="light"] .badge-tier-2 { color: #636366; }
+            
             /* Tabs */
             .tabs-container {
                 display: flex;
@@ -437,8 +500,8 @@
                 transition: all 0.3s var(--ease-out);
             }
             .tab-btn:hover {
-                color: var(--silver);
-                background: rgba(255,255,255,0.05);
+                color: var(--text-primary);
+                background: rgba(128,128,128,0.1);
             }
             .tab-btn.active {
                 color: white;
@@ -480,17 +543,18 @@
             }
             .data-table td {
                 padding: 0.75rem 1rem;
-                border-bottom: 1px solid rgba(255,255,255,0.03);
+                border-bottom: 1px solid var(--glass-border);
                 vertical-align: middle;
+                color: var(--text-primary);
             }
             .data-table tr {
                 transition: background 0.15s ease;
             }
-            .data-table tr:hover {
-                background: rgba(255,255,255,0.02);
+            .data-table tbody tr:hover {
+                background: rgba(128,128,128,0.05);
             }
             .data-table tr.selected {
-                background: rgba(0,113,227,0.08);
+                background: rgba(0,113,227,0.1);
             }
             .data-table tr.disabled {
                 opacity: 0.4;
@@ -519,7 +583,7 @@
                 font-family: var(--font-display);
                 font-size: 1.5rem;
                 font-weight: 700;
-                color: var(--silver);
+                color: var(--text-primary);
             }
             .stat-card-sub {
                 font-size: 0.75rem;
@@ -533,6 +597,7 @@
                 border: 1px solid var(--glass-border);
                 overflow: hidden;
                 margin-bottom: 1.5rem;
+                background: var(--space-surface);
             }
             .tier-header {
                 padding: 1rem 1.25rem;
@@ -543,7 +608,7 @@
                 transition: background 0.2s ease;
             }
             .tier-header:hover {
-                background: rgba(255,255,255,0.02);
+                background: rgba(128,128,128,0.05);
             }
             .tier-header-left {
                 display: flex;
@@ -564,6 +629,8 @@
             .tier-3-bg { background: var(--tier-3-dim); color: var(--tier-3); }
             .tier-4-bg { background: var(--tier-4-dim); color: var(--tier-4); }
             .tier-none-bg { background: var(--tier-none-dim); color: var(--tier-none); }
+            
+            [data-theme="light"] .tier-2-bg { color: #636366; }
             
             .tier-body {
                 display: none;
@@ -705,6 +772,8 @@
             .rounded-xl { border-radius: 12px; }
             .rounded-2xl { border-radius: 16px; }
             .rounded-full { border-radius: 9999px; }
+            
+            .space-y-2 > * + * { margin-top: 0.5rem; }
         }
 
         @layer animations {
@@ -741,10 +810,10 @@
         }
     </style>
 </head>
-<body data-lang="th">
+<body data-lang="th" data-theme="dark">
     <!-- Background Canvas -->
     <canvas id="antigravity-canvas" class="fixed inset-0 z-0"></canvas>
-    <div class="fixed inset-0 z-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, transparent 0%, #000 70%);"></div>
+    <div id="gradient-overlay" class="fixed inset-0 z-0 pointer-events-none" style="background: radial-gradient(ellipse at 50% 0%, transparent 0%, #000 70%);"></div>
 
     <!-- Loading Overlay -->
     <div id="loading-overlay" class="loading-overlay">
@@ -764,7 +833,7 @@
                     <div id="logo-slot" class="text-neon"></div>
                     <div>
                         <h1 class="font-display font-bold text-lg tracking-wider">
-                            <span class="text-white">กยศ.</span> 
+                            <span class="text-primary">กยศ.</span> 
                             <span class="text-titanium">NEXUS</span> //
                             <span class="text-neon">ALLOCATION</span>
                         </h1>
@@ -775,6 +844,9 @@
                     </div>
                 </div>
                 <nav class="flex items-center gap-3">
+                    <button id="theme-toggle" class="theme-toggle" onclick="APP.toggleTheme()" title="Toggle Light/Dark Mode">
+                        <span id="theme-icon">🌙</span>
+                    </button>
                     <button class="btn btn-ghost btn-sm" onclick="APP.toggleLang()">
                         <span id="lang-indicator">EN</span> / <span>TH</span>
                     </button>
@@ -828,15 +900,15 @@
                                 <span lang="en">Number of Students</span>
                                 <span lang="th">จำนวนนักเรียน</span>
                             </label>
-                            <input type="number" id="config-students" class="input-field" min="3" max="50" value="20">
-                            <span class="text-xs text-titanium">(3-50)</span>
+                            <input type="number" id="config-students" class="input-field" min="3" max="100" value="20">
+                            <span class="text-xs text-titanium">(3-100)</span>
                         </div>
                         <div class="input-group">
                             <label class="input-label">
-                                <span lang="en">Federal Budget (Billion ฿)</span>
-                                <span lang="th">งบประมาณ (พันล้านบาท)</span>
+                                <span lang="en">Federal Budget (Million ฿)</span>
+                                <span lang="th">งบประมาณ (ล้านบาท)</span>
                             </label>
-                            <input type="number" id="config-budget" class="input-field" min="1" max="100" value="5" step="0.1">
+                            <input type="number" id="config-budget" class="input-field" min="1" max="10000" value="50" step="1">
                         </div>
                         <div class="input-group">
                             <label class="input-label">
@@ -1275,7 +1347,9 @@
                 'ศักดิ์ชัย', 'ศิริพร', 'มานะ', 'มาลี', 'วีระ', 'วีณา', 'กิตติ', 'กัญญา',
                 'ณัฐพล', 'ณัฐธิดา', 'ภาคภูมิ', 'ภัทรา', 'อดิศักดิ์', 'อรวรรณ', 'ปรีชา', 'ปราณี',
                 'เกียรติศักดิ์', 'เกศรินทร์', 'ธีรศักดิ์', 'ธีราภรณ์', 'สันติ', 'สันทนา', 'วรพจน์', 'วรรณา',
-                'นพดล', 'นพรัตน์', 'ยุทธนา', 'ยุวดี', 'รัฐพล', 'รัตนา', 'จิรศักดิ์', 'จิราภรณ์'
+                'นพดล', 'นพรัตน์', 'ยุทธนา', 'ยุวดี', 'รัฐพล', 'รัตนา', 'จิรศักดิ์', 'จิราภรณ์',
+                'พงศกร', 'พิมพ์ใจ', 'สุทธิพงษ์', 'สุนิสา', 'อภิชาติ', 'อัญชลี', 'ธวัชชัย', 'ธัญญา',
+                'วิทยา', 'วิลาวัลย์', 'สมศักดิ์', 'สมใจ', 'ชาญชัย', 'ชนิดา', 'บุญมี', 'บุษบา'
             ],
             
             // Thai Last Names
@@ -1283,7 +1357,8 @@
                 'แก้วมณี', 'ทองดี', 'สุขใจ', 'รักษา', 'พงศ์พันธ์', 'วงศ์สกุล', 'สิทธิโชค', 'มหาชัย',
                 'ศรีสุข', 'วัฒนา', 'อมรรัตน์', 'พรหมมา', 'จันทร์เพ็ญ', 'สมบูรณ์', 'เจริญสุข', 'อินทรา',
                 'ประสิทธิ์', 'มงคล', 'ชัยรัตน์', 'สุวรรณ', 'ภูมิพัฒน์', 'รุ่งเรือง', 'กิจเจริญ', 'ศิริมงคล',
-                'นิยม', 'บุญมา', 'พิพัฒน์', 'สำเร็จ', 'เอกชัย', 'วิไลลักษณ์', 'ธนวัฒน์', 'ปัญญา'
+                'นิยม', 'บุญมา', 'พิพัฒน์', 'สำเร็จ', 'เอกชัย', 'วิไลลักษณ์', 'ธนวัฒน์', 'ปัญญา',
+                'ใจดี', 'สุขสันต์', 'พรมแดน', 'ทิพย์สุข', 'ศรีวิชัย', 'เพชรดี', 'ทองคำ', 'เงินดี'
             ],
             
             // Thai Education Institutes
@@ -1314,6 +1389,7 @@
         // ============================================
         const STATE = {
             lang: 'th',
+            theme: 'dark',
             students: [],
             selectedInstitutes: [],
             tierAllocations: { 1: [], 2: [], 3: [], 4: [], none: [] },
@@ -1403,10 +1479,110 @@
         // ============================================
         // 6. STUDENT GENERATION
         // ============================================
+        function generateStudentWithCriteria(usedNames, shuffledFirstNames, shuffledLastNames, index, criteria) {
+            let firstName, lastName, fullName;
+            let attempts = 0;
+            
+            // Ensure unique name combinations
+            do {
+                firstName = shuffledFirstNames[(index + attempts) % shuffledFirstNames.length];
+                lastName = shuffledLastNames[(index + attempts * 2) % shuffledLastNames.length];
+                fullName = `${firstName} ${lastName}`;
+                attempts++;
+            } while (usedNames.has(fullName) && attempts < 200);
+            
+            usedNames.add(fullName);
+            
+            const educationLevel = criteria.educationLevel || Utils.randomChoice(CONFIG.EDUCATION_LEVELS);
+            const loanType = criteria.loanType !== undefined ? criteria.loanType : Utils.randomChoice(CONFIG.LOAN_TYPES);
+            const hasEEF = criteria.hasEEF !== undefined ? criteria.hasEEF : Math.random() < 0.25;
+            const hasWelfareCard = criteria.hasWelfareCard !== undefined ? criteria.hasWelfareCard : Math.random() < 0.3;
+            
+            // Income with skewed distribution (more low income)
+            let householdIncome;
+            if (criteria.isLowIncome === true) {
+                householdIncome = Utils.randomInt(CONFIG.INCOME_MIN, CONFIG.INCOME_THRESHOLD);
+            } else if (criteria.isLowIncome === false) {
+                householdIncome = Utils.randomInt(CONFIG.INCOME_THRESHOLD + 1, CONFIG.INCOME_MAX);
+            } else {
+                const incomeRand = Math.pow(Math.random(), 2);
+                householdIncome = Math.round(CONFIG.INCOME_MIN + incomeRand * (CONFIG.INCOME_MAX - CONFIG.INCOME_MIN));
+            }
+            
+            const isLowIncome = householdIncome <= CONFIG.INCOME_THRESHOLD;
+            
+            // Poverty status: at least one of EEF, welfare card, or low income
+            const isPoor = hasEEF || hasWelfareCard || isLowIncome;
+            
+            // Stipend eligibility
+            const requestedStipend = isPoor && Math.random() < 0.7;
+            const approvedStipend = requestedStipend && Math.random() < 0.85;
+            
+            // Calculate stipend amount
+            const monthlyStipend = educationLevel === 'ม.ปลาย' ? CONFIG.STIPEND_HIGH_SCHOOL : CONFIG.STIPEND_OTHER;
+            const annualStipend = approvedStipend ? monthlyStipend * CONFIG.STIPEND_MONTHS : 0;
+            
+            // Tuition (skewed towards lower values)
+            const tuitionRand = Math.pow(Math.random(), 1.5);
+            const tuition = Math.round(CONFIG.TUITION_MIN + tuitionRand * (CONFIG.TUITION_MAX - CONFIG.TUITION_MIN));
+            
+            // Total loan
+            const totalLoan = tuition + annualStipend;
+            
+            // Determine tier based on flowchart logic
+            let tier;
+            const isTargetedMajor = loanType === 2 || loanType === 3;
+            
+            if (isTargetedMajor) {
+                // Track A: Targeted Majors
+                if (householdIncome > CONFIG.INCOME_THRESHOLD) {
+                    tier = 2; // High income targeted major
+                } else {
+                    tier = 1; // Low income targeted major (Tier 1)
+                }
+            } else {
+                // Track B: General Majors
+                if (hasEEF || hasWelfareCard) {
+                    tier = 3; // Has welfare/EEF
+                } else if (isLowIncome) {
+                    tier = 4; // Low income general
+                } else {
+                    tier = 'none'; // No budget category
+                }
+            }
+            
+            // Tag for Tier 1 grouping (has EEF/welfare vs doesn't)
+            const hasBenefitCard = hasEEF || hasWelfareCard;
+            
+            return {
+                cid: Utils.generateCID(),
+                firstName,
+                lastName,
+                fullName,
+                educationLevel,
+                loanType,
+                hasEEF,
+                hasWelfareCard,
+                isLowIncome,
+                isPoor,
+                householdIncome,
+                requestedStipend,
+                approvedStipend,
+                monthlyStipend: approvedStipend ? monthlyStipend : 0,
+                annualStipend,
+                tuition,
+                totalLoan,
+                tier,
+                hasBenefitCard,
+                isSelected: false,
+                isInstituteSelected: false
+            };
+        }
+
         function generateStudents() {
             const numInstitutes = parseInt(document.getElementById('config-institutes').value) || 3;
             const numStudents = parseInt(document.getElementById('config-students').value) || 20;
-            const budgetBillions = parseFloat(document.getElementById('config-budget').value) || 5;
+            const budgetMillions = parseFloat(document.getElementById('config-budget').value) || 50;
             
             // Validate
             if (numStudents < numInstitutes) {
@@ -1425,105 +1601,81 @@
             const shuffledFirstNames = Utils.shuffleArray([...CONFIG.FIRST_NAMES]);
             const shuffledLastNames = Utils.shuffleArray([...CONFIG.LAST_NAMES]);
             
-            for (let i = 0; i < numStudents; i++) {
-                let firstName, lastName, fullName;
-                let attempts = 0;
+            let studentIndex = 0;
+            
+            // If numStudents >= 4, ensure at least one student per tier and education level
+            if (numStudents >= 4) {
+                // Create guaranteed students for each tier
+                const tierCriteria = [
+                    // Tier 1: Low income + targeted major (loan type 2 or 3)
+                    { loanType: 2, isLowIncome: true, educationLevel: 'ม.ปลาย' },
+                    // Tier 2: High income + targeted major
+                    { loanType: 3, isLowIncome: false, educationLevel: 'ปวช.' },
+                    // Tier 3: Has EEF/welfare + general major
+                    { loanType: 1, hasEEF: true, hasWelfareCard: false, educationLevel: 'ปวส.' },
+                    // Tier 4: Low income + general major + no EEF/welfare
+                    { loanType: 1, isLowIncome: true, hasEEF: false, hasWelfareCard: false, educationLevel: 'ป.ตรี' }
+                ];
                 
-                // Ensure unique name combinations
-                do {
-                    firstName = shuffledFirstNames[i % shuffledFirstNames.length];
-                    lastName = shuffledLastNames[(i + attempts) % shuffledLastNames.length];
-                    fullName = `${firstName} ${lastName}`;
-                    attempts++;
-                } while (usedNames.has(fullName) && attempts < 100);
-                
-                usedNames.add(fullName);
-                
-                const educationLevel = Utils.randomChoice(CONFIG.EDUCATION_LEVELS);
-                const loanType = Utils.randomChoice(CONFIG.LOAN_TYPES);
-                const hasEEF = Math.random() < 0.25;
-                const hasWelfareCard = Math.random() < 0.3;
-                
-                // Income with skewed distribution (more low income)
-                const incomeRand = Math.pow(Math.random(), 2);
-                const householdIncome = Math.round(CONFIG.INCOME_MIN + incomeRand * (CONFIG.INCOME_MAX - CONFIG.INCOME_MIN));
-                const isLowIncome = householdIncome <= CONFIG.INCOME_THRESHOLD;
-                
-                // Poverty status: at least one of EEF, welfare card, or low income
-                const isPoor = hasEEF || hasWelfareCard || isLowIncome;
-                
-                // Stipend eligibility
-                const requestedStipend = isPoor && Math.random() < 0.7;
-                const approvedStipend = requestedStipend && Math.random() < 0.85;
-                
-                // Calculate stipend amount
-                const monthlyStipend = educationLevel === 'ม.ปลาย' ? CONFIG.STIPEND_HIGH_SCHOOL : CONFIG.STIPEND_OTHER;
-                const annualStipend = approvedStipend ? monthlyStipend * CONFIG.STIPEND_MONTHS : 0;
-                
-                // Tuition (skewed towards lower values)
-                const tuitionRand = Math.pow(Math.random(), 1.5);
-                const tuition = Math.round(CONFIG.TUITION_MIN + tuitionRand * (CONFIG.TUITION_MAX - CONFIG.TUITION_MIN));
-                
-                // Total loan
-                const totalLoan = tuition + annualStipend;
-                
-                // Determine tier based on flowchart logic
-                let tier;
-                const isTargetedMajor = loanType === 2 || loanType === 3;
-                
-                if (isTargetedMajor) {
-                    // Track A: Targeted Majors
-                    if (householdIncome > CONFIG.INCOME_THRESHOLD) {
-                        tier = 2; // High income targeted major
-                    } else {
-                        tier = 1; // Low income targeted major (Tier 1)
-                    }
-                } else {
-                    // Track B: General Majors
-                    if (hasEEF || hasWelfareCard) {
-                        tier = 3; // Has welfare/EEF
-                    } else if (isLowIncome) {
-                        tier = 4; // Low income general
-                    } else {
-                        tier = 'none'; // No budget category
-                    }
-                }
-                
-                // Tag for Tier 1 grouping (has EEF/welfare vs doesn't)
-                const hasBenefitCard = hasEEF || hasWelfareCard;
-                
-                students.push({
-                    id: i + 1,
-                    cid: Utils.generateCID(),
-                    firstName,
-                    lastName,
-                    fullName,
-                    institute: Utils.randomChoice(STATE.selectedInstitutes),
-                    educationLevel,
-                    loanType,
-                    hasEEF,
-                    hasWelfareCard,
-                    isLowIncome,
-                    isPoor,
-                    householdIncome,
-                    requestedStipend,
-                    approvedStipend,
-                    monthlyStipend: approvedStipend ? monthlyStipend : 0,
-                    annualStipend,
-                    tuition,
-                    totalLoan,
-                    tier,
-                    hasBenefitCard,
-                    isSelected: false,
-                    isInstituteSelected: false
+                // Generate guaranteed tier students
+                tierCriteria.forEach((criteria, idx) => {
+                    const student = generateStudentWithCriteria(
+                        usedNames, shuffledFirstNames, shuffledLastNames, studentIndex, criteria
+                    );
+                    student.id = studentIndex + 1;
+                    student.institute = STATE.selectedInstitutes[idx % STATE.selectedInstitutes.length];
+                    students.push(student);
+                    studentIndex++;
                 });
+                
+                // If we still need more students to cover all education levels
+                const coveredLevels = new Set(students.map(s => s.educationLevel));
+                const missingLevels = CONFIG.EDUCATION_LEVELS.filter(l => !coveredLevels.has(l));
+                
+                missingLevels.forEach(level => {
+                    if (studentIndex < numStudents) {
+                        const student = generateStudentWithCriteria(
+                            usedNames, shuffledFirstNames, shuffledLastNames, studentIndex,
+                            { educationLevel: level }
+                        );
+                        student.id = studentIndex + 1;
+                        student.institute = Utils.randomChoice(STATE.selectedInstitutes);
+                        students.push(student);
+                        studentIndex++;
+                    }
+                });
+                
+                // Also ensure we have at least one "none" tier student if possible
+                if (studentIndex < numStudents) {
+                    const noneStudent = generateStudentWithCriteria(
+                        usedNames, shuffledFirstNames, shuffledLastNames, studentIndex,
+                        { loanType: 1, isLowIncome: false, hasEEF: false, hasWelfareCard: false }
+                    );
+                    noneStudent.id = studentIndex + 1;
+                    noneStudent.institute = Utils.randomChoice(STATE.selectedInstitutes);
+                    students.push(noneStudent);
+                    studentIndex++;
+                }
+            }
+            
+            // Generate remaining random students
+            for (let i = studentIndex; i < numStudents; i++) {
+                const student = generateStudentWithCriteria(
+                    usedNames, shuffledFirstNames, shuffledLastNames, i, {}
+                );
+                student.id = i + 1;
+                student.institute = Utils.randomChoice(STATE.selectedInstitutes);
+                students.push(student);
             }
             
             // Sort by household income ascending
             students.sort((a, b) => a.householdIncome - b.householdIncome);
             
+            // Re-assign IDs after sorting
+            students.forEach((s, idx) => s.id = idx + 1);
+            
             STATE.students = students;
-            STATE.totalBudget = budgetBillions * 1e9;
+            STATE.totalBudget = budgetMillions * 1e6; // Convert millions to actual value
             STATE.selectedStudents.clear();
             STATE.grantedStudents.clear();
             STATE.instituteSelectedStudents.clear();
@@ -1567,6 +1719,17 @@
         function renderTierSections() {
             const container = document.getElementById('tiers-container');
             
+            if (STATE.students.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-titanium py-12">
+                        <div class="text-4xl mb-4">📋</div>
+                        <p lang="en">Configure settings above and click "Generate Students" to begin allocation</p>
+                        <p lang="th">กรุณาตั้งค่าด้านบนและคลิก "สร้างข้อมูลนักเรียน" เพื่อเริ่มการจัดสรร</p>
+                    </div>
+                `;
+                return;
+            }
+            
             const tierConfigs = [
                 { tier: 1, name: 'Tier 1 - Gold Priority', nameTH: 'ระดับ 1 - ลำดับความสำคัญสูงสุด', icon: ICONS.trophy, bgClass: 'tier-1-bg', badgeClass: 'badge-tier-1', borderClass: 'border-tier-1' },
                 { tier: 2, name: 'Tier 2 - Silver', nameTH: 'ระดับ 2 - รายได้สูง สาขาเป้าหมาย', icon: ICONS.medal, bgClass: 'tier-2-bg', badgeClass: 'badge-tier-2', borderClass: 'border-tier-2' },
@@ -1579,7 +1742,6 @@
             
             tierConfigs.forEach(config => {
                 const students = STATE.tierAllocations[config.tier] || [];
-                const tierPct = parseFloat(document.getElementById(`tier${config.tier === 'none' ? '4' : config.tier}-pct`)?.value) || 100;
                 
                 // Calculate available budget for this tier
                 const availableBudget = calculateAvailableBudget(config.tier);
@@ -1588,7 +1750,7 @@
                 
                 html += `
                 <div class="tier-section reveal" id="tier-section-${config.tier}">
-                    <div class="tier-header ${config.bgClass.replace('-bg', '-dim')}" onclick="toggleTierBody('${config.tier}')">
+                    <div class="tier-header" onclick="toggleTierBody('${config.tier}')">
                         <div class="tier-header-left">
                             <div class="tier-icon ${config.bgClass}">${config.icon}</div>
                             <div>
@@ -1613,7 +1775,7 @@
                                     <span lang="en">Group by EEF/Welfare</span>
                                     <span lang="th">จัดกลุ่ม กสศ./บัตรสวัสดิการ</span>
                                 </span>
-                                <div id="tier1-grouping-toggle" class="toggle toggle-sm ${STATE.tierGroupingEnabled ? 'active' : ''}" onclick="toggleTier1Grouping()"></div>
+                                <div id="tier1-grouping-toggle" class="toggle toggle-sm ${STATE.tierGroupingEnabled ? 'active' : ''}" onclick="event.stopPropagation(); toggleTier1Grouping()"></div>
                             </div>
                             ` : ''}
                             <span class="text-titanium">${ICONS.chevronDown}</span>
@@ -1679,7 +1841,7 @@
                     if (lastBenefitStatus !== student.hasBenefitCard) {
                         lastBenefitStatus = student.hasBenefitCard;
                         html += `
-                        <tr class="bg-tier-1" style="opacity: 0.3;">
+                        <tr class="bg-tier-1" style="opacity: 0.5;">
                             <td colspan="13" class="text-xs font-semibold uppercase tracking-wider py-2">
                                 ${student.hasBenefitCard ? 
                                     '<span lang="en">With EEF/Welfare Card</span><span lang="th">มี กสศ./บัตรสวัสดิการ</span>' : 
@@ -1692,13 +1854,14 @@
                 
                 const isSelected = STATE.selectedStudents.has(student.id);
                 const canSelect = canSelectStudent(student);
+                const isDisabled = !canSelect && !isSelected;
                 
                 html += `
-                <tr class="${isSelected ? 'selected' : ''} ${!canSelect && !isSelected ? 'opacity-50' : ''}">
+                <tr class="${isSelected ? 'selected' : ''}" data-student-id="${student.id}">
                     <td>
-                        <div class="toggle toggle-sm ${isSelected ? 'active' : ''} ${!canSelect && !isSelected ? 'disabled' : ''}" 
-                             onclick="${canSelect || isSelected ? `toggleStudentSelection(${student.id})` : ''}"
-                             title="${!canSelect && !isSelected ? 'Budget limit reached' : ''}"></div>
+                        <div class="toggle toggle-sm ${isSelected ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" 
+                             onclick="handleToggleClick(event, ${student.id}, ${isDisabled})"
+                             title="${isDisabled ? 'Budget limit reached' : ''}"></div>
                     </td>
                     <td class="mono text-xs">${Utils.formatCID(student.cid)}</td>
                     <td class="font-thai">${student.fullName}</td>
@@ -1733,19 +1896,21 @@
             const tierOrder = [1, 2, 3, 4, 'none'];
             const tierIndex = tierOrder.indexOf(tier);
             
-            let availableBudget = STATE.totalBudget;
+            // Calculate remaining budget after previous tiers
+            let remainingBudget = STATE.totalBudget;
             
             for (let i = 0; i < tierIndex; i++) {
                 const prevTier = tierOrder[i];
-                const pctInput = document.getElementById(`tier${prevTier === 'none' ? '4' : prevTier}-pct`);
-                const pct = parseFloat(pctInput?.value) || 100;
-                const tierBudget = availableBudget * (pct / 100);
                 const usedBudget = calculateTierSelectedBudget(prevTier);
-                availableBudget = tierBudget - usedBudget;
+                remainingBudget -= usedBudget;
             }
             
-            const currentPct = parseFloat(document.getElementById(`tier${tier === 'none' ? '4' : tier}-pct`)?.value) || 100;
-            return Math.max(0, availableBudget * (currentPct / 100));
+            // Apply percentage for current tier
+            const pctInputId = tier === 'none' ? 'tier4-pct' : `tier${tier}-pct`;
+            const pctInput = document.getElementById(pctInputId);
+            const pct = parseFloat(pctInput?.value) || 100;
+            
+            return Math.max(0, remainingBudget * (pct / 100));
         }
 
         function calculateTierSelectedBudget(tier) {
@@ -1765,35 +1930,114 @@
             return (currentTierBudget + student.totalLoan) <= availableBudget;
         }
 
+        function handleToggleClick(event, studentId, isDisabled) {
+            event.stopPropagation();
+            if (isDisabled) return;
+            toggleStudentSelection(studentId);
+        }
+
         function toggleStudentSelection(studentId) {
             const student = STATE.students.find(s => s.id === studentId);
             if (!student) return;
             
             if (STATE.selectedStudents.has(studentId)) {
+                // Deselect
                 STATE.selectedStudents.delete(studentId);
                 STATE.grantedStudents.delete(studentId);
                 student.isSelected = false;
             } else {
+                // Check if can select
                 if (!canSelectStudent(student)) return;
                 STATE.selectedStudents.add(studentId);
                 STATE.grantedStudents.add(studentId);
                 student.isSelected = true;
             }
             
-            renderTierSections();
+            // Update only the affected row and dashboard instead of full re-render
+            updateStudentRowState(studentId);
+            updateAllRowsSelectability();
             updateBudgetDashboard();
+            updateTierHeaders();
             updateInstituteView();
+        }
+
+        function updateStudentRowState(studentId) {
+            const row = document.querySelector(`tr[data-student-id="${studentId}"]`);
+            if (!row) return;
+            
+            const isSelected = STATE.selectedStudents.has(studentId);
+            const toggle = row.querySelector('.toggle');
+            
+            if (isSelected) {
+                row.classList.add('selected');
+                toggle.classList.add('active');
+            } else {
+                row.classList.remove('selected');
+                toggle.classList.remove('active');
+            }
+        }
+
+        function updateAllRowsSelectability() {
+            STATE.students.forEach(student => {
+                const row = document.querySelector(`tr[data-student-id="${student.id}"]`);
+                if (!row) return;
+                
+                const toggle = row.querySelector('.toggle');
+                const isSelected = STATE.selectedStudents.has(student.id);
+                const canSelect = canSelectStudent(student);
+                const isDisabled = !canSelect && !isSelected;
+                
+                if (isDisabled) {
+                    toggle.classList.add('disabled');
+                } else {
+                    toggle.classList.remove('disabled');
+                }
+                
+                // Update onclick handler
+                toggle.onclick = (e) => handleToggleClick(e, student.id, isDisabled);
+            });
+        }
+
+        function updateTierHeaders() {
+            const tierOrder = [1, 2, 3, 4, 'none'];
+            tierOrder.forEach(tier => {
+                const section = document.getElementById(`tier-section-${tier}`);
+                if (!section) return;
+                
+                const students = STATE.tierAllocations[tier] || [];
+                const availableBudget = calculateAvailableBudget(tier);
+                const selectedBudget = calculateTierSelectedBudget(tier);
+                const budgetPct = availableBudget > 0 ? (selectedBudget / availableBudget * 100) : 0;
+                
+                // Update the header info
+                const headerRight = section.querySelector('.tier-header .text-right');
+                if (headerRight) {
+                    headerRight.innerHTML = `
+                        <div class="text-sm font-mono">${Utils.formatCurrency(selectedBudget)}</div>
+                        <div class="text-xs text-titanium">${budgetPct.toFixed(1)}% <span lang="en">of tier budget</span><span lang="th">ของงบระดับนี้</span></div>
+                    `;
+                }
+            });
         }
 
         function toggleTierBody(tier) {
             const body = document.getElementById(`tier-body-${tier}`);
-            body.classList.toggle('open');
+            if (body) {
+                body.classList.toggle('open');
+            }
         }
 
         function toggleTier1Grouping() {
             STATE.tierGroupingEnabled = !STATE.tierGroupingEnabled;
-            document.getElementById('tier1-grouping-toggle').classList.toggle('active');
-            renderTierSections();
+            const toggle = document.getElementById('tier1-grouping-toggle');
+            if (toggle) {
+                toggle.classList.toggle('active', STATE.tierGroupingEnabled);
+            }
+            // Re-render only tier 1 table
+            const tier1Body = document.getElementById('tier-body-1');
+            if (tier1Body) {
+                tier1Body.innerHTML = renderTierTable(1, STATE.tierAllocations[1] || []);
+            }
         }
 
         // ============================================
@@ -1874,6 +2118,10 @@
         // 10. CHARTS
         // ============================================
         function renderCharts() {
+            const isDark = STATE.theme === 'dark';
+            const textColor = isDark ? '#86868b' : '#6e6e73';
+            const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
+            
             // Tier Budget Chart (Doughnut)
             const tierBudgets = [
                 calculateTierSelectedBudget(1),
@@ -1903,7 +2151,7 @@
                 plugins: {
                     legend: {
                         position: 'right',
-                        labels: { color: '#86868b', font: { size: 11 } }
+                        labels: { color: textColor, font: { size: 11 } }
                     }
                 },
                 cutout: '60%'
@@ -1929,8 +2177,8 @@
                     {
                         label: STATE.lang === 'th' ? 'ทั้งหมด' : 'Total',
                         data: tierCounts,
-                        backgroundColor: 'rgba(134, 134, 139, 0.3)',
-                        borderColor: 'rgba(134, 134, 139, 0.5)',
+                        backgroundColor: isDark ? 'rgba(134, 134, 139, 0.3)' : 'rgba(110, 110, 115, 0.3)',
+                        borderColor: isDark ? 'rgba(134, 134, 139, 0.5)' : 'rgba(110, 110, 115, 0.5)',
                         borderWidth: 1
                     },
                     {
@@ -1947,17 +2195,17 @@
                 plugins: {
                     legend: {
                         position: 'top',
-                        labels: { color: '#86868b', font: { size: 11 } }
+                        labels: { color: textColor, font: { size: 11 } }
                     }
                 },
                 scales: {
                     x: {
-                        grid: { color: 'rgba(255,255,255,0.05)' },
-                        ticks: { color: '#86868b' }
+                        grid: { color: gridColor },
+                        ticks: { color: textColor }
                     },
                     y: {
-                        grid: { color: 'rgba(255,255,255,0.05)' },
-                        ticks: { color: '#86868b' }
+                        grid: { color: gridColor },
+                        ticks: { color: textColor }
                     }
                 }
             });
@@ -1982,7 +2230,10 @@
 
         function toggleGrantedFilter() {
             STATE.showGrantedOnly = !STATE.showGrantedOnly;
-            document.getElementById('granted-toggle').classList.toggle('active');
+            const toggle = document.getElementById('granted-toggle');
+            if (toggle) {
+                toggle.classList.toggle('active', STATE.showGrantedOnly);
+            }
             filterByInstitute();
         }
 
@@ -2042,7 +2293,7 @@
                 const isInstSelected = STATE.instituteSelectedStudents.has(student.id);
                 
                 html += `
-                <tr class="${!isGranted ? 'disabled opacity-50' : ''} ${isInstSelected ? 'selected' : ''}">
+                <tr class="${!isGranted ? 'disabled' : ''} ${isInstSelected ? 'selected' : ''}" style="${!isGranted ? 'opacity: 0.5;' : ''}">
                     <td>
                         ${isGranted ? `
                         <div class="toggle toggle-sm ${isInstSelected ? 'active' : ''}" 
@@ -2170,6 +2421,31 @@
                 
                 // Update language indicator
                 this.updateLangIndicator();
+                
+                // Update theme icon
+                this.updateThemeIcon();
+            },
+            
+            toggleTheme() {
+                STATE.theme = STATE.theme === 'dark' ? 'light' : 'dark';
+                document.body.dataset.theme = STATE.theme;
+                this.updateThemeIcon();
+                this.updateGradientOverlay();
+                renderCharts();
+            },
+            
+            updateThemeIcon() {
+                const icon = document.getElementById('theme-icon');
+                icon.textContent = STATE.theme === 'dark' ? '🌙' : '☀️';
+            },
+            
+            updateGradientOverlay() {
+                const overlay = document.getElementById('gradient-overlay');
+                if (STATE.theme === 'light') {
+                    overlay.style.background = 'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(255,255,255,0.8) 70%)';
+                } else {
+                    overlay.style.background = 'radial-gradient(ellipse at 50% 0%, transparent 0%, #000 70%)';
+                }
             },
             
             toggleLang() {
