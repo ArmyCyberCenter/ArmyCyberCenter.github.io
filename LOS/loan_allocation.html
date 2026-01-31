@@ -12,7 +12,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
     <style>
-        /* === NEXUS MICRO-FRAMEWORK v14.0 === */
+        /* === NEXUS MICRO-FRAMEWORK v15.0 === */
         @layer base, layout, components, utilities, animations;
 
         @layer base {
@@ -44,6 +44,11 @@
                 --warning: #ffd60a;
                 --warning-dim: rgba(255, 214, 10, 0.15);
                 --info: #64d2ff;
+                
+                /* Alert Colors */
+                --alert-bg: rgba(255, 69, 58, 0.25);
+                --alert-border: rgba(255, 69, 58, 0.6);
+                --alert-pulse: rgba(255, 69, 58, 0.4);
                 
                 /* Tier Colors */
                 --tier-1: #ffd700;
@@ -107,6 +112,10 @@
                 --success-dim: rgba(48, 209, 88, 0.2);
                 --danger-dim: rgba(255, 69, 58, 0.2);
                 --warning-dim: rgba(255, 214, 10, 0.25);
+                
+                --alert-bg: rgba(255, 69, 58, 0.15);
+                --alert-border: rgba(255, 69, 58, 0.5);
+                --alert-pulse: rgba(255, 69, 58, 0.3);
             }
             
             * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -332,6 +341,14 @@
                 color: var(--text-primary);
                 background: rgba(128,128,128,0.1);
             }
+            .btn-danger {
+                background: var(--danger);
+                color: white;
+            }
+            .btn-danger:hover:not(:disabled) {
+                background: #ff6961;
+                box-shadow: 0 0 20px rgba(255, 69, 58, 0.4);
+            }
             .btn-sm {
                 padding: 0.375rem 0.75rem;
                 font-size: 0.75rem;
@@ -391,6 +408,14 @@
             }
             .input-field::placeholder {
                 color: var(--graphite);
+            }
+            .input-field.input-warning {
+                border-color: var(--warning);
+                box-shadow: 0 0 0 3px var(--warning-dim);
+            }
+            .input-field.input-danger {
+                border-color: var(--danger);
+                box-shadow: 0 0 0 3px var(--danger-dim);
             }
             
             select.input-field {
@@ -559,6 +584,14 @@
             .data-table tr.disabled {
                 opacity: 0.4;
             }
+            .data-table tr.over-budget-alert {
+                background: var(--alert-bg) !important;
+                border-left: 3px solid var(--danger);
+                animation: alertPulse 1.5s ease-in-out infinite;
+            }
+            .data-table tr.over-budget-alert td {
+                border-bottom-color: var(--alert-border);
+            }
             .data-table .mono {
                 font-family: var(--font-mono);
                 font-size: 0.75rem;
@@ -570,6 +603,11 @@
                 border-radius: 12px;
                 background: var(--space-elevated);
                 border: 1px solid var(--glass-border);
+                transition: all 0.3s ease;
+            }
+            .stat-card.over-budget {
+                border-color: var(--danger);
+                background: var(--danger-dim);
             }
             .stat-card-label {
                 font-size: 0.6875rem;
@@ -591,6 +629,34 @@
                 margin-top: 0.25rem;
             }
             
+            /* Over Budget Alert Box */
+            .over-budget-alert-box {
+                background: var(--danger-dim);
+                border: 2px solid var(--danger);
+                border-radius: 12px;
+                padding: 1rem 1.25rem;
+                margin-bottom: 1rem;
+                animation: alertPulse 1.5s ease-in-out infinite;
+            }
+            .over-budget-alert-box .alert-header {
+                display: flex;
+                align-items: center;
+                gap: 0.5rem;
+                font-weight: 600;
+                color: var(--danger);
+                margin-bottom: 0.5rem;
+            }
+            .over-budget-alert-box .alert-content {
+                font-size: 0.875rem;
+                color: var(--text-primary);
+            }
+            .over-budget-alert-box .alert-amount {
+                font-family: var(--font-mono);
+                font-size: 1.25rem;
+                font-weight: 700;
+                color: var(--danger);
+            }
+            
             /* Tier Section */
             .tier-section {
                 border-radius: 16px;
@@ -598,6 +664,11 @@
                 overflow: hidden;
                 margin-bottom: 1.5rem;
                 background: var(--space-surface);
+                transition: all 0.3s ease;
+            }
+            .tier-section.over-budget {
+                border-color: var(--danger);
+                box-shadow: 0 0 20px var(--alert-pulse);
             }
             .tier-header {
                 padding: 1rem 1.25rem;
@@ -640,6 +711,31 @@
                 display: block;
             }
             
+            /* Tier Budget Info */
+            .tier-budget-info {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.75rem;
+                padding: 1rem;
+                background: var(--space-deep);
+                border-bottom: 1px solid var(--glass-border);
+            }
+            .tier-budget-item {
+                text-align: center;
+            }
+            .tier-budget-item-label {
+                font-size: 0.625rem;
+                color: var(--titanium);
+                text-transform: uppercase;
+                letter-spacing: 0.05em;
+                margin-bottom: 0.25rem;
+            }
+            .tier-budget-item-value {
+                font-family: var(--font-mono);
+                font-size: 0.875rem;
+                font-weight: 600;
+            }
+            
             /* Progress Bar */
             .progress-bar {
                 height: 6px;
@@ -651,6 +747,9 @@
                 height: 100%;
                 border-radius: 3px;
                 transition: width 0.5s var(--ease-out);
+            }
+            .progress-bar-fill.over-budget {
+                background: var(--danger) !important;
             }
             
             /* Chart Container */
@@ -792,11 +891,27 @@
                 from { opacity: 0; transform: translateX(-20px); }
                 to { opacity: 1; transform: translateX(0); }
             }
+            @keyframes alertPulse {
+                0%, 100% { 
+                    background: var(--alert-bg);
+                    box-shadow: 0 0 0 0 var(--alert-pulse);
+                }
+                50% { 
+                    background: rgba(255, 69, 58, 0.35);
+                    box-shadow: 0 0 15px 0 var(--alert-pulse);
+                }
+            }
+            @keyframes shake {
+                0%, 100% { transform: translateX(0); }
+                10%, 30%, 50%, 70%, 90% { transform: translateX(-2px); }
+                20%, 40%, 60%, 80% { transform: translateX(2px); }
+            }
             
             .animate-spin { animation: spin 1s linear infinite; }
             .animate-pulse { animation: pulse 2s ease-in-out infinite; }
             .animate-fade-in { animation: fadeIn 0.4s var(--ease-out) forwards; }
             .animate-slide-in { animation: slideIn 0.4s var(--ease-out) forwards; }
+            .animate-shake { animation: shake 0.5s ease-in-out; }
             
             .reveal {
                 opacity: 0;
@@ -908,7 +1023,7 @@
                                 <span lang="en">Federal Budget (Million ฿)</span>
                                 <span lang="th">งบประมาณ (ล้านบาท)</span>
                             </label>
-                            <input type="number" id="config-budget" class="input-field" min="1" max="10000" value="50" step="1">
+                            <input type="number" id="config-budget" class="input-field" min="1" max="10000" value="50" step="1" oninput="BudgetManager.onBudgetChange()">
                         </div>
                         <div class="input-group">
                             <label class="input-label">
@@ -922,8 +1037,8 @@
                     <!-- Tier Allocation Percentages -->
                     <div class="mt-6 pt-6 border-t border-[var(--glass-border)]">
                         <h3 class="text-xs font-semibold text-titanium uppercase tracking-wider mb-4">
-                            <span lang="en">Tier Allocation Percentages</span>
-                            <span lang="th">สัดส่วนการจัดสรรรายระดับ</span>
+                            <span lang="en">Tier Allocation Percentages (Real-time)</span>
+                            <span lang="th">สัดส่วนการจัดสรรรายระดับ (อัปเดตทันที)</span>
                         </h3>
                         <div class="grid md:grid-cols-4 gap-4">
                             <div class="input-group">
@@ -933,8 +1048,11 @@
                                     <span lang="th">ลำดับที่ 1</span>
                                 </label>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" id="tier1-pct" class="input-field" min="0" max="100" value="100">
+                                    <input type="number" id="tier1-pct" class="input-field" min="0" max="100" value="100" oninput="BudgetManager.onTierPctChange(1)">
                                     <span class="text-titanium">%</span>
+                                </div>
+                                <div class="text-xs text-titanium mt-1" id="tier1-available-display">
+                                    <span lang="en">Available:</span><span lang="th">งบ:</span> <span class="font-mono">-</span>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -944,8 +1062,11 @@
                                     <span lang="th">ลำดับที่ 2</span>
                                 </label>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" id="tier2-pct" class="input-field" min="0" max="100" value="100">
+                                    <input type="number" id="tier2-pct" class="input-field" min="0" max="100" value="100" oninput="BudgetManager.onTierPctChange(2)">
                                     <span class="text-titanium">%</span>
+                                </div>
+                                <div class="text-xs text-titanium mt-1" id="tier2-available-display">
+                                    <span lang="en">Available:</span><span lang="th">งบ:</span> <span class="font-mono">-</span>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -955,8 +1076,11 @@
                                     <span lang="th">ลำดับที่ 3</span>
                                 </label>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" id="tier3-pct" class="input-field" min="0" max="100" value="100">
+                                    <input type="number" id="tier3-pct" class="input-field" min="0" max="100" value="100" oninput="BudgetManager.onTierPctChange(3)">
                                     <span class="text-titanium">%</span>
+                                </div>
+                                <div class="text-xs text-titanium mt-1" id="tier3-available-display">
+                                    <span lang="en">Available:</span><span lang="th">งบ:</span> <span class="font-mono">-</span>
                                 </div>
                             </div>
                             <div class="input-group">
@@ -966,8 +1090,11 @@
                                     <span lang="th">ลำดับที่ 4</span>
                                 </label>
                                 <div class="flex items-center gap-2">
-                                    <input type="number" id="tier4-pct" class="input-field" min="0" max="100" value="100">
+                                    <input type="number" id="tier4-pct" class="input-field" min="0" max="100" value="100" oninput="BudgetManager.onTierPctChange(4)">
                                     <span class="text-titanium">%</span>
+                                </div>
+                                <div class="text-xs text-titanium mt-1" id="tier4-available-display">
+                                    <span lang="en">Available:</span><span lang="th">งบ:</span> <span class="font-mono">-</span>
                                 </div>
                             </div>
                         </div>
@@ -1103,8 +1230,8 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="stat-card bg-tier-1">
                                     <div class="stat-card-label">
-                                        <span lang="en">Total Required Budget</span>
-                                        <span lang="th">งบประมาณที่ต้องการทั้งหมด</span>
+                                        <span lang="en">Total Allocated</span>
+                                        <span lang="th">จัดสรรแล้วทั้งหมด</span>
                                     </div>
                                     <div class="stat-card-value" id="final-required">฿0</div>
                                 </div>
@@ -1311,36 +1438,24 @@
             medal: `<svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><circle cx="12" cy="14" r="6"/><path d="M9 2L12 8L15 2" stroke="currentColor" stroke-width="2" fill="none"/></svg>`,
             award: `<svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><circle cx="12" cy="8" r="6"/><path d="M8.21 13.89L7 23L12 20L17 23L15.79 13.88"/></svg>`,
             layers: `<svg viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M12 2L2 7L12 12L22 7L12 2Z"/><path d="M2 17L12 22L22 17" opacity="0.5"/><path d="M2 12L12 17L22 12" opacity="0.7"/></svg>`,
-            helpCircle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`
+            helpCircle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5" fill="currentColor"/></svg>`,
+            alertTriangle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-5 h-5"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`
         };
 
         // ============================================
         // 2. CONSTANTS & CONFIGURATION
         // ============================================
         const CONFIG = {
-            // Living Stipend Constants
-            STIPEND_HIGH_SCHOOL: 1800,  // ม.ปลาย per month
-            STIPEND_OTHER: 3000,        // ป.ตรี, ปวช., ปวส. per month
+            STIPEND_HIGH_SCHOOL: 1800,
+            STIPEND_OTHER: 3000,
             STIPEND_MONTHS: 12,
-            
-            // Income Threshold
             INCOME_THRESHOLD: 360000,
-            
-            // Tuition Range
             TUITION_MIN: 5000,
             TUITION_MAX: 500000,
-            
-            // Household Income Range
             INCOME_MIN: 10000,
             INCOME_MAX: 10000000,
-            
-            // Education Levels
             EDUCATION_LEVELS: ['ม.ปลาย', 'ปวช.', 'ปวส.', 'ป.ตรี'],
-            
-            // Loan Types (1, 2, 3, 5 - not 4 for graduate)
             LOAN_TYPES: [1, 2, 3, 5],
-            
-            // Thai First Names
             FIRST_NAMES: [
                 'สมชาย', 'สมหญิง', 'วิชัย', 'วิภา', 'ประเสริฐ', 'ประภา', 'สุรชัย', 'สุรีย์',
                 'อนันต์', 'อรุณี', 'ธนากร', 'ธนิดา', 'พิชัย', 'พิมพ์', 'ชัยวัฒน์', 'ชุติมา',
@@ -1351,8 +1466,6 @@
                 'พงศกร', 'พิมพ์ใจ', 'สุทธิพงษ์', 'สุนิสา', 'อภิชาติ', 'อัญชลี', 'ธวัชชัย', 'ธัญญา',
                 'วิทยา', 'วิลาวัลย์', 'สมศักดิ์', 'สมใจ', 'ชาญชัย', 'ชนิดา', 'บุญมี', 'บุษบา'
             ],
-            
-            // Thai Last Names
             LAST_NAMES: [
                 'แก้วมณี', 'ทองดี', 'สุขใจ', 'รักษา', 'พงศ์พันธ์', 'วงศ์สกุล', 'สิทธิโชค', 'มหาชัย',
                 'ศรีสุข', 'วัฒนา', 'อมรรัตน์', 'พรหมมา', 'จันทร์เพ็ญ', 'สมบูรณ์', 'เจริญสุข', 'อินทรา',
@@ -1360,26 +1473,13 @@
                 'นิยม', 'บุญมา', 'พิพัฒน์', 'สำเร็จ', 'เอกชัย', 'วิไลลักษณ์', 'ธนวัฒน์', 'ปัญญา',
                 'ใจดี', 'สุขสันต์', 'พรมแดน', 'ทิพย์สุข', 'ศรีวิชัย', 'เพชรดี', 'ทองคำ', 'เงินดี'
             ],
-            
-            // Thai Education Institutes
             INSTITUTES: [
-                'จุฬาลงกรณ์มหาวิทยาลัย',
-                'มหาวิทยาลัยธรรมศาสตร์',
-                'มหาวิทยาลัยเกษตรศาสตร์',
-                'มหาวิทยาลัยมหิดล',
-                'มหาวิทยาลัยเชียงใหม่',
-                'มหาวิทยาลัยขอนแก่น',
-                'มหาวิทยาลัยสงขลานครินทร์',
-                'สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง',
-                'มหาวิทยาลัยศรีนครินทรวิโรฒ',
-                'มหาวิทยาลัยบูรพา',
-                'วิทยาลัยอาชีวศึกษากรุงเทพ',
-                'วิทยาลัยเทคนิคกรุงเทพ',
-                'โรงเรียนเตรียมอุดมศึกษา',
-                'โรงเรียนสวนกุหลาบวิทยาลัย',
-                'โรงเรียนบดินทรเดชา',
-                'โรงเรียนสามเสนวิทยาลัย',
-                'วิทยาลัยเทคนิคชลบุรี',
+                'จุฬาลงกรณ์มหาวิทยาลัย', 'มหาวิทยาลัยธรรมศาสตร์', 'มหาวิทยาลัยเกษตรศาสตร์',
+                'มหาวิทยาลัยมหิดล', 'มหาวิทยาลัยเชียงใหม่', 'มหาวิทยาลัยขอนแก่น',
+                'มหาวิทยาลัยสงขลานครินทร์', 'สถาบันเทคโนโลยีพระจอมเกล้าเจ้าคุณทหารลาดกระบัง',
+                'มหาวิทยาลัยศรีนครินทรวิโรฒ', 'มหาวิทยาลัยบูรพา', 'วิทยาลัยอาชีวศึกษากรุงเทพ',
+                'วิทยาลัยเทคนิคกรุงเทพ', 'โรงเรียนเตรียมอุดมศึกษา', 'โรงเรียนสวนกุหลาบวิทยาลัย',
+                'โรงเรียนบดินทรเดชา', 'โรงเรียนสามเสนวิทยาลัย', 'วิทยาลัยเทคนิคชลบุรี',
                 'วิทยาลัยอาชีวศึกษาเชียงใหม่'
             ]
         };
@@ -1398,13 +1498,279 @@
             grantedStudents: new Set(),
             showGrantedOnly: false,
             tierGroupingEnabled: false,
-            tierBudgets: { 1: 0, 2: 0, 3: 0, 4: 0, none: 0 },
             totalBudget: 0,
+            overBudgetStudents: { 1: [], 2: [], 3: [], 4: [], none: [] },
             charts: {}
         };
 
         // ============================================
-        // 4. CHART MANAGER
+        // 4. BUDGET MANAGER - Real-time Budget Calculations
+        // ============================================
+        const BudgetManager = {
+            // Get current federal budget from input
+            getFederalBudget() {
+                const budgetMillions = parseFloat(document.getElementById('config-budget').value) || 50;
+                return budgetMillions * 1e6;
+            },
+            
+            // Get tier percentage from input
+            getTierPercentage(tier) {
+                const inputId = tier === 'none' ? 'tier4-pct' : `tier${tier}-pct`;
+                const input = document.getElementById(inputId);
+                return parseFloat(input?.value) || 100;
+            },
+            
+            // Calculate available budget for each tier (cascading)
+            calculateTierBudgets() {
+                const federalBudget = this.getFederalBudget();
+                const tierOrder = [1, 2, 3, 4, 'none'];
+                const budgets = {};
+                
+                let remainingBudget = federalBudget;
+                
+                tierOrder.forEach(tier => {
+                    const pct = this.getTierPercentage(tier);
+                    const tierAvailable = remainingBudget * (pct / 100);
+                    const tierUsed = this.getTierSelectedBudget(tier);
+                    
+                    budgets[tier] = {
+                        available: tierAvailable,
+                        used: tierUsed,
+                        remaining: tierAvailable - tierUsed,
+                        overBudget: tierUsed > tierAvailable ? tierUsed - tierAvailable : 0,
+                        pctOfTier: tierAvailable > 0 ? (tierUsed / tierAvailable * 100) : 0,
+                        pctOfFederal: federalBudget > 0 ? (tierUsed / federalBudget * 100) : 0
+                    };
+                    
+                    // Remaining for next tier is what's left after this tier's allocation
+                    remainingBudget = remainingBudget - tierUsed;
+                });
+                
+                return budgets;
+            },
+            
+            // Get total selected budget for a tier
+            getTierSelectedBudget(tier) {
+                let total = 0;
+                STATE.selectedStudents.forEach(id => {
+                    const student = STATE.students.find(s => s.id === id);
+                    if (student && student.tier === tier) {
+                        total += student.totalLoan;
+                    }
+                });
+                return total;
+            },
+            
+            // Check if a student can be selected
+            canSelectStudent(student) {
+                const budgets = this.calculateTierBudgets();
+                const tierBudget = budgets[student.tier];
+                return (tierBudget.used + student.totalLoan) <= tierBudget.available;
+            },
+            
+            // Detect over-budget situations and identify students to highlight
+            detectOverBudget() {
+                const budgets = this.calculateTierBudgets();
+                const tierOrder = [1, 2, 3, 4, 'none'];
+                const overBudgetInfo = {};
+                
+                tierOrder.forEach(tier => {
+                    const tierBudget = budgets[tier];
+                    overBudgetInfo[tier] = {
+                        isOverBudget: tierBudget.overBudget > 0,
+                        overAmount: tierBudget.overBudget,
+                        studentsToHighlight: []
+                    };
+                    
+                    if (tierBudget.overBudget > 0) {
+                        // Get selected students in this tier, sorted by totalLoan descending
+                        const selectedInTier = STATE.students
+                            .filter(s => s.tier === tier && STATE.selectedStudents.has(s.id))
+                            .sort((a, b) => b.totalLoan - a.totalLoan);
+                        
+                        // Find students to highlight (top loans until we exceed over-budget amount)
+                        let accumulated = 0;
+                        for (const student of selectedInTier) {
+                            overBudgetInfo[tier].studentsToHighlight.push(student.id);
+                            accumulated += student.totalLoan;
+                            if (accumulated >= tierBudget.overBudget) {
+                                break;
+                            }
+                        }
+                    }
+                });
+                
+                STATE.overBudgetStudents = overBudgetInfo;
+                return overBudgetInfo;
+            },
+            
+            // Handle budget input change
+            onBudgetChange() {
+                STATE.totalBudget = this.getFederalBudget();
+                this.updateAllDisplays();
+            },
+            
+            // Handle tier percentage change
+            onTierPctChange(tier) {
+                this.updateAllDisplays();
+            },
+            
+            // Update all displays
+            updateAllDisplays() {
+                if (STATE.students.length === 0) return;
+                
+                STATE.totalBudget = this.getFederalBudget();
+                
+                // Detect over-budget situations
+                this.detectOverBudget();
+                
+                // Update tier available displays in config
+                this.updateTierAvailableDisplays();
+                
+                // Update dashboard
+                updateBudgetDashboard();
+                
+                // Update tier sections
+                this.updateTierSections();
+                
+                // Update charts
+                renderCharts();
+                
+                // Update institute view if visible
+                updateInstituteView();
+            },
+            
+            // Update tier available displays in config panel
+            updateTierAvailableDisplays() {
+                const budgets = this.calculateTierBudgets();
+                const tierOrder = [1, 2, 3, 4];
+                
+                tierOrder.forEach(tier => {
+                    const display = document.getElementById(`tier${tier}-available-display`);
+                    if (display) {
+                        const budget = budgets[tier];
+                        const isOver = budget.overBudget > 0;
+                        display.innerHTML = `
+                            <span lang="en">Available:</span><span lang="th">งบ:</span> 
+                            <span class="font-mono ${isOver ? 'text-danger' : ''}">${Utils.formatCurrency(budget.available)}</span>
+                            ${isOver ? `<br><span class="text-danger font-semibold"><span lang="en">Over:</span><span lang="th">เกิน:</span> ${Utils.formatCurrency(budget.overBudget)}</span>` : ''}
+                        `;
+                        
+                        // Update input field styling
+                        const input = document.getElementById(`tier${tier}-pct`);
+                        if (input) {
+                            input.classList.toggle('input-danger', isOver);
+                        }
+                    }
+                });
+            },
+            
+            // Update tier sections with over-budget highlighting
+            updateTierSections() {
+                const budgets = this.calculateTierBudgets();
+                const tierOrder = [1, 2, 3, 4, 'none'];
+                
+                tierOrder.forEach(tier => {
+                    const section = document.getElementById(`tier-section-${tier}`);
+                    if (!section) return;
+                    
+                    const budget = budgets[tier];
+                    const overBudgetInfo = STATE.overBudgetStudents[tier];
+                    
+                    // Update section styling
+                    section.classList.toggle('over-budget', overBudgetInfo?.isOverBudget);
+                    
+                    // Update tier budget info display
+                    const budgetInfoEl = section.querySelector('.tier-budget-info');
+                    if (budgetInfoEl) {
+                        budgetInfoEl.innerHTML = this.renderTierBudgetInfo(tier, budget, overBudgetInfo);
+                    }
+                    
+                    // Update row highlighting
+                    const tbody = section.querySelector('tbody');
+                    if (tbody) {
+                        const rows = tbody.querySelectorAll('tr[data-student-id]');
+                        rows.forEach(row => {
+                            const studentId = parseInt(row.dataset.studentId);
+                            const shouldHighlight = overBudgetInfo?.studentsToHighlight?.includes(studentId);
+                            row.classList.toggle('over-budget-alert', shouldHighlight);
+                        });
+                    }
+                    
+                    // Update header info
+                    this.updateTierHeader(tier, budget, overBudgetInfo);
+                });
+            },
+            
+            renderTierBudgetInfo(tier, budget, overBudgetInfo) {
+                const isOver = overBudgetInfo?.isOverBudget;
+                
+                return `
+                    <div class="tier-budget-item">
+                        <div class="tier-budget-item-label">
+                            <span lang="en">Available</span>
+                            <span lang="th">งบที่มี</span>
+                        </div>
+                        <div class="tier-budget-item-value text-neon">${Utils.formatCurrency(budget.available)}</div>
+                    </div>
+                    <div class="tier-budget-item">
+                        <div class="tier-budget-item-label">
+                            <span lang="en">Used</span>
+                            <span lang="th">ใช้แล้ว</span>
+                        </div>
+                        <div class="tier-budget-item-value ${isOver ? 'text-danger' : 'text-success'}">${Utils.formatCurrency(budget.used)}</div>
+                        <div class="text-xs text-titanium">${budget.pctOfTier.toFixed(1)}% <span lang="en">of tier</span><span lang="th">ของระดับ</span></div>
+                    </div>
+                    <div class="tier-budget-item">
+                        <div class="tier-budget-item-label">
+                            <span lang="en">${isOver ? 'Over Budget' : 'Remaining'}</span>
+                            <span lang="th">${isOver ? 'เกินงบ' : 'คงเหลือ'}</span>
+                        </div>
+                        <div class="tier-budget-item-value ${isOver ? 'text-danger animate-pulse' : 'text-warning'}">${Utils.formatCurrency(isOver ? budget.overBudget : budget.remaining)}</div>
+                        <div class="text-xs text-titanium">${budget.pctOfFederal.toFixed(1)}% <span lang="en">of federal</span><span lang="th">ของงบรวม</span></div>
+                    </div>
+                    ${isOver ? `
+                    <div style="grid-column: 1 / -1;" class="over-budget-alert-box mt-2">
+                        <div class="alert-header">
+                            ${ICONS.alertTriangle}
+                            <span lang="en">OVER BUDGET ALERT</span>
+                            <span lang="th">แจ้งเตือน: เกินงบประมาณ</span>
+                        </div>
+                        <div class="alert-content">
+                            <span lang="en">This tier is over budget by</span>
+                            <span lang="th">ระดับนี้เกินงบประมาณ</span>
+                            <span class="alert-amount ml-2">${Utils.formatCurrency(budget.overBudget)}</span>
+                            <br>
+                            <span class="text-sm text-titanium">
+                                <span lang="en">Highlighted rows (${overBudgetInfo.studentsToHighlight.length} students) are suggested for deselection or increase tier allocation %.</span>
+                                <span lang="th">แถวที่ไฮไลท์ (${overBudgetInfo.studentsToHighlight.length} คน) แนะนำให้ยกเลิกการเลือก หรือเพิ่ม % การจัดสรร</span>
+                            </span>
+                        </div>
+                    </div>
+                    ` : ''}
+                `;
+            },
+            
+            updateTierHeader(tier, budget, overBudgetInfo) {
+                const section = document.getElementById(`tier-section-${tier}`);
+                if (!section) return;
+                
+                const headerRight = section.querySelector('.tier-header .flex.items-center.gap-4 > .text-right');
+                if (headerRight) {
+                    const isOver = overBudgetInfo?.isOverBudget;
+                    headerRight.innerHTML = `
+                        <div class="text-sm font-mono ${isOver ? 'text-danger' : ''}">${Utils.formatCurrency(budget.used)}</div>
+                        <div class="text-xs ${isOver ? 'text-danger' : 'text-titanium'}">
+                            ${budget.pctOfTier.toFixed(1)}% 
+                            ${isOver ? `<span class="font-semibold">(+${Utils.formatCurrency(budget.overBudget)})</span>` : ''}
+                        </div>
+                    `;
+                }
+            }
+        };
+
+        // ============================================
+        // 5. CHART MANAGER
         // ============================================
         const ChartManager = {
             instances: {},
@@ -1423,7 +1789,7 @@
         };
 
         // ============================================
-        // 5. UTILITY FUNCTIONS
+        // 6. UTILITY FUNCTIONS
         // ============================================
         const Utils = {
             formatCurrency(value) {
@@ -1455,12 +1821,10 @@
             },
             
             generateCID() {
-                // Thai 13-digit Citizen ID format
                 const digits = [];
                 for (let i = 0; i < 12; i++) {
                     digits.push(this.randomInt(0, 9));
                 }
-                // Calculate check digit
                 const weights = [13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2];
                 let sum = 0;
                 for (let i = 0; i < 12; i++) {
@@ -1477,13 +1841,12 @@
         };
 
         // ============================================
-        // 6. STUDENT GENERATION
+        // 7. STUDENT GENERATION
         // ============================================
         function generateStudentWithCriteria(usedNames, shuffledFirstNames, shuffledLastNames, index, criteria) {
             let firstName, lastName, fullName;
             let attempts = 0;
             
-            // Ensure unique name combinations
             do {
                 firstName = shuffledFirstNames[(index + attempts) % shuffledFirstNames.length];
                 lastName = shuffledLastNames[(index + attempts * 2) % shuffledLastNames.length];
@@ -1498,7 +1861,6 @@
             const hasEEF = criteria.hasEEF !== undefined ? criteria.hasEEF : Math.random() < 0.25;
             const hasWelfareCard = criteria.hasWelfareCard !== undefined ? criteria.hasWelfareCard : Math.random() < 0.3;
             
-            // Income with skewed distribution (more low income)
             let householdIncome;
             if (criteria.isLowIncome === true) {
                 householdIncome = Utils.randomInt(CONFIG.INCOME_MIN, CONFIG.INCOME_THRESHOLD);
@@ -1510,48 +1872,30 @@
             }
             
             const isLowIncome = householdIncome <= CONFIG.INCOME_THRESHOLD;
-            
-            // Poverty status: at least one of EEF, welfare card, or low income
             const isPoor = hasEEF || hasWelfareCard || isLowIncome;
-            
-            // Stipend eligibility
             const requestedStipend = isPoor && Math.random() < 0.7;
             const approvedStipend = requestedStipend && Math.random() < 0.85;
-            
-            // Calculate stipend amount
             const monthlyStipend = educationLevel === 'ม.ปลาย' ? CONFIG.STIPEND_HIGH_SCHOOL : CONFIG.STIPEND_OTHER;
             const annualStipend = approvedStipend ? monthlyStipend * CONFIG.STIPEND_MONTHS : 0;
-            
-            // Tuition (skewed towards lower values)
             const tuitionRand = Math.pow(Math.random(), 1.5);
             const tuition = Math.round(CONFIG.TUITION_MIN + tuitionRand * (CONFIG.TUITION_MAX - CONFIG.TUITION_MIN));
-            
-            // Total loan
             const totalLoan = tuition + annualStipend;
             
-            // Determine tier based on flowchart logic
             let tier;
             const isTargetedMajor = loanType === 2 || loanType === 3;
             
             if (isTargetedMajor) {
-                // Track A: Targeted Majors
-                if (householdIncome > CONFIG.INCOME_THRESHOLD) {
-                    tier = 2; // High income targeted major
-                } else {
-                    tier = 1; // Low income targeted major (Tier 1)
-                }
+                tier = householdIncome > CONFIG.INCOME_THRESHOLD ? 2 : 1;
             } else {
-                // Track B: General Majors
                 if (hasEEF || hasWelfareCard) {
-                    tier = 3; // Has welfare/EEF
+                    tier = 3;
                 } else if (isLowIncome) {
-                    tier = 4; // Low income general
+                    tier = 4;
                 } else {
-                    tier = 'none'; // No budget category
+                    tier = 'none';
                 }
             }
             
-            // Tag for Tier 1 grouping (has EEF/welfare vs doesn't)
             const hasBenefitCard = hasEEF || hasWelfareCard;
             
             return {
@@ -1584,40 +1928,28 @@
             const numStudents = parseInt(document.getElementById('config-students').value) || 20;
             const budgetMillions = parseFloat(document.getElementById('config-budget').value) || 50;
             
-            // Validate
             if (numStudents < numInstitutes) {
                 alert('จำนวนนักเรียนต้องมากกว่าหรือเท่ากับจำนวนสถานศึกษา');
                 return;
             }
             
-            // Select random institutes
             STATE.selectedInstitutes = Utils.shuffleArray(CONFIG.INSTITUTES).slice(0, numInstitutes);
             
-            // Generate unique name combinations
             const usedNames = new Set();
             const students = [];
-            
-            // Shuffle names for better randomization
             const shuffledFirstNames = Utils.shuffleArray([...CONFIG.FIRST_NAMES]);
             const shuffledLastNames = Utils.shuffleArray([...CONFIG.LAST_NAMES]);
             
             let studentIndex = 0;
             
-            // If numStudents >= 4, ensure at least one student per tier and education level
             if (numStudents >= 4) {
-                // Create guaranteed students for each tier
                 const tierCriteria = [
-                    // Tier 1: Low income + targeted major (loan type 2 or 3)
                     { loanType: 2, isLowIncome: true, educationLevel: 'ม.ปลาย' },
-                    // Tier 2: High income + targeted major
                     { loanType: 3, isLowIncome: false, educationLevel: 'ปวช.' },
-                    // Tier 3: Has EEF/welfare + general major
                     { loanType: 1, hasEEF: true, hasWelfareCard: false, educationLevel: 'ปวส.' },
-                    // Tier 4: Low income + general major + no EEF/welfare
                     { loanType: 1, isLowIncome: true, hasEEF: false, hasWelfareCard: false, educationLevel: 'ป.ตรี' }
                 ];
                 
-                // Generate guaranteed tier students
                 tierCriteria.forEach((criteria, idx) => {
                     const student = generateStudentWithCriteria(
                         usedNames, shuffledFirstNames, shuffledLastNames, studentIndex, criteria
@@ -1628,7 +1960,6 @@
                     studentIndex++;
                 });
                 
-                // If we still need more students to cover all education levels
                 const coveredLevels = new Set(students.map(s => s.educationLevel));
                 const missingLevels = CONFIG.EDUCATION_LEVELS.filter(l => !coveredLevels.has(l));
                 
@@ -1645,7 +1976,6 @@
                     }
                 });
                 
-                // Also ensure we have at least one "none" tier student if possible
                 if (studentIndex < numStudents) {
                     const noneStudent = generateStudentWithCriteria(
                         usedNames, shuffledFirstNames, shuffledLastNames, studentIndex,
@@ -1658,7 +1988,6 @@
                 }
             }
             
-            // Generate remaining random students
             for (let i = studentIndex; i < numStudents; i++) {
                 const student = generateStudentWithCriteria(
                     usedNames, shuffledFirstNames, shuffledLastNames, i, {}
@@ -1668,36 +1997,28 @@
                 students.push(student);
             }
             
-            // Sort by household income ascending
             students.sort((a, b) => a.householdIncome - b.householdIncome);
-            
-            // Re-assign IDs after sorting
             students.forEach((s, idx) => s.id = idx + 1);
             
             STATE.students = students;
-            STATE.totalBudget = budgetMillions * 1e6; // Convert millions to actual value
+            STATE.totalBudget = budgetMillions * 1e6;
             STATE.selectedStudents.clear();
             STATE.grantedStudents.clear();
             STATE.instituteSelectedStudents.clear();
+            STATE.overBudgetStudents = { 1: [], 2: [], 3: [], 4: [], none: [] };
             
-            // Categorize into tiers
             STATE.tierAllocations = { 1: [], 2: [], 3: [], 4: [], none: [] };
             students.forEach(s => {
                 STATE.tierAllocations[s.tier].push(s);
             });
             
-            // Update budget range display
             updateBudgetRangeDisplay();
-            
-            // Render UI
             renderTierSections();
-            updateBudgetDashboard();
+            BudgetManager.updateAllDisplays();
             populateInstituteSelect();
             
-            // Show final summary
             document.getElementById('final-summary').classList.remove('hidden');
             
-            // Reveal animations
             document.querySelectorAll('.reveal').forEach((el, i) => {
                 setTimeout(() => el.classList.add('visible'), i * 100);
             });
@@ -1714,7 +2035,7 @@
         }
 
         // ============================================
-        // 7. TIER RENDERING
+        // 8. TIER RENDERING
         // ============================================
         function renderTierSections() {
             const container = document.getElementById('tiers-container');
@@ -1731,22 +2052,17 @@
             }
             
             const tierConfigs = [
-                { tier: 1, name: 'Tier 1 - Gold Priority', nameTH: 'ระดับ 1 - ลำดับความสำคัญสูงสุด', icon: ICONS.trophy, bgClass: 'tier-1-bg', badgeClass: 'badge-tier-1', borderClass: 'border-tier-1' },
-                { tier: 2, name: 'Tier 2 - Silver', nameTH: 'ระดับ 2 - รายได้สูง สาขาเป้าหมาย', icon: ICONS.medal, bgClass: 'tier-2-bg', badgeClass: 'badge-tier-2', borderClass: 'border-tier-2' },
-                { tier: 3, name: 'Tier 3 - Bronze', nameTH: 'ระดับ 3 - กลุ่มเปราะบาง', icon: ICONS.award, bgClass: 'tier-3-bg', badgeClass: 'badge-tier-3', borderClass: 'border-tier-3' },
-                { tier: 4, name: 'Tier 4 - Standard', nameTH: 'ระดับ 4 - รายได้น้อย สาขาทั่วไป', icon: ICONS.layers, bgClass: 'tier-4-bg', badgeClass: 'badge-tier-4', borderClass: 'border-tier-4' },
-                { tier: 'none', name: 'Unclassified', nameTH: 'ไม่จัดประเภท', icon: ICONS.helpCircle, bgClass: 'tier-none-bg', badgeClass: 'badge-tier-none', borderClass: 'border-tier-none' }
+                { tier: 1, name: 'Tier 1 - Gold Priority', nameTH: 'ระดับ 1 - ลำดับความสำคัญสูงสุด', icon: ICONS.trophy, bgClass: 'tier-1-bg' },
+                { tier: 2, name: 'Tier 2 - Silver', nameTH: 'ระดับ 2 - รายได้สูง สาขาเป้าหมาย', icon: ICONS.medal, bgClass: 'tier-2-bg' },
+                { tier: 3, name: 'Tier 3 - Bronze', nameTH: 'ระดับ 3 - กลุ่มเปราะบาง', icon: ICONS.award, bgClass: 'tier-3-bg' },
+                { tier: 4, name: 'Tier 4 - Standard', nameTH: 'ระดับ 4 - รายได้น้อย สาขาทั่วไป', icon: ICONS.layers, bgClass: 'tier-4-bg' },
+                { tier: 'none', name: 'Unclassified', nameTH: 'ไม่จัดประเภท', icon: ICONS.helpCircle, bgClass: 'tier-none-bg' }
             ];
             
             let html = '';
             
             tierConfigs.forEach(config => {
                 const students = STATE.tierAllocations[config.tier] || [];
-                
-                // Calculate available budget for this tier
-                const availableBudget = calculateAvailableBudget(config.tier);
-                const selectedBudget = calculateTierSelectedBudget(config.tier);
-                const budgetPct = availableBudget > 0 ? (selectedBudget / availableBudget * 100) : 0;
                 
                 html += `
                 <div class="tier-section reveal" id="tier-section-${config.tier}">
@@ -1759,15 +2075,14 @@
                                     <span lang="th">${config.nameTH}</span>
                                 </div>
                                 <div class="text-xs text-titanium">
-                                    ${students.length} <span lang="en">students</span><span lang="th">คน</span> • 
-                                    <span lang="en">Available:</span><span lang="th">งบ:</span> ${Utils.formatCurrency(availableBudget)}
+                                    ${students.length} <span lang="en">students</span><span lang="th">คน</span>
                                 </div>
                             </div>
                         </div>
                         <div class="flex items-center gap-4">
                             <div class="text-right">
-                                <div class="text-sm font-mono">${Utils.formatCurrency(selectedBudget)}</div>
-                                <div class="text-xs text-titanium">${budgetPct.toFixed(1)}% <span lang="en">of tier budget</span><span lang="th">ของงบระดับนี้</span></div>
+                                <div class="text-sm font-mono">-</div>
+                                <div class="text-xs text-titanium">-</div>
                             </div>
                             ${config.tier === 1 ? `
                             <div class="toggle-wrapper" onclick="event.stopPropagation()">
@@ -1782,6 +2097,7 @@
                         </div>
                     </div>
                     <div class="tier-body open" id="tier-body-${config.tier}">
+                        <div class="tier-budget-info"></div>
                         ${renderTierTable(config.tier, students)}
                     </div>
                 </div>
@@ -1799,7 +2115,6 @@
                 </div>`;
             }
             
-            // For Tier 1, optionally group by benefit card status
             let sortedStudents = [...students];
             if (tier === 1 && STATE.tierGroupingEnabled) {
                 const withBenefit = sortedStudents.filter(s => s.hasBenefitCard).sort((a, b) => a.householdIncome - b.householdIncome);
@@ -1812,10 +2127,7 @@
                 <table class="data-table">
                     <thead>
                         <tr>
-                            <th style="width: 50px;">
-                                <span lang="en">Select</span>
-                                <span lang="th">เลือก</span>
-                            </th>
+                            <th style="width: 50px;"><span lang="en">Select</span><span lang="th">เลือก</span></th>
                             <th><span lang="en">CID</span><span lang="th">เลขประจำตัว</span></th>
                             <th><span lang="en">Name</span><span lang="th">ชื่อ-นามสกุล</span></th>
                             <th><span lang="en">Institute</span><span lang="th">สถานศึกษา</span></th>
@@ -1833,7 +2145,6 @@
                     <tbody>
             `;
             
-            // Add grouping headers for Tier 1
             let lastBenefitStatus = null;
             
             sortedStudents.forEach(student => {
@@ -1853,15 +2164,12 @@
                 }
                 
                 const isSelected = STATE.selectedStudents.has(student.id);
-                const canSelect = canSelectStudent(student);
-                const isDisabled = !canSelect && !isSelected;
                 
                 html += `
                 <tr class="${isSelected ? 'selected' : ''}" data-student-id="${student.id}">
                     <td>
-                        <div class="toggle toggle-sm ${isSelected ? 'active' : ''} ${isDisabled ? 'disabled' : ''}" 
-                             onclick="handleToggleClick(event, ${student.id}, ${isDisabled})"
-                             title="${isDisabled ? 'Budget limit reached' : ''}"></div>
+                        <div class="toggle toggle-sm ${isSelected ? 'active' : ''}" 
+                             onclick="handleToggleClick(event, ${student.id})"></div>
                     </td>
                     <td class="mono text-xs">${Utils.formatCID(student.cid)}</td>
                     <td class="font-thai">${student.fullName}</td>
@@ -1890,49 +2198,10 @@
         }
 
         // ============================================
-        // 8. BUDGET CALCULATIONS
+        // 9. TOGGLE HANDLERS
         // ============================================
-        function calculateAvailableBudget(tier) {
-            const tierOrder = [1, 2, 3, 4, 'none'];
-            const tierIndex = tierOrder.indexOf(tier);
-            
-            // Calculate remaining budget after previous tiers
-            let remainingBudget = STATE.totalBudget;
-            
-            for (let i = 0; i < tierIndex; i++) {
-                const prevTier = tierOrder[i];
-                const usedBudget = calculateTierSelectedBudget(prevTier);
-                remainingBudget -= usedBudget;
-            }
-            
-            // Apply percentage for current tier
-            const pctInputId = tier === 'none' ? 'tier4-pct' : `tier${tier}-pct`;
-            const pctInput = document.getElementById(pctInputId);
-            const pct = parseFloat(pctInput?.value) || 100;
-            
-            return Math.max(0, remainingBudget * (pct / 100));
-        }
-
-        function calculateTierSelectedBudget(tier) {
-            let total = 0;
-            STATE.selectedStudents.forEach(id => {
-                const student = STATE.students.find(s => s.id === id);
-                if (student && student.tier === tier) {
-                    total += student.totalLoan;
-                }
-            });
-            return total;
-        }
-
-        function canSelectStudent(student) {
-            const availableBudget = calculateAvailableBudget(student.tier);
-            const currentTierBudget = calculateTierSelectedBudget(student.tier);
-            return (currentTierBudget + student.totalLoan) <= availableBudget;
-        }
-
-        function handleToggleClick(event, studentId, isDisabled) {
+        function handleToggleClick(event, studentId) {
             event.stopPropagation();
-            if (isDisabled) return;
             toggleStudentSelection(studentId);
         }
 
@@ -1941,24 +2210,20 @@
             if (!student) return;
             
             if (STATE.selectedStudents.has(studentId)) {
-                // Deselect
                 STATE.selectedStudents.delete(studentId);
                 STATE.grantedStudents.delete(studentId);
                 student.isSelected = false;
             } else {
-                // Check if can select
-                if (!canSelectStudent(student)) return;
                 STATE.selectedStudents.add(studentId);
                 STATE.grantedStudents.add(studentId);
                 student.isSelected = true;
             }
             
-            // Update only the affected row and dashboard instead of full re-render
+            // Update row state
             updateStudentRowState(studentId);
-            updateAllRowsSelectability();
-            updateBudgetDashboard();
-            updateTierHeaders();
-            updateInstituteView();
+            
+            // Update all budget displays
+            BudgetManager.updateAllDisplays();
         }
 
         function updateStudentRowState(studentId) {
@@ -1970,54 +2235,11 @@
             
             if (isSelected) {
                 row.classList.add('selected');
-                toggle.classList.add('active');
+                toggle?.classList.add('active');
             } else {
                 row.classList.remove('selected');
-                toggle.classList.remove('active');
+                toggle?.classList.remove('active');
             }
-        }
-
-        function updateAllRowsSelectability() {
-            STATE.students.forEach(student => {
-                const row = document.querySelector(`tr[data-student-id="${student.id}"]`);
-                if (!row) return;
-                
-                const toggle = row.querySelector('.toggle');
-                const isSelected = STATE.selectedStudents.has(student.id);
-                const canSelect = canSelectStudent(student);
-                const isDisabled = !canSelect && !isSelected;
-                
-                if (isDisabled) {
-                    toggle.classList.add('disabled');
-                } else {
-                    toggle.classList.remove('disabled');
-                }
-                
-                // Update onclick handler
-                toggle.onclick = (e) => handleToggleClick(e, student.id, isDisabled);
-            });
-        }
-
-        function updateTierHeaders() {
-            const tierOrder = [1, 2, 3, 4, 'none'];
-            tierOrder.forEach(tier => {
-                const section = document.getElementById(`tier-section-${tier}`);
-                if (!section) return;
-                
-                const students = STATE.tierAllocations[tier] || [];
-                const availableBudget = calculateAvailableBudget(tier);
-                const selectedBudget = calculateTierSelectedBudget(tier);
-                const budgetPct = availableBudget > 0 ? (selectedBudget / availableBudget * 100) : 0;
-                
-                // Update the header info
-                const headerRight = section.querySelector('.tier-header .text-right');
-                if (headerRight) {
-                    headerRight.innerHTML = `
-                        <div class="text-sm font-mono">${Utils.formatCurrency(selectedBudget)}</div>
-                        <div class="text-xs text-titanium">${budgetPct.toFixed(1)}% <span lang="en">of tier budget</span><span lang="th">ของงบระดับนี้</span></div>
-                    `;
-                }
-            });
         }
 
         function toggleTierBody(tier) {
@@ -2033,18 +2255,20 @@
             if (toggle) {
                 toggle.classList.toggle('active', STATE.tierGroupingEnabled);
             }
-            // Re-render only tier 1 table
             const tier1Body = document.getElementById('tier-body-1');
             if (tier1Body) {
-                tier1Body.innerHTML = renderTierTable(1, STATE.tierAllocations[1] || []);
+                const budgetInfoEl = tier1Body.querySelector('.tier-budget-info');
+                const budgetInfoHTML = budgetInfoEl ? budgetInfoEl.outerHTML : '<div class="tier-budget-info"></div>';
+                tier1Body.innerHTML = budgetInfoHTML + renderTierTable(1, STATE.tierAllocations[1] || []);
             }
+            BudgetManager.updateAllDisplays();
         }
 
         // ============================================
-        // 9. BUDGET DASHBOARD
+        // 10. BUDGET DASHBOARD
         // ============================================
         function updateBudgetDashboard() {
-            const totalBudget = STATE.totalBudget;
+            const totalBudget = BudgetManager.getFederalBudget();
             let allocatedBudget = 0;
             
             STATE.selectedStudents.forEach(id => {
@@ -2068,17 +2292,18 @@
             document.getElementById('final-remaining').textContent = Utils.formatCurrency(remainingBudget);
             document.getElementById('final-used-pct').textContent = `${allocatedPct.toFixed(1)}%`;
             document.getElementById('final-remaining-pct').textContent = `${remainingPct.toFixed(1)}%`;
-            document.getElementById('final-used-bar').style.width = `${allocatedPct}%`;
-            document.getElementById('final-remaining-bar').style.width = `${remainingPct}%`;
+            document.getElementById('final-used-bar').style.width = `${Math.min(allocatedPct, 100)}%`;
+            document.getElementById('final-remaining-bar').style.width = `${Math.max(remainingPct, 0)}%`;
             
-            // Tier summary list
+            // Check for over-budget on overall
+            const usedBar = document.getElementById('final-used-bar');
+            usedBar.classList.toggle('over-budget', allocatedPct > 100);
+            
             updateTierSummaryList();
-            
-            // Update charts
-            renderCharts();
         }
 
         function updateTierSummaryList() {
+            const budgets = BudgetManager.calculateTierBudgets();
             const tiers = [
                 { tier: 1, name: 'Tier 1', nameTH: 'ระดับ 1', color: 'var(--tier-1)' },
                 { tier: 2, name: 'Tier 2', nameTH: 'ระดับ 2', color: 'var(--tier-2)' },
@@ -2089,23 +2314,24 @@
             
             let html = '';
             tiers.forEach(t => {
-                const budget = calculateTierSelectedBudget(t.tier);
+                const budget = budgets[t.tier];
                 const students = STATE.tierAllocations[t.tier] || [];
                 const selectedCount = students.filter(s => STATE.selectedStudents.has(s.id)).length;
-                const pct = STATE.totalBudget > 0 ? (budget / STATE.totalBudget * 100) : 0;
+                const isOver = budget.overBudget > 0;
                 
                 html += `
-                <div class="flex items-center justify-between py-2 border-b border-[var(--glass-border)]">
+                <div class="flex items-center justify-between py-2 border-b border-[var(--glass-border)] ${isOver ? 'bg-danger-dim rounded' : ''}">
                     <div class="flex items-center gap-2">
                         <div class="w-3 h-3 rounded" style="background: ${t.color}"></div>
                         <span class="text-sm">
                             <span lang="en">${t.name}</span>
                             <span lang="th">${t.nameTH}</span>
                         </span>
+                        ${isOver ? `<span class="badge badge-danger ml-2"><span lang="en">OVER</span><span lang="th">เกิน</span></span>` : ''}
                     </div>
                     <div class="text-right">
-                        <div class="font-mono text-sm">${Utils.formatCurrency(budget)}</div>
-                        <div class="text-xs text-titanium">${selectedCount}/${students.length} • ${pct.toFixed(1)}%</div>
+                        <div class="font-mono text-sm ${isOver ? 'text-danger' : ''}">${Utils.formatCurrency(budget.used)}</div>
+                        <div class="text-xs text-titanium">${selectedCount}/${students.length} • ${budget.pctOfTier.toFixed(1)}%</div>
                     </div>
                 </div>
                 `;
@@ -2115,20 +2341,20 @@
         }
 
         // ============================================
-        // 10. CHARTS
+        // 11. CHARTS
         // ============================================
         function renderCharts() {
             const isDark = STATE.theme === 'dark';
             const textColor = isDark ? '#86868b' : '#6e6e73';
             const gridColor = isDark ? 'rgba(255,255,255,0.05)' : 'rgba(0,0,0,0.05)';
             
-            // Tier Budget Chart (Doughnut)
+            const budgets = BudgetManager.calculateTierBudgets();
             const tierBudgets = [
-                calculateTierSelectedBudget(1),
-                calculateTierSelectedBudget(2),
-                calculateTierSelectedBudget(3),
-                calculateTierSelectedBudget(4),
-                calculateTierSelectedBudget('none')
+                budgets[1]?.used || 0,
+                budgets[2]?.used || 0,
+                budgets[3]?.used || 0,
+                budgets[4]?.used || 0,
+                budgets['none']?.used || 0
             ];
             
             ChartManager.render('tier-budget-chart', 'doughnut', {
@@ -2157,7 +2383,6 @@
                 cutout: '60%'
             });
             
-            // Student Distribution Chart (Bar)
             const tierCounts = [
                 STATE.tierAllocations[1]?.length || 0,
                 STATE.tierAllocations[2]?.length || 0,
@@ -2212,7 +2437,7 @@
         }
 
         // ============================================
-        // 11. INSTITUTE VIEW
+        // 12. INSTITUTE VIEW
         // ============================================
         function populateInstituteSelect() {
             const select = document.getElementById('institute-select');
@@ -2252,10 +2477,8 @@
                 return;
             }
             
-            // Filter students by institute
             let students = STATE.students.filter(s => s.institute === institute);
             
-            // Sort by education level, then by name
             const levelOrder = { 'ม.ปลาย': 0, 'ปวช.': 1, 'ปวส.': 2, 'ป.ตรี': 3 };
             students.sort((a, b) => {
                 const levelDiff = levelOrder[a.educationLevel] - levelOrder[b.educationLevel];
@@ -2263,7 +2486,6 @@
                 return a.fullName.localeCompare(b.fullName, 'th');
             });
             
-            // Update stats
             const grantedStudents = students.filter(s => STATE.grantedStudents.has(s.id));
             const selectedByInstitute = students.filter(s => STATE.instituteSelectedStudents.has(s.id));
             
@@ -2271,7 +2493,6 @@
             document.getElementById('inst-granted-students').textContent = grantedStudents.length;
             document.getElementById('inst-selected-students').textContent = selectedByInstitute.length;
             
-            // Filter by granted status if toggle is on
             if (STATE.showGrantedOnly) {
                 students = grantedStudents;
             }
@@ -2334,7 +2555,7 @@
         }
 
         // ============================================
-        // 12. EXPORT FUNCTIONALITY
+        // 13. EXPORT FUNCTIONALITY
         // ============================================
         function exportInstituteData() {
             const institute = document.getElementById('institute-select').value;
@@ -2345,7 +2566,6 @@
             
             const format = document.getElementById('export-format').value;
             
-            // Get selected students for this institute
             const students = STATE.students.filter(s => 
                 s.institute === institute && STATE.instituteSelectedStudents.has(s.id)
             );
@@ -2403,26 +2623,15 @@
         }
 
         // ============================================
-        // 13. APP CORE
+        // 14. APP CORE
         // ============================================
         const APP = {
             init() {
-                // Hide loading overlay
                 document.getElementById('loading-overlay').classList.add('hidden');
-                
-                // Set logo
                 document.getElementById('logo-slot').innerHTML = ICONS.logo;
-                
-                // Init physics background
                 this.initPhysics();
-                
-                // Init observers for reveal animations
                 this.initObservers();
-                
-                // Update language indicator
                 this.updateLangIndicator();
-                
-                // Update theme icon
                 this.updateThemeIcon();
             },
             
@@ -2435,25 +2644,20 @@
             },
             
             updateThemeIcon() {
-                const icon = document.getElementById('theme-icon');
-                icon.textContent = STATE.theme === 'dark' ? '🌙' : '☀️';
+                document.getElementById('theme-icon').textContent = STATE.theme === 'dark' ? '🌙' : '☀️';
             },
             
             updateGradientOverlay() {
                 const overlay = document.getElementById('gradient-overlay');
-                if (STATE.theme === 'light') {
-                    overlay.style.background = 'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(255,255,255,0.8) 70%)';
-                } else {
-                    overlay.style.background = 'radial-gradient(ellipse at 50% 0%, transparent 0%, #000 70%)';
-                }
+                overlay.style.background = STATE.theme === 'light' 
+                    ? 'radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(255,255,255,0.8) 70%)'
+                    : 'radial-gradient(ellipse at 50% 0%, transparent 0%, #000 70%)';
             },
             
             toggleLang() {
                 STATE.lang = STATE.lang === 'en' ? 'th' : 'en';
                 document.body.dataset.lang = STATE.lang;
                 this.updateLangIndicator();
-                
-                // Re-render components that need language updates
                 populateInstituteSelect();
                 renderCharts();
             },
@@ -2463,16 +2667,12 @@
             },
             
             switchTab(tabId) {
-                // Update buttons
                 document.querySelectorAll('.tab-btn').forEach(btn => {
                     btn.classList.toggle('active', btn.dataset.tab === tabId);
                 });
-                
-                // Update content
                 document.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.toggle('active', content.id === `tab-${tabId}`);
                 });
-                
                 if (tabId === 'institute') {
                     filterByInstitute();
                 }
@@ -2496,8 +2696,8 @@
             
             showHelp() {
                 alert(STATE.lang === 'th' ? 
-                    'ระบบจัดสรรงบประมาณ กยศ. Nexus\n\n1. ตั้งค่าจำนวนสถานศึกษาและนักเรียน\n2. คลิก "สร้างข้อมูลนักเรียน"\n3. เลือกนักเรียนในแต่ละระดับ\n4. ตรวจสอบงบประมาณที่จัดสรร' :
-                    'กยศ. Nexus Budget Allocation System\n\n1. Configure institutes and student count\n2. Click "Generate Students"\n3. Select students in each tier\n4. Review budget allocation');
+                    'ระบบจัดสรรงบประมาณ กยศ. Nexus\n\n1. ตั้งค่าจำนวนสถานศึกษาและนักเรียน\n2. คลิก "สร้างข้อมูลนักเรียน"\n3. เลือกนักเรียนในแต่ละระดับ\n4. ปรับ % การจัดสรรแต่ละระดับได้ทันที\n5. ระบบจะแจ้งเตือนเมื่อเกินงบประมาณ' :
+                    'กยศ. Nexus Budget Allocation System\n\n1. Configure institutes and student count\n2. Click "Generate Students"\n3. Select students in each tier\n4. Adjust tier allocation % in real-time\n5. System alerts when over budget');
             },
             
             closePanel() {
@@ -2508,7 +2708,6 @@
             initPhysics() {
                 const canvas = document.getElementById('antigravity-canvas');
                 
-                // Try Three.js first
                 if (typeof THREE !== 'undefined') {
                     try {
                         const scene = new THREE.Scene();
@@ -2517,7 +2716,6 @@
                         renderer.setSize(window.innerWidth, window.innerHeight);
                         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
                         
-                        // Create particles
                         const geometry = new THREE.BufferGeometry();
                         const count = 1500;
                         const positions = new Float32Array(count * 3);
@@ -2540,7 +2738,6 @@
                         
                         const particles = new THREE.Points(geometry, material);
                         scene.add(particles);
-                        
                         camera.position.z = 30;
                         
                         function animate() {
@@ -2558,15 +2755,12 @@
                             renderer.setSize(window.innerWidth, window.innerHeight);
                         });
                         
-                        console.log('[Physics] WebGL Engine Active');
                         return;
                     } catch (e) {
                         console.warn('[Physics] WebGL failed, using fallback', e);
                     }
                 }
                 
-                // Canvas 2D Fallback
-                console.log('[Physics] Using Canvas 2D Fallback');
                 const ctx = canvas.getContext('2d');
                 let w = canvas.width = window.innerWidth;
                 let h = canvas.height = window.innerHeight;
@@ -2589,16 +2783,13 @@
                     particles.forEach(p => {
                         p.x += p.vx;
                         p.y += p.vy;
-                        
                         if (p.x < 0 || p.x > w) p.vx *= -1;
                         if (p.y < 0 || p.y > h) p.vy *= -1;
-                        
                         ctx.beginPath();
                         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
                         ctx.fill();
                     });
                     
-                    // Draw connections
                     ctx.strokeStyle = 'rgba(0, 113, 227, 0.1)';
                     ctx.lineWidth = 0.5;
                     for (let i = 0; i < particles.length; i++) {
@@ -2640,7 +2831,7 @@
         };
 
         // ============================================
-        // 14. RESILIENT LOADER
+        // 15. RESILIENT LOADER
         // ============================================
         function waitForLibs(retries = 0) {
             const d3Ready = typeof d3 !== 'undefined';
@@ -2654,7 +2845,7 @@
                 setTimeout(() => waitForLibs(retries + 1), 100);
             } else {
                 console.error('[System] Library loading timeout');
-                APP.init(); // Try to init anyway
+                APP.init();
             }
         }
 
