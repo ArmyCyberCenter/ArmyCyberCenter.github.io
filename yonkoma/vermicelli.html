@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิกฤตวุ้นเส้นพันล้าน — The Billion-Baht Noodle Crisis</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='40' fill='%23c89b3c'/%3E%3C/svg%3E">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Sarabun:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&family=Noto+Sans+Thai:wght@400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<style>
+@layer base, layout, components, manga, animations;
+
+@layer base {
+  :root {
+    --void: #0a0604;
+    --surface: #1a100b;
+    --surface-2: #241810;
+    --gold-primary: #c89b3c;
+    --gold-bright: #e8c060;
+    --gold-dim: #8b6914;
+    --gold-glow: rgba(200,155,60,0.15);
+    --text-cream: #f5e6c8;
+    --text-muted: #8a7560;
+    --glass-border: rgba(200,155,60,0.15);
+    --temple-red: #c41e3a;
+    --neon-blue: #00d4ff;
+    --neon-pink: #ff2d7b;
+    --neon-orange: #ff6b35;
+    --emerald: #2d6a4f;
+    --panel-bg: #f8f0e0;
+    --panel-border: #1a1a1a;
+    --bubble-white: #ffffff;
+    --manga-black: #1a1a1a;
+    --ease-temple: cubic-bezier(0.16,1,0.3,1);
+    --font-th: 'Noto Sans Thai','Sarabun',sans-serif;
+    --font-display: 'Cinzel',serif;
+    --font-mono: 'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{background:var(--void);color:var(--text-cream);font-family:var(--font-th);overflow-x:hidden;min-height:100vh;}
+  ::selection{background:var(--gold-primary);color:var(--void);}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-track{background:var(--void);}
+  ::-webkit-scrollbar-thumb{background:var(--gold-dim);border-radius:3px;}
+}
+
+@layer layout {
+  .container{max-width:720px;margin:0 auto;padding:0 16px;}
+  .flex-center{display:flex;align-items:center;justify-content:center;}
+}
+
+@layer components {
+  #sacred-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:0.4;}
+
+  .header-bar{
+    position:sticky;top:0;z-index:100;
+    background:rgba(10,6,4,0.92);backdrop-filter:blur(24px);
+    border-bottom:1px solid var(--glass-border);
+    padding:12px 20px;display:flex;align-items:center;justify-content:space-between;
+  }
+  .header-bar h1{font-family:var(--font-display);font-size:clamp(0.8rem,2.5vw,1.1rem);letter-spacing:0.15em;color:var(--text-cream);}
+  .header-bar h1 span{color:var(--gold-primary);}
+  .badge{
+    display:inline-flex;align-items:center;gap:4px;padding:4px 14px;border-radius:99px;
+    font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;
+    border:1px solid var(--gold-primary);color:var(--gold-primary);background:var(--gold-glow);
+    cursor:pointer;transition:all 0.3s var(--ease-temple);user-select:none;
+  }
+  .badge:hover{background:var(--gold-primary);color:var(--void);}
+
+  .title-block{
+    text-align:center;padding:48px 16px 24px;position:relative;z-index:10;
+  }
+  .title-block .genre{
+    font-family:var(--font-mono);font-size:0.65rem;letter-spacing:0.3em;
+    color:var(--gold-dim);text-transform:uppercase;margin-bottom:8px;
+  }
+  .title-block h2{
+    font-family:var(--font-display);font-size:clamp(1.4rem,4vw,2.2rem);
+    background:linear-gradient(135deg,var(--gold-bright),var(--gold-primary),var(--neon-orange));
+    -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+    line-height:1.2;margin-bottom:6px;
+  }
+  .title-block .subtitle{
+    font-size:clamp(1rem,3vw,1.4rem);font-weight:700;color:var(--text-cream);opacity:0.9;
+    margin-bottom:12px;
+  }
+  .title-block .meta{font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);}
+
+  .footer-disclaimer{
+    position:relative;z-index:10;text-align:center;
+    padding:32px 20px 48px;font-size:0.7rem;color:var(--text-muted);
+    border-top:1px solid var(--glass-border);margin-top:40px;
+    max-width:640px;margin-left:auto;margin-right:auto;line-height:1.7;
+  }
+  .footer-disclaimer .disclaimer-label{
+    display:inline-block;padding:2px 10px;border:1px solid var(--temple-red);
+    color:var(--temple-red);border-radius:4px;font-size:0.6rem;font-weight:700;
+    letter-spacing:0.1em;margin-bottom:8px;
+  }
+}
+
+@layer manga {
+  .manga-strip{
+    position:relative;z-index:10;
+    display:flex;flex-direction:column;gap:0;
+    background:var(--manga-black);
+    border:3px solid var(--manga-black);
+    border-radius:8px;overflow:hidden;
+    box-shadow:0 20px 80px rgba(0,0,0,0.6),0 0 40px var(--gold-glow);
+    margin-bottom:8px;
+  }
+
+  .panel{
+    position:relative;
+    background:var(--panel-bg);
+    min-height:280px;
+    border-bottom:4px solid var(--manga-black);
+    overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .panel:last-child{border-bottom:none;}
+
+  .panel-number{
+    position:absolute;top:6px;left:8px;z-index:20;
+    font-family:var(--font-mono);font-size:0.6rem;font-weight:700;
+    color:#999;background:rgba(255,255,255,0.7);
+    width:18px;height:18px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    border:1px solid #ccc;
+  }
+
+  .panel-label{
+    position:absolute;top:6px;right:8px;z-index:20;
+    font-family:var(--font-mono);font-size:0.5rem;font-weight:700;
+    letter-spacing:0.12em;text-transform:uppercase;
+    padding:2px 8px;border-radius:3px;
+    background:rgba(0,0,0,0.08);color:#777;
+  }
+
+  .panel-inner{
+    flex:1;display:flex;padding:16px;gap:12px;
+    align-items:flex-end;position:relative;
+  }
+
+  /* Characters */
+  .char-zone{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:90px;}
+  .char-avatar{
+    width:72px;height:72px;border-radius:50%;
+    border:2px solid var(--manga-black);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.8rem;background:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+    position:relative;overflow:hidden;
+  }
+  .char-label{font-size:0.55rem;font-weight:700;color:#555;margin-top:4px;letter-spacing:0.05em;}
+
+  /* Speech Bubbles */
+  .dialogue-zone{flex:1;display:flex;flex-direction:column;gap:8px;}
+  .bubble{
+    position:relative;
+    background:var(--bubble-white);
+    border:2px solid var(--manga-black);
+    border-radius:18px;
+    padding:10px 14px;
+    font-size:0.82rem;line-height:1.55;
+    color:var(--manga-black);
+    max-width:100%;
+    box-shadow:1px 2px 4px rgba(0,0,0,0.08);
+  }
+  .bubble::before{
+    content:'';position:absolute;bottom:12px;left:-10px;
+    border:6px solid transparent;border-right:8px solid var(--manga-black);
+  }
+  .bubble::after{
+    content:'';position:absolute;bottom:13px;left:-6px;
+    border:5px solid transparent;border-right:7px solid var(--bubble-white);
+  }
+  .bubble.right::before{left:auto;right:-10px;border-right:none;border-left:8px solid var(--manga-black);}
+  .bubble.right::after{left:auto;right:-6px;border-right:none;border-left:7px solid var(--bubble-white);}
+
+  .bubble.shout{
+    border-width:3px;
+    background:linear-gradient(135deg,#fff8e0,#fff);
+    border-radius:24px 24px 24px 6px;
+    font-weight:700;
+  }
+  .bubble.shout.right{border-radius:24px 24px 6px 24px;}
+
+  .bubble .speaker{
+    font-size:0.6rem;font-weight:800;color:var(--gold-dim);
+    text-transform:uppercase;letter-spacing:0.08em;margin-bottom:2px;display:block;
+  }
+
+  /* Panel-specific */
+  .panel-1 .panel-inner{align-items:center;}
+  .phone-screen{
+    background:#111;border-radius:12px;padding:8px;
+    border:2px solid #333;width:140px;flex-shrink:0;
+    box-shadow:0 4px 16px rgba(0,0,0,0.3);
+  }
+  .phone-screen .headline{
+    font-size:0.65rem;font-weight:800;color:#ff4444;
+    text-align:center;line-height:1.4;padding:4px;
+    background:#1a1a1a;border-radius:6px;
+  }
+  .phone-screen .sub{font-size:0.5rem;color:#888;text-align:center;margin-top:4px;line-height:1.3;}
+
+  /* Panel 3 Cyber */
+  .panel-3{background:linear-gradient(180deg,#0a0a14,#0d0818,#0a0604);min-height:360px;}
+  .panel-3 .panel-inner{align-items:stretch;}
+  .panel-3 .bubble{
+    background:rgba(10,10,20,0.9);color:#e0e0e0;
+    border-color:var(--neon-blue);
+    box-shadow:0 0 12px rgba(0,212,255,0.15);
+  }
+  .panel-3 .bubble::before{border-right-color:var(--neon-blue);}
+  .panel-3 .bubble::after{border-right-color:rgba(10,10,20,0.9);}
+  .panel-3 .bubble.right::before{border-right:none;border-left-color:var(--neon-blue);}
+  .panel-3 .bubble.right::after{border-right:none;border-left-color:rgba(10,10,20,0.9);}
+  .panel-3 .char-avatar{border-color:var(--neon-blue);box-shadow:0 0 16px rgba(0,212,255,0.3);}
+  .panel-3 .panel-label{color:var(--neon-pink);background:rgba(255,45,123,0.1);}
+  .panel-3 .panel-number{color:var(--neon-blue);background:rgba(0,212,255,0.1);border-color:var(--neon-blue);}
+
+  #nexus-graph{
+    flex:1;min-height:200px;border-radius:8px;
+    border:1px solid rgba(0,212,255,0.2);
+    background:rgba(0,0,0,0.4);
+    position:relative;overflow:hidden;
+  }
+  #nexus-graph .graph-title{
+    position:absolute;top:6px;left:8px;z-index:5;
+    font-family:var(--font-mono);font-size:0.55rem;
+    color:var(--neon-blue);letter-spacing:0.15em;opacity:0.8;
+  }
+  #nexus-graph .graph-stamp{
+    position:absolute;bottom:10px;right:10px;z-index:5;
+    font-family:var(--font-display);font-size:1.1rem;font-weight:900;
+    color:var(--temple-red);opacity:0.7;
+    transform:rotate(-8deg);
+    text-shadow:0 0 10px rgba(196,30,58,0.4);
+    letter-spacing:0.08em;
+    border:2px solid var(--temple-red);padding:2px 10px;border-radius:4px;
+  }
+
+  /* Panel 4 - deadpan */
+  .panel-4{background:var(--panel-bg);}
+  .thought-cloud{
+    background:#fff;border:2px dashed #aaa;
+    border-radius:50%;padding:12px;text-align:center;
+    width:130px;height:100px;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;flex-shrink:0;
+    font-size:0.6rem;color:#555;line-height:1.3;
+    position:relative;
+  }
+  .thought-cloud::after{
+    content:'○ ○';position:absolute;bottom:-16px;left:20px;
+    font-size:0.5rem;color:#aaa;letter-spacing:6px;
+  }
+  .thought-cloud .expired{
+    display:inline-block;padding:2px 6px;background:#ff4444;color:#fff;
+    font-size:0.5rem;font-weight:700;border-radius:3px;margin-top:4px;
+  }
+
+  .sweatdrop{
+    position:absolute;width:8px;height:14px;
+    background:linear-gradient(180deg,rgba(100,180,255,0.1),rgba(100,180,255,0.6));
+    border-radius:0 0 50% 50%;border:1px solid rgba(100,180,255,0.3);
+  }
+
+  /* Speed lines for panel 3 */
+  .speed-lines{
+    position:absolute;inset:0;
+    background:repeating-conic-gradient(
+      from 0deg at 50% 50%,
+      transparent 0deg, transparent 3deg,
+      rgba(0,212,255,0.02) 3deg, rgba(0,212,255,0.02) 4deg
+    );
+    pointer-events:none;
+  }
+
+  /* Screentone patterns */
+  .screentone{
+    position:absolute;inset:0;pointer-events:none;opacity:0.04;
+    background-image:radial-gradient(circle,#000 0.5px,transparent 0.5px);
+    background-size:4px 4px;
+  }
+}
+
+@layer animations {
+  @keyframes spin{to{transform:rotate(360deg);}}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.5;}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+  @keyframes glitch{
+    0%,100%{transform:translate(0);}
+    20%{transform:translate(-2px,1px);}
+    40%{transform:translate(1px,-1px);}
+    60%{transform:translate(-1px,2px);}
+    80%{transform:translate(2px,-1px);}
+  }
+  @keyframes scanline{
+    0%{transform:translateY(-100%);}
+    100%{transform:translateY(100%);}
+  }
+  @keyframes neonPulse{
+    0%,100%{text-shadow:0 0 5px var(--neon-blue),0 0 15px rgba(0,212,255,0.3);}
+    50%{text-shadow:0 0 10px var(--neon-blue),0 0 30px rgba(0,212,255,0.5);}
+  }
+
+  .panel{animation:fadeIn 0.6s var(--ease-temple) both;}
+  .panel:nth-child(2){animation-delay:0.15s;}
+  .panel:nth-child(3){animation-delay:0.3s;}
+  .panel:nth-child(4){animation-delay:0.45s;}
+
+  #nexus-graph .graph-title{animation:neonPulse 2s infinite;}
+  .scanline-overlay{
+    position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(transparent 50%,rgba(0,212,255,0.02) 50%);
+    background-size:100% 4px;
+  }
+  .scanline-bar{
+    position:absolute;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,transparent,rgba(0,212,255,0.15),transparent);
+    animation:scanline 4s linear infinite;pointer-events:none;
+  }
+
+  #loading-overlay{
+    position:fixed;inset:0;z-index:9999;
+    background:var(--void);display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    transition:opacity 0.8s var(--ease-temple);
+  }
+  #loading-overlay.done{opacity:0;pointer-events:none;}
+  .loader{width:40px;height:40px;border:3px solid var(--glass-border);border-top-color:var(--gold-primary);border-radius:50%;animation:spin 1s linear infinite;margin-bottom:16px;}
+  .loader-text{font-family:var(--font-mono);font-size:0.65rem;color:var(--gold-dim);letter-spacing:0.2em;animation:pulse 2s infinite;}
+}
+
+@media(max-width:500px){
+  .panel-inner{flex-direction:column;align-items:flex-start;}
+  .char-zone{flex-direction:row;width:auto;gap:6px;}
+  .char-avatar{width:48px;height:48px;font-size:1.2rem;}
+  .phone-screen{width:100%;}
+  #nexus-graph{min-height:180px;}
+  .thought-cloud{width:100%;height:auto;border-radius:16px;}
+}
+</style>
+</head>
+<body>
+
+<div id="loading-overlay">
+  <div class="loader"></div>
+  <div class="loader-text">INITIALIZING ARTIFACT...</div>
+</div>
+
+<canvas id="sacred-canvas"></canvas>
+
+<header class="header-bar">
+  <h1>NEXUS // <span>YONKOMA</span></h1>
+  <div style="display:flex;gap:8px;align-items:center;">
+    <span class="badge" onclick="scrollToPanel(3)" title="ดู NEXUS INTEL">⬡ INTEL</span>
+  </div>
+</header>
+
+<section class="title-block">
+  <div class="genre">Satirical Yonkoma Manga · Ki–Sho–Ten–Ketsu (起承転結)</div>
+  <h2>The Billion-Baht Noodle Crisis</h2>
+  <div class="subtitle">วิกฤตวุ้นเส้นพันล้าน</div>
+  <div class="meta">4-Panel Vertical Strip · Parody / Entertainment Only</div>
+</section>
+
+<main class="container" style="position:relative;z-index:10;padding-bottom:20px;">
+<div class="manga-strip" id="manga-strip">
+
+  <!-- ═══ PANEL 1: KI (起) ═══ -->
+  <div class="panel panel-1" id="panel-1">
+    <div class="screentone"></div>
+    <span class="panel-number">1</span>
+    <span class="panel-label">起 KI — INTRO</span>
+    <div class="panel-inner">
+      <div class="char-zone">
+        <div class="char-avatar" style="background:#e8f4e8;">🧑‍🎓</div>
+        <div class="char-label">BOY B</div>
+      </div>
+      <div class="dialogue-zone">
+        <div class="bubble">
+          <span class="speaker">Boy B</span>
+          เฮ้ย ดูข่าวนี้ดิ! ลุงคนนี้เครียดจัดไม่มีตังค์จ่ายค่า AI รายเดือน (Claude Max, ChatGPT Pro) จน<strong>ลงแดงดิจิทัล!</strong> ไปนั่งจุดไฟเผาวุ้นเส้นแห้งริมถนนรามอินทราหวังให้มันนิ่มกินได้อะ โคตรกาว!
+        </div>
+        <div class="bubble right">
+          <span class="speaker">Boy A</span>
+          หืม... แต่ในข่าวบอกว่าลุงแกอ้างว่าเป็น <strong>'แพะรับบาป'</strong> ในคดีจัดซื้อจัดจ้างภาครัฐด้วยนี่?
+        </div>
+      </div>
+      <div class="phone-screen">
+        <div class="headline">🔥 คดีวุ้นเส้น<br>รามอินทรา</div>
+        <div class="sub">หนุ่มตกงานเครียด ลงแดง AI<br>เผาวุ้นเส้นประท้วง!</div>
+      </div>
+      <div class="char-zone">
+        <div class="char-avatar" style="background:#e8e8f8;">🤓</div>
+        <div class="char-label">BOY A</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 2: SHO (承) ═══ -->
+  <div class="panel panel-2" id="panel-2">
+    <div class="screentone"></div>
+    <span class="panel-number">2</span>
+    <span class="panel-label">承 SHO — DEVELOPMENT</span>
+    <div class="panel-inner">
+      <div class="char-zone">
+        <div class="char-avatar" style="background:#e8e8f8;box-shadow:0 0 12px rgba(255,215,0,0.4);">
+          🤓<span style="position:absolute;top:2px;right:2px;font-size:0.5rem;">✨</span>
+        </div>
+        <div class="char-label">BOY A</div>
+      </div>
+      <div class="dialogue-zone">
+        <div class="bubble shout">
+          <span class="speaker">Boy A · Dramatic Lens Flare ✦</span>
+          คำว่า 'แพะรับบาป' มันสะกิดต่อม data ของฉัน... <strong>ขอรันฐานข้อมูล NEXUS INTEL v12.1</strong> ตรวจสอบเบื้องหลังหน่อย...
+        </div>
+        <div class="bubble right" style="border-style:dashed;">
+          <span class="speaker">Boy B · 😐💧</span>
+          เฮ้ย! แกจะไปวิเคราะห์จริงจังอะไรกับ<strong>คนบ้าเผาวุ้นเส้นประท้วงหาแสง</strong>เนี่ย!?
+        </div>
+      </div>
+      <div class="char-zone">
+        <div class="char-avatar" style="background:#e8f4e8;position:relative;">
+          🧑‍🎓
+          <span class="sweatdrop" style="top:-4px;right:6px;"></span>
+        </div>
+        <div class="char-label">BOY B</div>
+      </div>
+    </div>
+    <!-- Mini tablet screen -->
+    <div style="position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:var(--font-mono);font-size:0.5rem;color:#777;background:rgba(0,0,0,0.06);padding:3px 12px;border-radius:4px;border:1px dashed #ccc;">
+      CONNECTING TO: NEXUS INTEL v12.1 ███████░░ 78%
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 3: TEN (転) — CLIMAX ═══ -->
+  <div class="panel panel-3" id="panel-3">
+    <div class="speed-lines"></div>
+    <div class="scanline-overlay"></div>
+    <div class="scanline-bar"></div>
+    <span class="panel-number">3</span>
+    <span class="panel-label">転 TEN — TWIST</span>
+    <div class="panel-inner" style="flex-direction:column;gap:10px;">
+      <!-- NEXUS GRAPH -->
+      <div id="nexus-graph">
+        <div class="graph-title">⬡ NEXUS INTEL v12.1 — PROCUREMENT RING ANALYSIS</div>
+        <div class="graph-stamp">COLLUSION??</div>
+        <svg id="nexus-svg" width="100%" height="100%"></svg>
+      </div>
+      <!-- Dialogue row -->
+      <div style="display:flex;gap:8px;align-items:flex-end;">
+        <div class="char-zone" style="width:60px;">
+          <div class="char-avatar" style="width:48px;height:48px;font-size:1.2rem;background:rgba(0,40,80,0.5);border-color:var(--neon-blue);">🤓</div>
+          <div class="char-label" style="color:var(--neon-blue);">BOY A</div>
+        </div>
+        <div class="dialogue-zone">
+          <div class="bubble shout" style="border-color:var(--neon-pink);background:rgba(20,5,20,0.9);color:#ffccdd;font-size:0.78rem;">
+            <span class="speaker" style="color:var(--neon-pink);">Boy A · YELLING</span>
+            เจอแล้ว! นี่มันเครือข่ายฮั้วประมูล <strong style="color:var(--neon-orange);">1.87 พันล้านบาท!!</strong> หัวหน้าคือ 'หนุ่ย P.'! เมียคุม 'Phoenix Corp'! ตั้ง 'P*** Group' ตามชื่อลูกชาย! ฮั้วกับบริษัท X ประมูลกล้อง CCTV กทม. เฉือนชนะแค่ <strong style="color:var(--temple-red);">0.3%!!</strong>
+          </div>
+        </div>
+        <div class="dialogue-zone" style="flex:0.8;">
+          <div class="bubble right shout" style="border-color:var(--neon-blue);background:rgba(5,10,30,0.9);color:#cce8ff;font-size:0.78rem;">
+            <span class="speaker" style="color:var(--neon-blue);">Boy B · SHOCKED</span>
+            เชร็ดดด!! นี่มันระดับ<strong>มาสเตอร์มายด์อาชญากรข้ามชาติ</strong>ชัดๆ!! ลุงวุ้นเส้นนั่นกุมความลับระดับประเทศไว้เรอะ!!
+          </div>
+        </div>
+        <div class="char-zone" style="width:60px;">
+          <div class="char-avatar" style="width:48px;height:48px;font-size:1.2rem;background:rgba(0,40,80,0.5);border-color:var(--neon-pink);">🧑‍🎓</div>
+          <div class="char-label" style="color:var(--neon-pink);">BOY B</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ PANEL 4: KETSU (結) — PUNCHLINE ═══ -->
+  <div class="panel panel-4" id="panel-4">
+    <div class="screentone"></div>
+    <span class="panel-number">4</span>
+    <span class="panel-label">結 KETSU — PUNCHLINE</span>
+    <div class="panel-inner" style="align-items:center;">
+      <div class="char-zone">
+        <div class="char-avatar" style="position:relative;">
+          🧑‍🎓
+          <span class="sweatdrop" style="top:-2px;right:8px;"></span>
+        </div>
+        <div class="char-label">BOY B</div>
+      </div>
+      <div class="dialogue-zone">
+        <div class="bubble" style="background:#fafafa;border-style:solid;">
+          <span class="speaker">Boy B · Deadpan 😐</span>
+          ...แต่<strong>มาสเตอร์มายด์ระดับพันล้าน</strong> ดันมานั่งร้องไห้เผาวุ้นเส้นกินริมถนน เพราะไม่มีตังค์หลักร้อยต่ออายุ AI เนี่ยนะ? <em>มันไม่เมคเซนส์เลยว่ะ</em>
+        </div>
+        <div class="bubble right" style="background:#fffbe6;border-color:#cca;">
+          <span class="speaker">Boy A · Weakly 😅</span>
+          สง... สงสัยงบพันล้านเอาไปหมุนในระบบไม่ทันมั้ง...
+        </div>
+      </div>
+      <!-- Thought cloud -->
+      <div class="thought-cloud">
+        <span style="font-size:1.4rem;">😭🍜</span>
+        <span style="font-size:0.55rem;color:#888;margin-top:2px;">มาสเตอร์มายด์<br>นั่งเผาวุ้นเส้น</span>
+        <span class="expired">Subscription Expired<br>Need ฿750 for AI Pro</span>
+      </div>
+      <div class="char-zone">
+        <div class="char-avatar" style="position:relative;">
+          🤓
+          <span class="sweatdrop" style="top:-2px;left:8px;"></span>
+        </div>
+        <div class="char-label">BOY A</div>
+      </div>
+    </div>
+    <!-- Upgrade popup gag -->
+    <div style="position:absolute;bottom:8px;right:12px;background:#111;color:#0f0;font-family:var(--font-mono);font-size:0.45rem;padding:4px 8px;border-radius:4px;border:1px solid #333;opacity:0.7;transform:rotate(2deg);">
+      ⚡ Upgrade to PRO for boiling instructions · ฿750/mo
+    </div>
+  </div>
+
+</div><!-- end manga-strip -->
+</main>
+
+<footer class="footer-disclaimer">
+  <div class="disclaimer-label">⚠ PARODY DISCLAIMER</div>
+  <p>ประกาศชี้แจง: ข้อความต่อไปนี้เป็น "ข่าวล้อเลียน/พาโรดี้" จัดทำขึ้นเพื่อความบันเทิง มิได้อ้างอิงบุคคล เหตุการณ์ หรือหน่วยงานใดจริง และไม่มีเจตนาพาดพิงให้เกิดความเสียหาย</p>
+  <p style="margin-top:8px;font-family:var(--font-mono);font-size:0.55rem;opacity:0.5;">ตัวละครและเหตุการณ์สมมุติทั้งหมด · NEXUS INTEL is fictional · Built with D3.js v7</p>
+</footer>
+
+<script>
+// ═══════════════════════════════════════
+//  SIMPLEX NOISE (minified)
+// ═══════════════════════════════════════
+class SimplexNoise{constructor(){this.p=new Uint8Array(256);for(let i=0;i<256;i++)this.p[i]=Math.floor(256*Math.random());this.perm=new Uint8Array(512);for(let i=0;i<512;i++)this.perm[i]=this.p[i&255]}dot(g,x,y){return g[0]*x+g[1]*y}noise(xin,yin){const F2=.5*(Math.sqrt(3)-1),G2=(3-Math.sqrt(3))/6;let i=Math.floor(xin+((xin+yin)*F2)),j=Math.floor(yin+((xin+yin)*F2)),t=(i+j)*G2,X0=i-t,Y0=j-t,x0=xin-X0,y0=yin-Y0;let i1,j1;if(x0>y0){i1=1;j1=0}else{i1=0;j1=1}let x1=x0-i1+G2,y1=y0-j1+G2,x2=x0-1+2*G2,y2=y0-1+2*G2,ii=i&255,jj=j&255,gi0=this.perm[ii+this.perm[jj]]%12,gi1=this.perm[ii+i1+this.perm[jj+j1]]%12,gi2=this.perm[ii+1+this.perm[jj+1]]%12,t0=.5-x0*x0-y0*y0,n0=t0<0?0:Math.pow(t0,4)*this.dot([Math.cos(gi0),Math.sin(gi0)],x0,y0),t1=.5-x1*x1-y1*y1,n1=t1<0?0:Math.pow(t1,4)*this.dot([Math.cos(gi1),Math.sin(gi1)],x1,y1),t2=.5-x2*x2-y2*y2,n2=t2<0?0:Math.pow(t2,4)*this.dot([Math.cos(gi2),Math.sin(gi2)],x2,y2);return 70*(n0+n1+n2)}}
+
+// ═══════════════════════════════════════
+//  PARTICLE BACKGROUND
+// ═══════════════════════════════════════
+class ParticleField {
+  constructor() {
+    this.canvas = document.getElementById('sacred-canvas');
+    this.ctx = this.canvas.getContext('2d');
+    this.simplex = new SimplexNoise();
+    this.particles = [];
+    this.time = 0;
+    this.resize();
+    this.init();
+    this.animate();
+    window.addEventListener('resize', () => this.resize());
+  }
+  resize() {
+    this.width = this.canvas.width = window.innerWidth;
+    this.height = this.canvas.height = window.innerHeight;
+  }
+  init() {
+    const count = Math.min(60, Math.floor(this.width * this.height / 18000));
+    this.particles = Array.from({length: count}, () => ({
+      x: Math.random() * this.width,
+      y: Math.random() * this.height,
+      size: Math.random() * 1.5 + 0.5,
+      speed: Math.random() * 0.3 + 0.1,
+      alpha: Math.random() * 0.4 + 0.1,
+    }));
+  }
+  animate() {
+    this.time += 0.003;
+    this.ctx.clearRect(0, 0, this.width, this.height);
+    for (const p of this.particles) {
+      const nx = this.simplex.noise(p.x * 0.003 + this.time, p.y * 0.003);
+      const ny = this.simplex.noise(p.x * 0.003, p.y * 0.003 + this.time);
+      p.x += nx * p.speed;
+      p.y += ny * p.speed + p.speed * 0.2;
+      if (p.x < 0) p.x = this.width;
+      if (p.x > this.width) p.x = 0;
+      if (p.y > this.height) { p.y = 0; p.x = Math.random() * this.width; }
+      this.ctx.beginPath();
+      this.ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+      this.ctx.fillStyle = `rgba(200,155,60,${p.alpha})`;
+      this.ctx.fill();
+    }
+    requestAnimationFrame(() => this.animate());
+  }
+}
+
+// ═══════════════════════════════════════
+//  NEXUS INTEL D3.js NETWORK GRAPH
+// ═══════════════════════════════════════
+function initNexusGraph() {
+  const container = document.getElementById('nexus-graph');
+  const svg = d3.select('#nexus-svg');
+  const w = container.clientWidth;
+  const h = container.clientHeight || 220;
+  svg.attr('viewBox', `0 0 ${w} ${h}`);
+
+  const nodes = [
+    {id:'ring',  label:'ฮั้วประมูล\n1.87 พันล้าน',  type:'artifact', fx:w*0.5,  fy:h*0.38},
+    {id:'nui',   label:'หนุ่ย P.',                    type:'person',   fx:w*0.2,  fy:h*0.25},
+    {id:'kiang', label:'ภรรยา\n"เคียง"',               type:'person',   fx:w*0.18, fy:h*0.65},
+    {id:'phx',   label:'Phoenix\nCorp (98%)',          type:'artifact', fx:w*0.42, fy:h*0.72},
+    {id:'prem',  label:'P*** Group\n(ชื่อลูกชาย)',       type:'artifact', fx:w*0.68, fy:h*0.2},
+    {id:'sys',   label:'บริษัท X\n(Systronics)',        type:'artifact', fx:w*0.82, fy:h*0.5},
+    {id:'cctv',  label:'CCTV กทม.\n<0.3% margin',     type:'location', fx:w*0.65, fy:h*0.75},
+    {id:'gov',   label:'หน่วยงานรัฐ A',                 type:'location', fx:w*0.35, fy:h*0.15},
+    {id:'noodle',label:'🍜 ลุงวุ้นเส้น\n(แพะ??)',        type:'person',   fx:w*0.85, fy:h*0.15},
+  ];
+  const links = [
+    {source:'nui',target:'ring',   color:'#ff2d7b'},
+    {source:'nui',target:'kiang',  color:'#ff6b35'},
+    {source:'kiang',target:'phx',  color:'#ff6b35'},
+    {source:'nui',target:'prem',   color:'#00d4ff'},
+    {source:'prem',target:'sys',   color:'#00d4ff'},
+    {source:'sys',target:'cctv',   color:'#c41e3a'},
+    {source:'ring',target:'cctv',  color:'#c41e3a'},
+    {source:'ring',target:'gov',   color:'#e8c060'},
+    {source:'ring',target:'prem',  color:'#ff2d7b'},
+    {source:'phx',target:'ring',   color:'#ff6b35'},
+    {source:'noodle',target:'ring', color:'#555',dash:'6,4'},
+  ];
+
+  // Defs for glow
+  const defs = svg.append('defs');
+  const glow = defs.append('filter').attr('id','glow');
+  glow.append('feGaussianBlur').attr('stdDeviation','3').attr('result','blur');
+  glow.append('feMerge').selectAll('feMergeNode').data(['blur','SourceGraphic'])
+    .join('feMergeNode').attr('in',d=>d);
+
+  // Links
+  svg.selectAll('.link').data(links).join('line')
+    .attr('class','link')
+    .attr('x1', d => nodes.find(n=>n.id===d.source).fx)
+    .attr('y1', d => nodes.find(n=>n.id===d.source).fy)
+    .attr('x2', d => nodes.find(n=>n.id===d.target).fx)
+    .attr('y2', d => nodes.find(n=>n.id===d.target).fy)
+    .attr('stroke', d => d.color)
+    .attr('stroke-width', 1.2)
+    .attr('stroke-opacity', 0.6)
+    .attr('stroke-dasharray', d => d.dash || 'none')
+    .attr('filter','url(#glow)');
+
+  // Nodes
+  const nodeG = svg.selectAll('.node').data(nodes).join('g')
+    .attr('class','node')
+    .attr('transform', d => `translate(${d.fx},${d.fy})`)
+    .attr('filter','url(#glow)');
+
+  nodeG.each(function(d) {
+    const el = d3.select(this);
+    if (d.type === 'person') {
+      el.append('circle').attr('r', d.id==='noodle'?14:12)
+        .attr('fill', d.id==='noodle'?'rgba(255,107,53,0.15)':'rgba(0,212,255,0.12)')
+        .attr('stroke', d.id==='noodle'?'#ff6b35':'#00d4ff')
+        .attr('stroke-width', 1.5);
+    } else if (d.type === 'artifact') {
+      const sz = d.id==='ring'?18:14;
+      el.append('rect')
+        .attr('x',-sz).attr('y',-sz*0.7).attr('width',sz*2).attr('height',sz*1.4)
+        .attr('rx',4).attr('ry',4)
+        .attr('fill', d.id==='ring'?'rgba(255,45,123,0.12)':'rgba(200,155,60,0.12)')
+        .attr('stroke', d.id==='ring'?'#ff2d7b':'#c89b3c')
+        .attr('stroke-width',1.5);
+    } else {
+      // Location = triangle/polygon
+      el.append('polygon')
+        .attr('points','0,-13 11,9 -11,9')
+        .attr('fill','rgba(196,30,58,0.12)')
+        .attr('stroke','#c41e3a')
+        .attr('stroke-width',1.5);
+    }
+  });
+
+  // Labels
+  nodeG.each(function(d) {
+    const el = d3.select(this);
+    const lines = d.label.split('\n');
+    lines.forEach((line, i) => {
+      el.append('text')
+        .attr('x', 0).attr('y', (d.type==='person'?18:20) + i * 10)
+        .attr('text-anchor','middle')
+        .attr('font-family','Noto Sans Thai, Sarabun, monospace')
+        .attr('font-size', d.id==='ring'? '6px':'5.5px')
+        .attr('font-weight', d.id==='ring'?'700':'400')
+        .attr('fill', d.id==='noodle'?'#ff6b35': d.id==='ring'?'#ff88aa':'#aaa')
+        .text(line);
+    });
+  });
+}
+
+// ═══════════════════════════════════════
+//  APP INIT
+// ═══════════════════════════════════════
+function scrollToPanel(n) {
+  document.getElementById('panel-' + n)?.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function waitForLibs(r = 0) {
+  if (typeof d3 !== 'undefined') {
+    console.log(`[Nexus] Artifact Ready (${r*100}ms)`);
+    document.getElementById('loading-overlay').classList.add('done');
+    new ParticleField();
+    initNexusGraph();
+  } else if (r < 50) {
+    setTimeout(() => waitForLibs(r + 1), 100);
+  }
+}
+document.addEventListener('DOMContentLoaded', () => waitForLibs());
+</script>
+</body>
+</html>
