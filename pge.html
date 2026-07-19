@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS INTEL v12.1 // Extended Network Analysis - 47 Entities</title>
+    <title>NEXUS INTEL v12.2 // PGE Procurement Evidence - 91 Tracked Activities</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -154,6 +154,56 @@
             .social-link { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.2rem 0.4rem; background: rgba(59, 130, 246, 0.1); border-radius: 4px; font-size: 0.6rem; color: var(--neon-core); text-decoration: none; margin-right: 0.25rem; }
             .social-link:hover { background: rgba(59, 130, 246, 0.2); }
             .intel-badge { display: inline-flex; align-items: center; gap: 0.25rem; padding: 0.15rem 0.4rem; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); border-radius: 4px; font-size: 0.55rem; color: var(--accent-gold); }
+            .source-strip { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+            .source-link { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.55rem 0.75rem; border: 1px solid rgba(59,130,246,0.32); border-radius: 9px; background: rgba(59,130,246,0.09); color: #93c5fd; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 0.66rem; transition: all 0.2s; }
+            .source-link:hover { transform: translateY(-1px); border-color: rgba(59,130,246,0.7); background: rgba(59,130,246,0.17); }
+            .source-link.official { border-color: rgba(16,185,129,0.35); background: rgba(16,185,129,0.09); color: #6ee7b7; }
+            .evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+            .evidence-item { padding: 0.85rem; border: 1px solid var(--glass-border); border-radius: 10px; background: rgba(0,0,0,0.22); }
+            .portfolio-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
+            .portfolio-metric { padding: 0.9rem; border-radius: 10px; background: rgba(0,0,0,0.28); border: 1px solid var(--glass-border); }
+            .portfolio-metric strong { display: block; color: var(--silver); font: 700 1.35rem 'Orbitron', sans-serif; margin-bottom: 0.2rem; }
+            .portfolio-metric span { color: var(--titanium-light); font-size: 0.68rem; line-height: 1.4; }
+            .target-project { padding: 1rem; border: 1px solid rgba(16,185,129,0.35); border-radius: 12px; background: linear-gradient(135deg, rgba(16,185,129,0.1), rgba(59,130,246,0.06)); }
+            .method-chip { display: inline-flex; flex-direction: column; min-width: 145px; gap: 0.15rem; padding: 0.6rem 0.75rem; border: 1px solid var(--glass-border); border-radius: 9px; background: rgba(255,255,255,0.025); }
+            .method-chip strong { color: var(--silver); font-size: 0.75rem; }
+            .method-chip span { color: var(--titanium); font: 0.62rem 'JetBrains Mono', monospace; }
+            .year-bars { display: grid; gap: 0.38rem; }
+            .year-row { display: grid; grid-template-columns: 48px minmax(100px, 1fr) 175px; align-items: center; gap: 0.65rem; font: 0.64rem 'JetBrains Mono', monospace; color: var(--titanium-light); }
+            .year-track { height: 8px; border-radius: 99px; background: rgba(255,255,255,0.05); overflow: hidden; }
+            .year-bar { height: 100%; min-width: 2px; border-radius: inherit; background: linear-gradient(90deg, var(--neon-core), var(--accent-violet)); }
+            .year-row.gap .year-bar { width: 0 !important; min-width: 0; }
+            .evidence-note { padding: 0.8rem; border-left: 3px solid var(--accent-gold); border-radius: 0 8px 8px 0; background: rgba(245,158,11,0.075); color: var(--titanium-light); font-size: 0.72rem; line-height: 1.6; }
+            .ledger-controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 0.75rem; align-items: center; }
+            .ledger-scroll { max-height: 560px; overflow: auto; border: 1px solid var(--glass-border); border-radius: 10px; }
+            .ledger-scroll .data-table { min-width: 1050px; }
+            .ledger-scroll .data-table tr { cursor: default; }
+            .project-link { color: #93c5fd; text-decoration: none; }
+            .project-link:hover { text-decoration: underline; }
+            .outcome-award { color: #6ee7b7; }
+            .outcome-participated { color: #fdba74; }
+            .provenance-tag { display: inline-block; padding: 0.18rem 0.4rem; border-radius: 5px; background: rgba(255,255,255,0.05); color: var(--titanium-light); font: 0.58rem 'JetBrains Mono', monospace; }
+            @media (max-width: 900px) {
+                .portfolio-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .evidence-grid { grid-template-columns: 1fr; }
+                .ledger-controls { grid-template-columns: 1fr; }
+                .year-row { grid-template-columns: 42px minmax(80px, 1fr) 128px; font-size: 0.56rem; }
+            }
+            @media (max-width: 640px) {
+                header { top: 0.5rem !important; }
+                header .container { flex-direction: column; align-items: stretch; gap: 0.75rem; padding: 0; }
+                header .container > .flex { width: 100%; min-width: 0; }
+                header nav { width: 100%; flex-wrap: wrap; }
+                header nav .btn { flex: 1 1 88px; min-width: 0; padding: 0.45rem 0.55rem; }
+                header h1 { font-size: 0.95rem !important; }
+                header p { font-size: 0.58rem !important; line-height: 1.45; }
+                .portfolio-metric { padding: 0.75rem; }
+                .portfolio-metric strong { font-size: 1.08rem; }
+                .source-link { max-width: 100%; white-space: normal; }
+                main .grid > * { min-width: 0; }
+                #procurement-pram, #procurement-cobid { max-width: 100%; overflow-x: hidden; }
+                .procurement-card { max-width: 100%; }
+            }
         }
         @layer utilities {
             .font-display { font-family: 'Orbitron', sans-serif; }
@@ -197,12 +247,12 @@
     <div id="loading-overlay" class="fixed inset-0 z-9999 flex flex-col items-center justify-center transition-opacity" style="background: var(--space-void);">
         <div class="loader mb-4"></div>
         <div class="font-display text-lg text-peach animate-pulse tracking-wider mb-2">
-            <span lang="en">INITIALIZING NEXUS INTEL v12.1...</span>
-            <span lang="th">กำลังเริ่มต้น NEXUS INTEL v12.1...</span>
+            <span lang="en">INITIALIZING NEXUS INTEL v12.2...</span>
+            <span lang="th">กำลังเริ่มต้น NEXUS INTEL v12.2...</span>
         </div>
         <div class="text-xs text-muted font-mono">
-            <span lang="en">Loading 47 entities, 85+ procurement records, 75+ connections</span>
-            <span lang="th">โหลด 47 หน่วยงาน, 85+ รายการจัดซื้อ, 75+ การเชื่อมต่อ</span>
+            <span lang="en">Loading 47 entities, 91 tracked procurement activities, 75+ connections</span>
+            <span lang="th">โหลด 47 หน่วยงาน, กิจกรรมจัดซื้อจัดจ้างที่ติดตาม 91 รายการ, 75+ การเชื่อมต่อ</span>
         </div>
     </div>
     <div class="relative z-10 min-h-screen">
@@ -211,10 +261,10 @@
                 <div class="flex items-center gap-4">
                     <div id="logo-slot" class="text-neon"></div>
                     <div>
-                        <h1 class="font-display text-lg font-bold tracking-wider text-silver">NEXUS // <span class="text-gold">INTEL</span> <span class="text-xs text-muted font-mono">v12.1</span></h1>
+                        <h1 class="font-display text-lg font-bold tracking-wider text-silver">NEXUS // <span class="text-gold">INTEL</span> <span class="text-xs text-muted font-mono">v12.2</span></h1>
                         <p class="text-xs text-muted tracking-wide">
-                            <span lang="en">EXTENDED NETWORK • 47 ENTITIES • FAMILY INTEL UPDATE • 75+ CONNECTIONS</span>
-                            <span lang="th">เครือข่ายขยาย • 47 หน่วยงาน • อัปเดตข้อมูลครอบครัว • 75+ การเชื่อมต่อ</span>
+                            <span lang="en">PGE PROCUREMENT EVIDENCE • 91 TRACKED ACTIVITIES • RECONCILED 20 JUL 2026</span>
+                            <span lang="th">หลักฐานจัดซื้อจัดจ้าง PGE • ติดตาม 91 รายการ • กระทบยอด 20 ก.ค. 2569</span>
                         </p>
                     </div>
                 </div>
@@ -226,26 +276,30 @@
             </div>
         </header>
         <main class="container py-6">
-            <!-- CRITICAL INTEL ALERT -->
-            <section class="glass-panel p-4 mb-6 reveal" style="border-color: rgba(236, 72, 153, 0.5); background: linear-gradient(135deg, rgba(236, 72, 153, 0.08), rgba(139, 92, 246, 0.05));">
+            <!-- SOURCE-BOUNDED IDENTITY UPDATE -->
+            <section class="glass-panel p-4 mb-6 reveal" style="border-color: rgba(236, 72, 153, 0.38); background: linear-gradient(135deg, rgba(236, 72, 153, 0.07), rgba(139, 92, 246, 0.04));">
                 <div class="flex items-start gap-3">
-                    <div class="text-2xl">🔍</div>
-                    <div>
-                        <h3 class="font-display text-base font-bold tracking-wide text-pink mb-2">
-                            <span lang="en">⚡ CRITICAL INTEL UPDATE: FAMILY RELATIONSHIP CONFIRMED</span>
-                            <span lang="th">⚡ อัปเดตข่าวกรองสำคัญ: ยืนยันความสัมพันธ์ครอบครัว</span>
+                    <div class="text-2xl">🔎</div>
+                    <div class="w-full">
+                        <h3 class="font-display text-base font-bold tracking-wide text-pink mb-3">
+                            <span lang="en">IDENTITY &amp; ROSTER EVIDENCE UPDATE</span>
+                            <span lang="th">อัปเดตหลักฐานบุคคลและบัญชีรายชื่อ</span>
                         </h3>
-                        <p class="text-sm text-silver mb-2">
-                            <span lang="en"><strong class="text-pink">สุวรรณี อยู่นิรันดร</strong> (nickname: เกียง) is confirmed as the <strong class="text-danger">WIFE</strong> of <strong class="text-gold">ปฏิกร พิทักษ์ฉนวน</strong> (nickname: หนุ่ย). They have <strong class="text-neon">3 sons</strong>: ปลื้ม, เปรม, and ปั้น.</span>
-                            <span lang="th"><strong class="text-pink">สุวรรณี อยู่นิรันดร</strong> (ชื่อเล่น: เกียง) ได้รับการยืนยันว่าเป็น <strong class="text-danger">ภรรยา</strong> ของ <strong class="text-gold">ปฏิกร พิทักษ์ฉนวน</strong> (ชื่อเล่น: หนุ่ย) มี <strong class="text-neon">ลูกชาย 3 คน</strong>: ปลื้ม, เปรม, และ ปั้น</span>
-                        </p>
-                        <div class="flex flex-wrap gap-2">
-                            <span class="intel-badge">📧 suwanneeu@prem-ge.com</span>
-                            <span class="intel-badge">📱 085-111-8584</span>
-                            <span class="intel-badge">🎂 30 Nov 1971</span>
-                            <span class="intel-badge">🎓 บงส. รุ่น 12</span>
-                            <span class="intel-badge">📚 นงส. รุ่น 13 (กำลังเรียน)</span>
+                        <div class="evidence-grid">
+                            <div class="evidence-item">
+                                <div class="text-xs text-muted font-display uppercase tracking-wider mb-2"><span lang="en">Patikorn Pitakchanuan</span><span lang="th">นายปฏิกร พิทักษ์ฉนวน</span></div>
+                                <p class="text-sm text-silver"><span lang="en">Birth year: <strong class="text-gold">2516 B.E. (1973 A.D.)</strong>. Only the requested year is reproduced here; the underlying identity document is not embedded.</span><span lang="th">ปีเกิด: <strong class="text-gold">พ.ศ. 2516 (ค.ศ. 1973)</strong> แสดงเฉพาะปีตามที่จำเป็น โดยไม่ฝังเอกสารประจำตัวต้นทางไว้ในหน้าเว็บ</span></p>
+                            </div>
+                            <div class="evidence-item">
+                                <div class="text-xs text-muted font-display uppercase tracking-wider mb-2"><span lang="en">Budget Bureau roster — name match</span><span lang="th">บัญชีรายชื่อสำนักงบประมาณ — ชื่อตรงกัน</span></div>
+                                <p class="text-sm text-silver mb-2"><span lang="en"><strong class="text-pink">นางสาวสุวรรณี อยู่นิรันดร</strong>, identified elsewhere in this dossier as Patikorn's wife, appears at <strong class="text-gold">No. 146</strong> among private-sector participants selected for the Budget Bureau's Senior Budget Executive Program (นงส.) Cohort 13, scheduled February–July 2026.</span><span lang="th"><strong class="text-pink">นางสาวสุวรรณี อยู่นิรันดร</strong> ซึ่งแฟ้มนี้ระบุจากหลักฐานอื่นว่าเป็นภรรยาของปฏิกร ปรากฏเป็น <strong class="text-gold">ลำดับที่ 146</strong> ในรายชื่อผู้บริหารภาคเอกชนที่ได้รับการคัดเลือกให้เข้ารับการอบรมหลักสูตรนักบริหารการงบประมาณระดับสูง (นงส.) รุ่นที่ 13 ระหว่างเดือนกุมภาพันธ์–กรกฎาคม 2569</span></p>
+                                <div class="source-strip">
+                                    <a class="source-link" href="budget_bureau_13th.pdf#page=5" target="_blank" rel="noopener">LOCAL PDF · p.5 · row 146 ↗</a>
+                                    <a class="source-link official" href="https://www.bb.go.th/anticrt/topic-detail.php?id=18426&amp;mid=425&amp;catID=0" target="_blank" rel="noopener">BUDGET BUREAU PAGE ↗</a>
+                                </div>
+                            </div>
                         </div>
+                        <p class="evidence-note mt-3"><span lang="en">Evidence boundary: the Budget Bureau roster establishes a matching name and selection status only. It does not state a spouse relationship, employer, position, attendance, or course completion; those points must not be inferred from this PDF alone.</span><span lang="th">ขอบเขตหลักฐาน: บัญชีรายชื่อของสำนักงบประมาณยืนยันได้เพียงชื่อที่ตรงกันและสถานะ “ได้รับการคัดเลือก” เท่านั้น เอกสารไม่ระบุความสัมพันธ์คู่สมรส นายจ้าง ตำแหน่ง การเข้าอบรมจริง หรือการสำเร็จหลักสูตร จึงไม่ควรอนุมานประเด็นเหล่านี้จาก PDF ฉบับนี้เพียงฉบับเดียว</span></p>
                     </div>
                 </div>
             </section>
@@ -259,13 +313,132 @@
                             <span class="badge badge-family"><span lang="en">FAMILY NETWORK</span><span lang="th">เครือข่ายครอบครัว</span></span>
                         </div>
                         <h2 class="font-display text-2xl font-bold tracking-wide text-silver mb-1">นายปฏิกร พิทักษ์ฉนวน <span class="text-pink text-lg">(หนุ่ย)</span></h2>
-                        <p class="text-muted text-sm"><span lang="en">Extended Family & Business Network Investigation</span><span lang="th">การสืบสวนเครือข่ายครอบครัวและธุรกิจขยาย</span></p>
+                        <p class="text-muted text-sm"><span lang="en">Extended Family, Business &amp; Government Procurement Evidence</span><span lang="th">หลักฐานเครือข่ายครอบครัว ธุรกิจ และการจัดซื้อจัดจ้างภาครัฐ</span></p>
                     </div>
                     <div class="flex gap-2 flex-wrap">
                         <button class="btn btn-ghost" onclick="APP.resetNetwork()"><span id="icon-reset"></span> <span lang="en">RESET</span><span lang="th">รีเซ็ต</span></button>
-                        <button class="btn btn-warning" onclick="APP.highlightCollusion()"><span id="icon-alert"></span> <span lang="en">COLLUSION</span><span lang="th">สมคบคิด</span></button>
+                        <button class="btn btn-warning" onclick="APP.highlightCollusion()"><span id="icon-alert"></span> <span lang="en">RISK SIGNALS</span><span lang="th">สัญญาณความเสี่ยง</span></button>
                         <button class="btn btn-primary" onclick="APP.highlightBridges()"><span id="icon-bridge"></span> <span lang="en">KEY LINKS</span><span lang="th">จุดเชื่อมสำคัญ</span></button>
                     </div>
+                </div>
+            </section>
+            <!-- RECONCILED PROCUREMENT EVIDENCE -->
+            <section id="procurement-evidence" class="glass-panel p-4 mb-6 reveal" style="border-color: rgba(59,130,246,0.34);">
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap mb-2">
+                            <span class="badge badge-government">ACTAI BASELINE</span>
+                            <span class="badge badge-low"><span lang="en">OFFICIAL AWARD UPDATE</span><span lang="th">อัปเดตผลทางการ</span></span>
+                            <span class="provenance-tag">RECONCILED 20 JUL 2026</span>
+                        </div>
+                        <h3 class="font-display text-xl font-bold tracking-wide text-silver mb-2"><span lang="en">PGE GOVERNMENT PROCUREMENT FOOTPRINT</span><span lang="th">ภาพรวมการจัดซื้อจัดจ้างภาครัฐของ PGE</span></h3>
+                        <p class="text-sm text-muted mb-3"><span lang="en">A contract-level reconstruction of every activity currently linked to PGE by ACTAI, plus the later official award and contract for project 67129514936 that ACTAI has not yet incorporated.</span><span lang="th">กระทบยอดระดับสัญญาของทุกรายการที่ ACTAI เชื่อมโยงกับ PGE ในปัจจุบัน และเพิ่มผลผู้ชนะกับสัญญาทางการของโครงการ 67129514936 ซึ่ง ACTAI ยังไม่ได้ปรับปรุง</span></p>
+                        <div class="source-strip" id="source-shortcuts">
+                            <a id="actai-contractor-shortcut" class="source-link" href="https://procurement.actai.co/contractor/0105549113642" target="_blank" rel="noopener">★ ACTAI · PGE CONTRACTOR PROFILE ↗</a>
+                            <a class="source-link" href="https://procurement.actai.co/project/67129514936" target="_blank" rel="noopener">ACTAI · PROJECT 67129514936 ↗</a>
+                            <a class="source-link official" href="https://process5.gprocurement.go.th/egp-template-service/dwnt/view-pdf-file?templateId=fcbfd179-ab96-4883-94ee-f90e47acb5f1" target="_blank" rel="noopener">e-GP · WINNER NOTICE PDF ↗</a>
+                            <a class="source-link official" href="https://govspendingbeta.data.go.th/budget?project_id=67129514936&amp;year=2568" target="_blank" rel="noopener">DGA · CONTRACT RECORD ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="portfolio-metrics">
+                        <div class="portfolio-metric"><strong>91</strong><span lang="en">tracked activities · cross-source minimum</span><span lang="th">กิจกรรมที่ติดตาม · จำนวนขั้นต่ำจากหลายแหล่ง</span></div>
+                        <div class="portfolio-metric"><strong>75</strong><span lang="en">PGE awards verified at contract/winner level</span><span lang="th">รายการที่ยืนยัน PGE เป็นผู้ชนะระดับสัญญา/ประกาศผล</span></div>
+                        <div class="portfolio-metric"><strong>฿2.078B</strong><span lang="en">minimum verified PGE award value</span><span lang="th">มูลค่าขั้นต่ำของงานที่ยืนยันว่า PGE ได้รับ</span></div>
+                        <div class="portfolio-metric"><strong>96.0%</strong><span lang="en">of PGE awards are from the Excise Department (72/75)</span><span lang="th">ของจำนวนงาน PGE มาจากกรมสรรพสามิต (72/75)</span></div>
+                    </div>
+
+                    <article class="target-project">
+                        <div class="flex justify-between items-start gap-3 flex-wrap mb-3">
+                            <div>
+                                <div class="text-xs text-emerald font-display tracking-wider uppercase mb-1"><span lang="en">Highlighted project · official outcome supersedes stale ACTAI status</span><span lang="th">โครงการที่เน้น · ผลทางการใหม่กว่าและแทนที่สถานะ ACTAI ที่ล้าสมัย</span></div>
+                                <h4 class="text-base text-silver font-semibold"><a class="project-link" href="https://procurement.actai.co/project/67129514936" target="_blank" rel="noopener">67129514936</a> · <span lang="en">Mobile X-ray inspection system under Excise control</span><span lang="th">ระบบตรวจสอบด้วยเครื่องเอกซเรย์แบบเคลื่อนที่ภายใต้การควบคุมของกรมสรรพสามิต</span></h4>
+                            </div>
+                            <span class="badge badge-low"><span lang="en">PGE WON</span><span lang="th">PGE ชนะ</span></span>
+                        </div>
+                        <div class="grid md:grid-cols-4 gap-3 mb-3">
+                            <div><div class="text-xs text-muted mb-1"><span lang="en">Reference price</span><span lang="th">ราคากลาง</span></div><div class="text-lg font-mono text-silver">฿80.920M</div></div>
+                            <div><div class="text-xs text-muted mb-1"><span lang="en">Winning / contract value</span><span lang="th">ราคาชนะ/มูลค่าสัญญา</span></div><div class="text-lg font-mono text-emerald">฿80.570M</div></div>
+                            <div><div class="text-xs text-muted mb-1"><span lang="en">Difference</span><span lang="th">ส่วนต่าง</span></div><div class="text-lg font-mono text-gold">−฿0.350M · 0.433%</div></div>
+                            <div><div class="text-xs text-muted mb-1"><span lang="en">Contract</span><span lang="th">สัญญา</span></div><div class="text-sm font-mono text-silver">116/2568</div><div class="text-xs text-muted">22 Sep 2025</div></div>
+                        </div>
+                        <p class="text-sm text-silver mb-2"><span lang="en">Official e-GP named PGE the lowest bidder and winner on <strong>19 August 2025</strong>. DGA's contract record shows signature on <strong>22 September 2025</strong>, a scheduled end date of <strong>20 May 2026</strong>, and still displays “in progress.” Because that end date had passed by this reconciliation date, delivery/acceptance status requires a fresh official check.</span><span lang="th">ประกาศ e-GP ทางการระบุ PGE เป็นผู้เสนอราคาต่ำสุดและผู้ชนะเมื่อ <strong>19 สิงหาคม 2568</strong> ข้อมูลสัญญาของ DGA ระบุลงนาม <strong>22 กันยายน 2568</strong> กำหนดสิ้นสุด <strong>20 พฤษภาคม 2569</strong> และยังแสดงสถานะ “ระหว่างดำเนินการ” เนื่องจากวันสิ้นสุดได้ผ่านไปแล้ว ณ วันที่กระทบยอด จึงควรตรวจสอบสถานะส่งมอบ/ตรวจรับจากแหล่งทางการอีกครั้ง</span></p>
+                        <p class="text-xs text-muted"><span lang="en">Source freshness: ACTAI's direct record was last updated 2 June 2025—before award—and still has no winner or contract. The official e-GP/DGA records are therefore used for the outcome.</span><span lang="th">ความใหม่ของแหล่งข้อมูล: ระเบียนตรงของ ACTAI ปรับปรุงล่าสุด 2 มิถุนายน 2568 ซึ่งก่อนประกาศผล และยังไม่มีผู้ชนะหรือสัญญา จึงใช้ e-GP/DGA ทางการสำหรับผลลัพธ์</span></p>
+                    </article>
+
+                    <div class="evidence-grid">
+                        <div class="evidence-item">
+                            <div class="text-xs text-neon font-display uppercase tracking-wider mb-2"><span lang="en">Confirmed PGE awards by method</span><span lang="th">งาน PGE ที่ยืนยันแล้ว แยกตามวิธี</span></div>
+                            <div class="flex flex-wrap gap-2">
+                                <span class="method-chip"><strong><span lang="en">Selection</span><span lang="th">คัดเลือก</span></strong><span>38 · ฿927.262M</span></span>
+                                <span class="method-chip"><strong><span lang="en">Special</span><span lang="th">พิเศษ</span></strong><span>21 · ฿404.535M</span></span>
+                                <span class="method-chip"><strong>e-bidding</strong><span>10 · ฿605.959M</span></span>
+                                <span class="method-chip"><strong><span lang="en">Specific</span><span lang="th">เฉพาะเจาะจง</span></strong><span>6 · ฿140.366M</span></span>
+                            </div>
+                        </div>
+                        <div class="evidence-item">
+                            <div class="text-xs text-neon font-display uppercase tracking-wider mb-2"><span lang="en">Portfolio shape · analytical reading</span><span lang="th">ลักษณะพอร์ต · ข้อวิเคราะห์</span></div>
+                            <p class="text-sm text-silver mb-2"><span lang="en"><strong>72/75 awards</strong> and <strong>฿2.060B (99.1%)</strong> of verified value come from the Excise Department. Within ACTAI's 90-row baseline, 53 titles explicitly concern oil/petroleum; PGE won 50 worth ฿1.420B. Twenty-four titles mention maintenance, with 20 PGE wins worth ฿358.016M—consistent with an installed-system-to-recurring-maintenance lifecycle.</span><span lang="th"><strong>72/75 งาน</strong> และ <strong>2.060 พันล้านบาท (99.1%)</strong> ของมูลค่าที่ตรวจสอบแล้วมาจากกรมสรรพสามิต ในฐานข้อมูล ACTAI 90 รายการ ชื่อโครงการ 53 รายการกล่าวถึงน้ำมัน/ปิโตรเลียมโดยตรง และ PGE ชนะ 50 รายการ มูลค่า 1.420 พันล้านบาท ส่วน 24 รายการกล่าวถึงการบำรุงรักษา โดย PGE ชนะ 20 รายการ มูลค่า 358.016 ล้านบาท สอดคล้องกับวงจรจากการติดตั้งระบบไปสู่การบำรุงรักษาต่อเนื่อง</span></p>
+                            <p class="text-xs text-gold"><span lang="en">Interpretation, not a finding: concentration and price proximity are leads for scope, competition, amendment, delivery, and acceptance review; they do not establish misconduct.</span><span lang="th">เป็นข้อวิเคราะห์ ไม่ใช่ข้อยุติ: การกระจุกตัวและราคาใกล้ราคากลางเป็นประเด็นนำสำหรับตรวจขอบเขต การแข่งขัน การแก้ไขสัญญา การส่งมอบ และการตรวจรับ แต่ไม่ใช่หลักฐานยืนยันการกระทำผิด</span></p>
+                        </div>
+                    </div>
+
+                    <div class="evidence-item">
+                        <div class="flex justify-between items-center gap-3 flex-wrap mb-3">
+                            <div class="text-xs text-neon font-display uppercase tracking-wider"><span lang="en">Confirmed PGE awards by fiscal year</span><span lang="th">งาน PGE ที่ยืนยันแล้ว แยกตามปีงบประมาณ</span></div>
+                            <span class="provenance-tag"><span lang="en">count · award value</span><span lang="th">จำนวน · มูลค่างาน</span></span>
+                        </div>
+                        <div class="year-bars">
+                            <div class="year-row"><span>2558</span><div class="year-track"><div class="year-bar" style="width:59.6%"></div></div><span>13 · ฿227.014M</span></div>
+                            <div class="year-row"><span>2559</span><div class="year-track"><div class="year-bar" style="width:46.6%"></div></div><span>8 · ฿177.521M</span></div>
+                            <div class="year-row gap"><span>2560</span><div class="year-track"><div class="year-bar"></div></div><span><span lang="en">no ACTAI row</span><span lang="th">ไม่พบระเบียน ACTAI</span></span></div>
+                            <div class="year-row"><span>2561</span><div class="year-track"><div class="year-bar" style="width:31.5%"></div></div><span>5 · ฿119.987M</span></div>
+                            <div class="year-row"><span>2562</span><div class="year-track"><div class="year-bar" style="width:83.5%"></div></div><span>12 · ฿318.464M</span></div>
+                            <div class="year-row"><span>2563</span><div class="year-track"><div class="year-bar" style="width:87.9%"></div></div><span>11 · ฿335.092M</span></div>
+                            <div class="year-row"><span>2564</span><div class="year-track"><div class="year-bar" style="width:100%"></div></div><span>7 · ฿381.210M</span></div>
+                            <div class="year-row"><span>2565</span><div class="year-track"><div class="year-bar" style="width:35.7%"></div></div><span>7 · ฿136.134M</span></div>
+                            <div class="year-row"><span>2566</span><div class="year-track"><div class="year-bar" style="width:48.8%"></div></div><span>6 · ฿186.064M</span></div>
+                            <div class="year-row"><span>2567</span><div class="year-track"><div class="year-bar" style="width:25.6%"></div></div><span>4 · ฿97.566M</span></div>
+                            <div class="year-row"><span>2568</span><div class="year-track"><div class="year-bar" style="width:26.0%"></div></div><span>2 · ฿99.070M</span></div>
+                        </div>
+                        <p class="text-xs text-muted mt-3"><span lang="en">FY2568 includes the official X-ray award. The missing FY2560 row means “not present in the current ACTAI-linked set,” not proof that PGE had no government procurement activity that year.</span><span lang="th">ปี 2568 รวมงานเอกซเรย์จากผลทางการ ส่วนปี 2560 ที่ไม่มีระเบียนหมายถึง “ไม่ปรากฏในชุดที่ ACTAI เชื่อมโยงปัจจุบัน” ไม่ใช่หลักฐานว่า PGE ไม่มีกิจกรรมจัดซื้อจัดจ้างภาครัฐในปีนั้น</span></p>
+                    </div>
+
+                    <div class="evidence-note">
+                        <span lang="en"><strong>Reconciliation method:</strong> ACTAI's contractor search currently exposes 90 linked activities: 74 contain PGE's tax ID in the awarded contract and 16 are bid-only/non-award participations. Award totals use the contract's contractor ID—not ACTAI's unreliable project-company status. The highlighted X-ray award raises the cross-source minimum to 91 activities, 75 awards and ฿2,078,121,600. ACTAI's company snapshot says “last updated 21 Jul 2025,” its annual aggregate returns only 45 projects, and its 44 risk-flagged rows are automated screening signals—not audit, court, or misconduct findings.</span>
+                        <span lang="th"><strong>วิธีกระทบยอด:</strong> ผลค้นหาผู้รับจ้างของ ACTAI แสดงกิจกรรมที่เชื่อมโยง 90 รายการ โดย 74 รายการมีเลขประจำตัวผู้เสียภาษีของ PGE ในสัญญาที่ได้รับ และ 16 รายการเป็นเพียงผู้เข้าร่วม/ไม่ได้รับสัญญา การรวมมูลค่าอ้างอิงเลขผู้รับจ้างในสัญญา ไม่ใช้สถานะบริษัทในระดับโครงการของ ACTAI ที่คลาดเคลื่อน เมื่อเพิ่มงานเอกซเรย์จึงเป็นขั้นต่ำจากหลายแหล่ง 91 กิจกรรม 75 งาน และ 2,078,121,600 บาท หน้าโปรไฟล์บริษัทของ ACTAI ระบุปรับปรุงล่าสุด 21 ก.ค. 2568 ขณะที่ยอดรวมรายปีคืนเพียง 45 โครงการ และธงความเสี่ยง 44 รายการเป็นเพียงสัญญาณคัดกรองอัตโนมัติ มิใช่ผลตรวจสอบ คำพิพากษา หรือข้อยุติว่ามีการกระทำผิด</span>
+                    </div>
+
+                    <details open>
+                        <summary class="font-display text-sm text-silver tracking-wider" style="cursor:pointer;"><span lang="en">FULL RECONCILED LEDGER · 91 ACTIVITIES</span><span lang="th">บัญชีกระทบยอดฉบับเต็ม · 91 กิจกรรม</span></summary>
+                        <div class="ledger-controls mt-4 mb-3">
+                            <div class="search-wrapper">
+                                <span class="search-icon">⌕</span>
+                                <input type="search" class="search-input" id="ledger-search" placeholder="Search project, agency, ID, winner…" oninput="APP.setLedgerQuery(this.value)">
+                            </div>
+                            <div class="flex flex-wrap gap-2">
+                                <button class="filter-chip active" id="ledger-filter-all" onclick="APP.setLedgerFilter('all')"><span lang="en">All 91</span><span lang="th">ทั้งหมด 91</span></button>
+                                <button class="filter-chip" id="ledger-filter-award" onclick="APP.setLedgerFilter('award')"><span lang="en">PGE awards 75</span><span lang="th">PGE ได้งาน 75</span></button>
+                                <button class="filter-chip" id="ledger-filter-participated" onclick="APP.setLedgerFilter('participated')"><span lang="en">Bid-only 16</span><span lang="th">ร่วมเสนอ/ไม่ได้งาน 16</span></button>
+                            </div>
+                        </div>
+                        <div class="text-xs text-muted mb-2"><span id="ledger-visible-count">91</span> <span lang="en">rows shown · click project ID to open ACTAI</span><span lang="th">แถวที่แสดง · คลิกเลขโครงการเพื่อเปิด ACTAI</span></div>
+                        <div class="ledger-scroll">
+                            <table class="data-table" aria-label="Reconciled PGE procurement ledger">
+                                <thead><tr>
+                                    <th><span lang="en">Project</span><span lang="th">โครงการ</span></th>
+                                    <th><span lang="en">Year</span><span lang="th">ปี</span></th>
+                                    <th><span lang="en">Agency</span><span lang="th">หน่วยงาน</span></th>
+                                    <th><span lang="en">PGE role</span><span lang="th">บทบาท PGE</span></th>
+                                    <th><span lang="en">Method</span><span lang="th">วิธี</span></th>
+                                    <th><span lang="en">PGE award</span><span lang="th">มูลค่างาน PGE</span></th>
+                                    <th><span lang="en">Winner</span><span lang="th">ผู้ชนะ</span></th>
+                                    <th><span lang="en">Signals</span><span lang="th">ธงคัดกรอง</span></th>
+                                </tr></thead>
+                                <tbody id="actai-ledger-body"></tbody>
+                            </table>
+                        </div>
+                    </details>
                 </div>
             </section>
             <section class="grid grid-cols-2 md:grid-cols-6 gap-3 mb-6 reveal">
@@ -280,24 +453,24 @@
                     <div class="text-xs text-muted"><span lang="en">Members</span><span lang="th">สมาชิก</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="critical">
-                    <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Collusion</span><span lang="th">สมคบคิด</span></div>
+                    <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Risk Links</span><span lang="th">ลิงก์ความเสี่ยง</span></div>
                     <div class="text-2xl font-display font-bold text-danger" id="stat-collusion">15</div>
                     <div class="text-xs text-muted"><span lang="en">Risk Links</span><span lang="th">ลิงก์เสี่ยง</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="medium">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Gov Clients</span><span lang="th">ลูกค้ารัฐ</span></div>
-                    <div class="text-2xl font-display font-bold text-emerald" id="stat-gov">5</div>
-                    <div class="text-xs text-muted"><span lang="en">Agencies</span><span lang="th">หน่วยงาน</span></div>
+                    <div class="text-2xl font-display font-bold text-emerald" id="stat-gov">8</div>
+                    <div class="text-xs text-muted"><span lang="en">ACTAI-linked agencies</span><span lang="th">หน่วยงานที่ ACTAI เชื่อมโยง</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="high">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Procurements</span><span lang="th">จัดซื้อจัดจ้าง</span></div>
-                    <div class="text-2xl font-display font-bold text-warning" id="stat-procurements">85+</div>
-                    <div class="text-xs text-muted"><span lang="en">Records</span><span lang="th">รายการ</span></div>
+                    <div class="text-2xl font-display font-bold text-warning" id="stat-procurements">91</div>
+                    <div class="text-xs text-muted"><span lang="en">Cross-source minimum</span><span lang="th">ขั้นต่ำจากหลายแหล่ง</span></div>
                 </div>
                 <div class="glass-panel stat-card p-3" data-risk="critical">
                     <div class="text-xs text-muted tracking-wider font-display uppercase mb-1"><span lang="en">Contracts</span><span lang="th">สัญญา</span></div>
-                    <div class="text-xl font-display font-bold text-danger" id="stat-contracts">1.87B+</div>
-                    <div class="text-xs text-muted"><span lang="en">THB Total</span><span lang="th">บาทรวม</span></div>
+                    <div class="text-xl font-display font-bold text-danger" id="stat-contracts">2.078B</div>
+                    <div class="text-xs text-muted"><span lang="en">THB · 75 PGE awards</span><span lang="th">บาท · PGE ได้งาน 75 รายการ</span></div>
                 </div>
             </section>
 
@@ -314,7 +487,7 @@
                             <div class="family-avatar">หนุ่ย</div>
                             <div class="flex-1">
                                 <div class="text-sm text-silver font-semibold">นายปฏิกร พิทักษ์ฉนวน</div>
-                                <div class="text-xs text-muted">ชื่อเล่น: หนุ่ย • 97.8% เปรม กรุ๊ป</div>
+                                <div class="text-xs text-muted">ชื่อเล่น: หนุ่ย • ปีเกิด พ.ศ. 2516 (ค.ศ. 1973) • 97.8% เปรม กรุ๊ป</div>
                                 <div class="mt-1">
                                     <a href="https://www.facebook.com/nui.pat.9" target="_blank" class="social-link">📘 Facebook</a>
                                 </div>
@@ -330,7 +503,7 @@
                                 <div class="mt-1">
                                     <a href="https://www.facebook.com/suwannee.pituk/" target="_blank" class="social-link">📘 Facebook</a>
                                     <span class="intel-badge">บงส.12</span>
-                                    <span class="intel-badge">นงส.13</span>
+                                    <span class="intel-badge">นงส.13 · คัดเลือกลำดับ 146</span>
                                 </div>
                             </div>
                             <span class="badge badge-high">High</span>
@@ -407,7 +580,7 @@
                         <div class="legend-item"><span class="legend-dot" style="background: var(--risk-critical); box-shadow: 0 0 6px var(--risk-critical);"></span> <span lang="en">Critical</span><span lang="th">วิกฤต</span></div>
                         <div class="legend-item"><span class="legend-line" style="background: var(--family-pink);"></span> <span lang="en">Marriage</span><span lang="th">สมรส</span></div>
                         <div class="legend-item"><span class="legend-line" style="background: rgba(59,130,246,0.6);"></span> <span lang="en">Direct</span><span lang="th">ตรง</span></div>
-                        <div class="legend-item"><span class="legend-line" style="background: rgba(239,68,68,0.6);"></span> <span lang="en">Collusion</span><span lang="th">สมคบคิด</span></div>
+                        <div class="legend-item"><span class="legend-line" style="background: rgba(239,68,68,0.6);"></span> <span lang="en">Analyst-coded risk</span><span lang="th">ความเสี่ยงที่ผู้วิเคราะห์กำหนด</span></div>
                     </div>
                     <div class="network-controls">
                         <button class="btn btn-ghost" onclick="APP.zoomIn()" title="Zoom In"><span id="icon-zoom-in"></span></button>
@@ -434,13 +607,13 @@
             <section class="glass-panel p-4 mb-6 reveal">
                 <div class="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
                     <div>
-                        <h3 class="font-display text-base font-bold tracking-wide text-silver mb-1"><span lang="en">PROCUREMENT TIMELINE (85+ Records)</span><span lang="th">ไทม์ไลน์จัดซื้อจัดจ้าง (85+ รายการ)</span></h3>
-                        <p class="text-xs text-muted"><span lang="en">Key contracts involving Pram Group & Systronics</span><span lang="th">สัญญาสำคัญที่เกี่ยวข้องกับ Pram Group และ Systronics</span></p>
+                        <h3 class="font-display text-base font-bold tracking-wide text-silver mb-1"><span lang="en">SELECTED LEGACY PROCUREMENT TIMELINE</span><span lang="th">ไทม์ไลน์จัดซื้อจัดจ้างเดิม (เฉพาะรายการสำคัญ)</span></h3>
+                        <p class="text-xs text-muted"><span lang="en">Legacy narrative examples; use the reconciled 91-row ledger above for portfolio totals</span><span lang="th">ตัวอย่างประกอบจากฉบับเดิม; โปรดใช้บัญชีกระทบยอด 91 รายการด้านบนสำหรับยอดรวมพอร์ต</span></p>
                     </div>
                 </div>
                 <div class="grid md:grid-cols-2 gap-4">
                     <div>
-                        <div class="text-xs text-muted uppercase tracking-wider font-display mb-3"><span lang="en">Major Contracts (Pram Group)</span><span lang="th">สัญญาหลัก (Pram Group)</span></div>
+                        <div class="text-xs text-muted uppercase tracking-wider font-display mb-3"><span lang="en">Major Contracts (PGE)</span><span lang="th">สัญญาหลัก (PGE)</span></div>
                         <div id="procurement-pram" style="max-height: 300px; overflow-y: auto;"></div>
                     </div>
                     <div>
@@ -453,7 +626,7 @@
                 <div class="flex flex-col md:flex-row justify-between items-start gap-3 mb-4">
                     <div>
                         <h3 class="font-display text-base font-bold tracking-wide text-silver mb-1"><span lang="en">CLUSTER ANALYSIS</span><span lang="th">การวิเคราะห์กลุ่ม</span></h3>
-                        <p class="text-xs text-muted"><span lang="en">Collusion patterns and procurement rings</span><span lang="th">รูปแบบการสมคบคิดและวงจรจัดซื้อจัดจ้าง</span></p>
+                        <p class="text-xs text-muted"><span lang="en">Recurring co-bidding and automated screening signals; not adjudicated findings</span><span lang="th">รูปแบบร่วมเสนอราคาซ้ำและสัญญาณคัดกรองอัตโนมัติ มิใช่ข้อยุติทางคดี</span></p>
                     </div>
                 </div>
                 <div class="tabs">
@@ -485,36 +658,37 @@
                 </div>
             </section>
             <section class="glass-panel p-4 mb-6 reveal" style="border-color: rgba(239, 68, 68, 0.4);">
-                <h3 class="font-display text-base font-bold tracking-wide text-danger mb-4"><span lang="en">⚠ CRITICAL FINDINGS</span><span lang="th">⚠ ข้อค้นพบสำคัญ</span></h3>
+                <h3 class="font-display text-base font-bold tracking-wide text-danger mb-2"><span lang="en">⚠ ANALYTICAL LEADS &amp; LEGACY CLAIMS</span><span lang="th">⚠ ประเด็นนำวิเคราะห์และข้ออ้างจากฉบับเดิม</span></h3>
+                <p class="text-xs text-muted mb-4"><span lang="en">These items prioritize documentary follow-up. ACTAI flags and network associations are not, by themselves, proof of coordination, corruption, or wrongdoing.</span><span lang="th">รายการเหล่านี้ใช้จัดลำดับการตรวจเอกสารต่อไป ธง ACTAI และความเชื่อมโยงเครือข่ายโดยตัวมันเองไม่ใช่หลักฐานยืนยันการฮั้ว การทุจริต หรือการกระทำผิด</span></p>
                 <div class="grid md:grid-cols-2 gap-4">
                     <div class="risk-box risk-box-family">
                         <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#0: FAMILY BUSINESS STRUCTURE</span><span lang="th">#0: โครงสร้างธุรกิจครอบครัว</span></div>
                         <p class="text-sm text-silver"><span lang="en"><strong class="text-pink">สุวรรณี</strong> is <strong class="text-danger">WIFE</strong> of ปฏิกร. She controls <strong class="text-violet">98% of Phoenix Corp</strong> and was partner in dissolved <strong class="text-warning">Prem Engineering</strong> with จีรพงษ์ (K Technology). Company named after son <strong class="text-gold">"เปรม"</strong>.</span><span lang="th"><strong class="text-pink">สุวรรณี</strong> เป็น <strong class="text-danger">ภรรยา</strong> ของปฏิกร ควบคุม <strong class="text-violet">98% ฟีนิกซ์</strong> และเป็นหุ้นส่วนใน <strong class="text-warning">เปรม เอ็นจิเนียริ่ง</strong> ที่เลิกกิจการกับจีรพงษ์ (K Technology) บริษัทตั้งชื่อตามลูก <strong class="text-gold">"เปรม"</strong></span></p>
                     </div>
                     <div class="risk-box risk-box-critical">
-                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#1: Pram-Systronics Reciprocal Bidding</span><span lang="th">#1: การประมูลสลับกัน Pram-Systronics</span></div>
-                        <p class="text-sm text-silver"><span lang="en">Price clustering in <strong class="text-danger">28+ projects</strong>. Alternating winners pattern. Connected via <strong class="text-gold">Kriangsak Imsri</strong> through Krungthep Brew House.</span><span lang="th">ราคาเกาะกลุ่มใน <strong class="text-danger">28+ โครงการ</strong> รูปแบบผู้ชนะสลับกัน เชื่อมต่อผ่าน <strong class="text-gold">เกรียงศักดิ์ อิ่มศรี</strong> ทางกรุงเทพ บริว เฮาส์</span></p>
+                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#1: Repeated PGE–Systronics Co-bidding</span><span lang="th">#1: PGE–Systronics ร่วมเสนอราคาซ้ำ</span></div>
+                        <p class="text-sm text-silver"><span lang="en">Systronics appears alongside PGE in <strong class="text-danger">28 bidder-detail records</strong>; many carry ACTAI price-clustering signals. Treat this as a tender-file review lead, not evidence of coordination. The legacy network also records a claimed connection via <strong class="text-gold">Kriangsak Imsri</strong> and Krungthep Brew House.</span><span lang="th">Systronics ปรากฏร่วมกับ PGE ใน <strong class="text-danger">ระเบียนรายละเอียดผู้เสนอราคา 28 รายการ</strong> และหลายรายการมีธงราคาเกาะกลุ่มของ ACTAI ควรใช้เป็นประเด็นนำตรวจแฟ้มประกวดราคา ไม่ใช่หลักฐานยืนยันการประสานราคา ส่วนเครือข่ายเดิมบันทึกความเชื่อมโยงที่อ้างผ่าน <strong class="text-gold">เกรียงศักดิ์ อิ่มศรี</strong> และกรุงเทพ บริว เฮาส์</span></p>
                     </div>
                     <div class="risk-box risk-box-critical">
                         <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#2: K Technology - 100% Loss Pattern</span><span lang="th">#2: K Technology - รูปแบบแพ้ 100%</span></div>
-                        <p class="text-sm text-silver"><span lang="en"><strong class="text-warning">K Technology</strong> lost <strong class="text-danger">100% of 9 bids</strong> against Pram. Connected via <strong class="text-pink">Wife สุวรรณี</strong> → Jeerapong chain through dissolved partnership.</span><span lang="th"><strong class="text-warning">K Technology</strong> แพ้ <strong class="text-danger">100% จาก 9 ครั้ง</strong> กับ Pram เชื่อมต่อผ่าน <strong class="text-pink">ภรรยา สุวรรณี</strong> → จีรพงษ์ ผ่านห้างหุ้นส่วนที่เลิก</span></p>
+                        <p class="text-sm text-silver"><span lang="en"><strong class="text-warning">K Technology</strong> appears with PGE in <strong class="text-danger">9 bidder-detail records</strong>, with PGE holding the resulting contracts in this set. The legacy network records an indirect Suwannee–Jeerapong link through a dissolved partnership; significance requires source-level verification.</span><span lang="th"><strong class="text-warning">K Technology</strong> ปรากฏร่วมกับ PGE ใน <strong class="text-danger">ระเบียนรายละเอียดผู้เสนอราคา 9 รายการ</strong> และ PGE ได้รับสัญญาในชุดนี้ เครือข่ายเดิมบันทึกลิงก์ทางอ้อม สุวรรณี–จีรพงษ์ ผ่านห้างหุ้นส่วนที่เลิกกิจการ แต่นัยสำคัญต้องตรวจสอบกับเอกสารต้นทาง</span></p>
                     </div>
                     <div class="risk-box risk-box-high">
-                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#3: Government Training Programs</span><span lang="th">#3: หลักสูตรฝึกอบรมภาครัฐ</span></div>
-                        <p class="text-sm text-silver"><span lang="en"><strong class="text-pink">สุวรรณี</strong> completed <strong class="text-gold">บงส. รุ่น 12</strong> (กรมบัญชีกลาง) and currently enrolled in <strong class="text-gold">นงส. รุ่น 13</strong> (สำนักงบประมาณ). These are elite government finance programs.</span><span lang="th"><strong class="text-pink">สุวรรณี</strong> จบ <strong class="text-gold">บงส. รุ่น 12</strong> (กรมบัญชีกลาง) และกำลังเรียน <strong class="text-gold">นงส. รุ่น 13</strong> (สำนักงบประมาณ) หลักสูตรการเงินภาครัฐระดับสูง</span></p>
+                        <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#3: Budget Bureau Selection Roster</span><span lang="th">#3: บัญชีรายชื่อผู้ได้รับคัดเลือกของสำนักงบประมาณ</span></div>
+                        <p class="text-sm text-silver"><span lang="en">The official roster lists the name <strong class="text-pink">สุวรรณี อยู่นิรันดร</strong> at <strong class="text-gold">No. 146</strong> among those selected for <strong class="text-gold">นงส. Cohort 13</strong>. This proves the name match and selection only—not attendance, completion, employment, or the spouse relationship.</span><span lang="th">บัญชีรายชื่อทางการระบุชื่อ <strong class="text-pink">สุวรรณี อยู่นิรันดร</strong> เป็น <strong class="text-gold">ลำดับที่ 146</strong> ในกลุ่มผู้ได้รับคัดเลือกสำหรับ <strong class="text-gold">นงส. รุ่นที่ 13</strong> หลักฐานนี้ยืนยันเพียงชื่อที่ตรงกันและการได้รับคัดเลือก ไม่ได้ยืนยันการเข้าอบรม การสำเร็จหลักสูตร นายจ้าง หรือความสัมพันธ์คู่สมรส</span></p>
                     </div>
                     <div class="risk-box risk-box-high">
                         <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#4: BKK CCTV Three-Way Clustering</span><span lang="th">#4: ราคาเกาะกลุ่ม 3 ทาง CCTV กทม.</span></div>
-                        <p class="text-sm text-silver"><span lang="en">Genius (88.6M), Vision (88.87M), Systronics (88.86M). Price diff <strong class="text-danger"><0.3%</strong> - statistically improbable.</span><span lang="th">Genius (88.6M), Vision (88.87M), Systronics (88.86M) ราคาต่าง <strong class="text-danger"><0.3%</strong> - ไม่น่าจะเป็นไปได้ทางสถิติ</span></p>
+                        <p class="text-sm text-silver"><span lang="en">Genius (88.6M), Vision (88.87M), and Systronics (88.86M) differ by <strong class="text-danger">less than 0.3%</strong>. The proximity warrants review of specifications, estimates, bid timing, and bidder independence; it is not a probability finding on its own.</span><span lang="th">Genius (88.6M), Vision (88.87M) และ Systronics (88.86M) ต่างกัน <strong class="text-danger">น้อยกว่า 0.3%</strong> ความใกล้เคียงควรนำไปตรวจ TOR ราคากลาง เวลายื่นข้อเสนอ และความเป็นอิสระของผู้เสนอราคา แต่ยังไม่ใช่ข้อสรุปทางสถิติด้วยตัวเอง</span></p>
                     </div>
                     <div class="risk-box risk-box-high">
                         <div class="text-xs text-muted uppercase tracking-wider mb-2 font-display"><span lang="en">#5: Sole-Source End-of-Year Contracts</span><span lang="th">#5: สัญญาเฉพาะเจาะจงท้ายปีงบประมาณ</span></div>
-                        <p class="text-sm text-silver"><span lang="en">Multiple <strong class="text-warning">sole-source contracts</strong> awarded to Pram Group at fiscal year-end (Sep-Oct). Total: <strong class="text-danger">97.57M THB</strong> in FY2567 alone.</span><span lang="th">หลาย <strong class="text-warning">สัญญาเฉพาะเจาะจง</strong> ให้ Pram Group ท้ายปีงบประมาณ (ก.ย.-ต.ค.) รวม: <strong class="text-danger">97.57 ล้านบาท</strong> ในปี 2567</span></p>
+                        <p class="text-sm text-silver"><span lang="en">PGE's four FY2567 awards total <strong class="text-danger">฿97.566M</strong> and are recorded as specific-method procurements. This is a scoping fact for necessity, price-benchmark, and approval review—not a conclusion about legality.</span><span lang="th">งานที่ PGE ได้รับ 4 รายการในปีงบประมาณ 2567 รวม <strong class="text-danger">97.566 ล้านบาท</strong> และบันทึกเป็นวิธีเฉพาะเจาะจง เป็นข้อเท็จจริงสำหรับกำหนดขอบเขตตรวจเหตุผลความจำเป็น ราคามาตรฐาน และการอนุมัติ ไม่ใช่ข้อสรุปเรื่องความชอบด้วยกฎหมาย</span></p>
                     </div>
                 </div>
             </section>
             <footer class="text-center py-6 border-t border-glass">
-                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.1 • Family Intel Update • 85+ Procurement Records • For Investigation Only</span><span lang="th">NEXUS INTEL v12.1 • อัปเดตข้อมูลครอบครัว • 85+ รายการจัดซื้อ • เพื่อการสืบสวนเท่านั้น</span></p>
+                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.2 • 91-activity cross-source minimum • Reconciled 20 Jul 2026 • For analytical review only</span><span lang="th">NEXUS INTEL v12.2 • จำนวนขั้นต่ำจากหลายแหล่ง 91 กิจกรรม • กระทบยอด 20 ก.ค. 2569 • เพื่อการวิเคราะห์ตรวจสอบเท่านั้น</span></p>
                 <p class="text-xs text-danger mt-2 font-display tracking-wider">⚠ <span lang="en">NOT FOR PUBLIC DISTRIBUTION</span><span lang="th">ห้ามเผยแพร่สู่สาธารณะ</span></p>
             </footer>
         </main>
@@ -555,6 +729,7 @@
             nodes: [
                 // FAMILY CORE (Updated)
                 {id:"n1",label:"นายปฏิกร พิทักษ์ฉนวน",type:"Person",risk:"Critical",category:"Central_Figure",nickname:"หนุ่ย",isFamily:true,
+                 birthYear:"พ.ศ. 2516 (ค.ศ. 1973)",
                  social:{facebook:"https://www.facebook.com/nui.pat.9"}},
                 {id:"n2",label:"บริษัท เปรม กรุ๊ป เอ็นจิเนียริ่ง จำกัด",type:"Company",risk:"Critical",category:"Central_Hub"},
                 {id:"n3",label:"นายพีรพล จันทร์ขำ",type:"Person",risk:"High",category:"Executive"},
@@ -568,7 +743,7 @@
                  social:{facebook:"https://www.facebook.com/suwannee.pituk/"},
                  contact:{phone:"0851118584",email:"suwanneeu@prem-ge.com"},
                  dob:"30 พฤศจิกายน 2514",
-                 education:["บงส. รุ่น 12 (กรมบัญชีกลาง)","นงส. รุ่น 13 (สำนักงบประมาณ) - กำลังเรียน"]},
+                 education:["บงส. รุ่น 12 (กรมบัญชีกลาง)","นงส. รุ่น 13 (สำนักงบประมาณ) - ได้รับคัดเลือก ลำดับ 146; ยังไม่ยืนยันการเข้า/สำเร็จ"]},
                 {id:"n7",label:"ห้างหุ้นส่วนจำกัด เปรม เอ็นจิเนียริ่ง",type:"Company",risk:"High",category:"Dissolved_Entity"},
                 {id:"n8",label:"นายจีรพงษ์ ใจหลัก",type:"Person",risk:"High",category:"Key_Connector"},
                 {id:"n9",label:"บริษัท เค เทคโนโลยี โซลูชั่น จำกัด",type:"Company",risk:"High",category:"Support_Bidder"},
@@ -614,9 +789,9 @@
                 {id:"n45",label:"กรมบัญชีกลาง",type:"Government",risk:"Low",category:"Training_Provider",
                  notes:"จัดหลักสูตร บงส. ที่สุวรรณีจบ"},
                 {id:"n46",label:"สำนักงบประมาณ",type:"Government",risk:"Low",category:"Training_Provider",
-                 notes:"จัดหลักสูตร นงส. ที่สุวรรณีกำลังเรียน"},
+                 notes:"ผู้จัดหลักสูตร นงส. รุ่น 13; บัญชีทางการระบุชื่อสุวรรณีเป็นผู้ได้รับคัดเลือกลำดับ 146"},
                 {id:"n47",label:"หลักสูตร บงส./นงส.",type:"Company",risk:"Medium",category:"Elite_Network",
-                 notes:"หลักสูตรนักบริหารการเงินการคลังภาครัฐระดับสูง - เครือข่ายผู้บริหารระดับสูง"}
+                 notes:"บริบทหลักสูตรผู้บริหารภาครัฐ; การปรากฏในบัญชีคัดเลือกไม่ยืนยันการเข้าเรียนหรือสำเร็จหลักสูตร"}
             ],
             links: [
                 // FAMILY RELATIONSHIPS (NEW)
@@ -630,7 +805,7 @@
                 
                 // WIFE'S GOVERNMENT CONNECTIONS (NEW)
                 {source:"n6",target:"n45",rel:"Alumni",details:"จบหลักสูตร บงส. รุ่น 12",type:"solid",riskIndicator:"Elite_Network"},
-                {source:"n6",target:"n46",rel:"Student",details:"กำลังเรียน นงส. รุ่น 13",type:"solid",riskIndicator:"Elite_Network"},
+                {source:"n6",target:"n46",rel:"Selected_Roster",details:"ชื่ออยู่ลำดับ 146 ในบัญชีผู้ได้รับคัดเลือก นงส. รุ่น 13",type:"solid",riskIndicator:"Documented_Name_Match"},
                 {source:"n45",target:"n47",rel:"Organizer",details:"จัดหลักสูตร บงส.",type:"dashed",riskIndicator:"Training_Program"},
                 {source:"n46",target:"n47",rel:"Organizer",details:"จัดหลักสูตร นงส.",type:"dashed",riskIndicator:"Training_Program"},
                 
@@ -668,8 +843,8 @@
                 {source:"n12",target:"n2",rel:"Procurement_Collusion_Risk",details:"Reciprocal Bidding Pattern - Alternating Winners",type:"risk",riskIndicator:"Critical_Risk"},
                 {source:"n9",target:"n2",rel:"Procurement_Support_Bidder",details:"K Tech lost 100% of bids (0/9) - Wife's connection",type:"risk",riskIndicator:"High_Risk"},
                 {source:"n23",target:"n2",rel:"Procurement_Support_Bidder",details:"Expert Eng lost 100% of bids (0/6)",type:"risk",riskIndicator:"High_Risk"},
-                {source:"n24",target:"n2",rel:"Bid_Validator",details:"I-3 Creation bids alongside Pram",type:"dashed",riskIndicator:"Medium_Risk"},
-                {source:"n25",target:"n2",rel:"Bid_Validator",details:"TA System bids alongside Pram",type:"dashed",riskIndicator:"Medium_Risk"},
+                {source:"n24",target:"n2",rel:"Co_Bid_Record",details:"I-3 Creation appears in bidder records alongside PGE",type:"dashed",riskIndicator:"Review_Lead"},
+                {source:"n25",target:"n2",rel:"Co_Bid_Record",details:"TA Systems appears in bidder records alongside PGE",type:"dashed",riskIndicator:"Review_Lead"},
                 
                 // CCTV/TRAFFIC RING
                 {source:"n12",target:"n26",rel:"Procurement_Competitor",details:"BKK CCTV - Price Clustering",type:"risk",riskIndicator:"High_Risk"},
@@ -736,6 +911,11 @@
             {year:2565,project:"โครงการพัฒนาระบบค้นหาและติดตามการขนส่งน้ำมัน",agency:"กรมสรรพสามิต",budget:47700000,winner:"ซิสทรอนิกส์",method:"คัดเลือก",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม"],status:"lost",bidders:[{name:"บีทามส์",price:47594300},{name:"ซิสทรอนิกส์",price:47575000},{name:"เปรม กรุ๊ป",price:47610000}]}
         ];
 
+        // RECONCILED PROCUREMENT LEDGER
+        // Compact keys: i=id, y=budget year, a=agency, n=name, m=method,
+        // o=PGE outcome, v=PGE award value, w=winner, r=ACTAI signal count, s=source.
+        const actaiLedgerData = [{"i":"67129514936","y":2568,"a":"กรมสรรพสามิต","n":"โครงการจัดซื้อเครื่อง X-ray เคลื่อนที่ภายใต้การควบคุมกรมสรรพสามิต เพื่อเพิ่มประสิทธิภาพภารกิจการตรวจสอบ ป้องกันและปราบปราม","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":80570000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"e-GP + DGA"},{"i":"67099543463","y":2568,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางรถยนต์ โดยวิธีเฉพาะเจาะจง","m":"เฉพาะเจาะจง","o":"award","v":18500000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"67029038405","y":2567,"a":"กรมสรรพสามิต","n":"ประกวดราคาจ้างโครงการบริหารจัดการสำนวนการตรวจสอบภาษีสรรพสามิต ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":3,"s":"ACTAI"},{"i":"67059060281","y":2567,"a":"กองทัพอากาศ","n":"ซื้อขออนุมัติดำเนินการจัดซื้อระบบประมวลผลข่าวสารที่ให้บริการผ่านอินเทอร์เน็ต เพื่อการต่อต้านการข่าวกรอง พร้อมติดตั้ง จำนวน ๑ ระบบ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซี อี โอ เทคโนโลยี","r":1,"s":"ACTAI"},{"i":"66069513999","y":2566,"a":"กรมสรรพสามิต","n":"ประกวดราคาจ้างโครงการกำกับและติดตามมาตรฐานสินค้าสุราชุมชน ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":66429000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":3,"s":"ACTAI"},{"i":"66069392431","y":2566,"a":"การยางแห่งประเทศไทย","n":"ประกวดราคาจ้างการเฝ้าระวังและการแจ้งเตือนการเกิดโรคใบร่วงในต้นยางพารา ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":1,"s":"ACTAI"},{"i":"66089348178","y":2565,"a":"กรมทรัพยากรน้ำบาดาล","n":"ประกวดราคาจ้างพัฒนาระบบบูรณาการข้อมูลเพื่อสนับสนุนการตัดสินใจด้วยเทคโนโลยีที่ทันสมัย (Decision Support system DSS) จำนวน ๑ งาน โครงการพัฒนาระบบบูรณาการข้อมูลเพื่อสนับสนุนการตัดสินใจด้วยเทคโนโลยีที่ทันสมัย (Decision Support system DSS) กรมทรัพยากรน้ำบาดาล ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"เจริญทัศน์","r":0,"s":"ACTAI"},{"i":"66099452427","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการบำรุงรักษาระบบด่านชั่งน้ำหนักเพื่อควบคุมการส่งออกน้ำมันทางบก (รถยนต์) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"66099439524","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการบำรุงรักษาระบบบริหารจัดการข้อมูล Flow Meter และภาชนะจัดเก็บน้ำมัน โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"66099438784","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการบำรุงรักษาระบบปราบปรามสินค้าผิดกฎหมายผ่านเครือข่ายออนไลน์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"66099425110","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการบริหารจัดการระบบตรวจสอบ ติดตาม ควบคุม และรายงานของศูนย์ปฏิบัติการป้องกัน และปราบปราม โดยวิธีเฉพาะเจาะจง","m":"เฉพาะเจาะจง","o":"award","v":18000000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":1,"s":"ACTAI"},{"i":"66099425019","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางรถยนต์ โดยวิธีเฉพาะเจาะจง","m":"เฉพาะเจาะจง","o":"award","v":20810000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":1,"s":"ACTAI"},{"i":"66099424969","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษาระบบ Real Time Surveillance และระบบสถานีเครือข่ายตรวจสอบ เฝ้าระวังเรือ Tanker ที่จำหน่ายน้ำมันให้แก่ชาวประมง โดยวิธีเฉพาะเจาะจง","m":"เฉพาะเจาะจง","o":"award","v":28370000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":1,"s":"ACTAI"},{"i":"66099424906","y":2567,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบฉีดสาร Marker และระบบออนไลน์ ข้อมูลทางเรือ โดยวิธีเฉพาะเจาะจง","m":"เฉพาะเจาะจง","o":"award","v":30386000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":1,"s":"ACTAI"},{"i":"66099425672","y":2567,"a":"กรมสรรพสามิต","n":"จ้างบำรุงรักษาระบบรักษาความปลอดภัยด้วยกล้องโทรทัศน์วงจรปิด (CCTV) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"66079343736","y":2566,"a":"กองทัพอากาศ","n":"ประกวดราคาซื้อระบบรวบรวมข้อมูลภัยคุกคามทางไซเบอร์และป้องกันเครื่องปลายทาง พร้อมติดตั้ง จำนวน 1 ระบบ ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"แจ๊ดส์คอม","r":1,"s":"ACTAI"},{"i":"65097457448","y":2566,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางรถยนต์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":27420000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65097275274","y":2566,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบฉีดสาร Marker และระบบออนไลน์ ข้อมูลทางเรือ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":34700000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65097275593","y":2566,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางบก โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":10400000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65097275555","y":2566,"a":"กรมสรรพสามิต","n":"จ้างโครงการบริหารจัดการระบบตรวจสอบ ติดตาม ควบคุม และรายงานของศูนย์ปฏิบัติการป้องกัน และปราบปราม โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":18245000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65097275332","y":2566,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษาระบบ Real Time Surveillance และระบบสถานีเครือข่ายตรวจสอบเฝ้าระวังเรือ Tanker ที่จำหน่ายน้ำมันให้แก่ชาวประมง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":28870000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65087641790","y":2565,"a":"กรมธนารักษ์","n":"ประกวดราคาจ้างโครงการพัฒนาระบบบริหารงานกฎหมายและร้องเรียนร้องทุกข์ ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"บิซโพเทนเชียล","r":2,"s":"ACTAI"},{"i":"65037473290","y":2565,"a":"กรมสรรพสามิต","n":"ประกวดราคาซื้อโครงการปรับปรุงระบบวิทยุสื่อสารในเขตพื้นที่สำนักงานสรรพสามิตภาคที่ ๔, ๕, ๖ และ ๑๐ เพื่อเพิ่มประสิทธิภาพภารกิจการตรวจสอบ ป้องกันและปราบปรามสินค้าประเภทสุรา ยาสูบ ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":87700000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":4,"s":"ACTAI"},{"i":"65017143414","y":2565,"a":"กรมสรรพสามิต","n":"จ้างซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบเครื่องฉีดสาร Marker และระบบควบคุม กำกับ ดูแล และตรวจสอบปริมาณการจ่ายสาร Marker โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":8113600,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"64117263832","y":2565,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบค้นหาและติดตามการขนส่งน้ำมันและผลิตภัณฑ์น้ำมันทางรถยนต์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"65017143649","y":2565,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษาระบบสถานีเครือข่ายระบบตรวจสอบและเฝ้าระวังเรือ Tanker ที่จำหน่ายน้ำมันให้แก่ชาวประมง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":4580000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65017143495","y":2565,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางบก โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":3080000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"65027032342","y":2565,"a":"กรมทรัพยากรน้ำบาดาล","n":"ประกวดราคาจ้างจัดทำระบบฐานข้อมูลสารสนเทศสำหรับการประเมินผลผลิตและผลลัพธ์ ผลกระทบของโครงการที่ได้รับการสนับสนุนจากกองทุนพัฒนาน้ำบาดาล จำนวน ๑ งาน ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":7190000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"64107353346","y":2565,"a":"กรมสรรพสามิต","n":"ประกวดราคาจ้างโครงการย้ายและปรับปรุงศูนย์ปฏิบัติการป้องกันและปราบปราม พร้อมจัดหาอุปกรณ์เพิ่มเติมเพื่อเพิ่มประสิทธิภาพการปฏิบัติงาน ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":19470000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":4,"s":"ACTAI"},{"i":"64097330961","y":2565,"a":"กรมประมง","n":"ประกวดราคาซื้อครุภัณฑ์โฆษณาและเผยแพร่ จำนวน 6 รายการ ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":6000000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"64067216637","y":2564,"a":"กรมสรรพสามิต","n":"ประกวดราคาซื้อโครงการซื้อพร้อมติดตั้งอุปกรณ์ระบบบริหารจัดการศูนย์ปฏิบัติการป้องกันและปราบปรามการส่งน้ำมันออกไปจำหน่ายนอกราชอาณาจักร ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":6950000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"64067060601","y":2564,"a":"กรมสรรพสามิต","n":"ประกวดราคาจ้างโครงการเพิ่มประสิทธิภาพระบบควบคุม ตรวจสอบ และติดตามการจำหน่ายน้ำมันดีเซลสำหรับชาวประมงในเขตต่อเนื่องของราชอาณาจักร ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":254000000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":4,"s":"ACTAI"},{"i":"64027092861","y":2564,"a":"กรมสรรพสามิต","n":"ประกวดราคาจ้างโครงการปรับปรุงและเพิ่มประสิทธิภาพระบบวิทยุสื่อสารในเขตพื้นที่ของสำนักงานสรรพสามิตภาคที่ ๒, ๗, และ ๘ พร้อมการเชื่อมโยงข้อมูลกับระบบงานของสำนักตรวจสอบ ป้องกันและปราบปราม ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":73000000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":4,"s":"ACTAI"},{"i":"64017012787","y":2564,"a":"กรมสรรพสามิต","n":"จ้างโครงการจ้างซ่อมบำรุงรักษาระบบควบคุมน้ำมันที่ส่งออกนอกราชอาณาจักรทางบก โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":7370000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"64017011156","y":2564,"a":"กรมสรรพสามิต","n":"ซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบเครื่องฉีดสาร Marker และระบบควบคุม กำกับดูแล และตรวจสอบปริมาณการจ่ายสาร Marker","m":"คัดเลือก","o":"award","v":24270000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"64017012017","y":2564,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษาระบบสถานีเครือข่ายระบบตรวจสอบและเฝ้าระวังเรือ Tanker ที่จำหน่ายน้ำมันให้แก่ชาวประมง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":10970000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"63097572191","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการบริหารจัดการข้อมูลศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":5940000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"63087599964","y":2564,"a":"องค์การสะพานปลา","n":"ประกวดราคาจ้างปรับปรุงและดูแลระบบเครื่องชั่งอัตโนมัติในระบบตรวจสอบย้อนกลับสัตว์น้ำขององค์การสะพานปลา ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"award","v":4650000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":1,"s":"ACTAI"},{"i":"63057092915","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ ควบคุม และรายงานน้ำมันและผลิตภัณฑ์น้ำมันส่งไปจำหน่ายนอกราชอาณาจักรทางรถยนต์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":20730000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"63037610104","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบตรวจสอบ ควบคุมการส่งน้ำมันเบนซินและน้ำมันดีเซลไปจำหน่ายต่างประเทศทางรถยนต์จากต้นทางโรงกลั่นน้ำมัน จังหวัดระยอง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":55329500,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"63037608606","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบตรวจสอบ ควบคุมการส่งน้ำมันเบนซินไปจำหน่ายต่างประเทศทางรถยนต์จากต้นทางโรงกลั่นน้ำมัน บริษัท เอสโซ่ (ประเทศไทย) จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":53559000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62107049015","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการติดตั้งและพัฒนาระบบควบคุมการส่งน้ำมันดีเซลไปจำหน่ายต่างประเทศ โรงกลั่นน้ำมันบริษัท เอสโซ่ (ประเทศไทย) จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":29251500,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62107045702","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบบริหารจัดการและการควบคุมน้ำมันและผลิตภัณฑ์น้ำมันที่ส่งไปจำหน่าย นอกราชอาณาจักรทางรถยนต์ โรงกลั่นน้ำมัน บริษัท พีทีที โกลบอล เคมิคอล จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":34282000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62107047324","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบติดตามและถ่ายทอดการออกปฏิบัติภารกิจป้องกันและปราบปราม โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":26475000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62097333319","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ และควบคุมสินค้าประเภทสุราแช่ (เบียร์) ที่ส่งไปจำหน่ายนอกราชอาณาจักรทางบกด้วยรหัสอิเล็กทรอนิกส์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":10316000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62077400465","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบตรวจสอบเฝ้าระวังการจำหน่ายน้ำมันสำหรับชาวประมงในเขตต่อเนื่องของราชอาณาจักร โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":38910000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62097341007","y":2563,"a":"กรมสรรพสามิต","n":"โครงการซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบเครื่องฉีดสาร Marker และระบบควบคุม กำกับ ดูแล และตรวจสอบปริมาณการจ่ายสาร Marker","m":"เฉพาะเจาะจง","o":"award","v":24300000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62077466755","y":2563,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ ป้องกันและปราบปรามน้ำมันเชื้อเพลิงที่ส่งออกนอกราชอาณาจักร และที่ลักลอบนำเข้ามาในราชอาณาจักร สำนักตรวจสอบ ป้องกันและปราบปราม โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":35999000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"62087593891","y":2562,"a":"องค์การบริหารส่วนจังหวัดสงขลา","n":"ซื้อโทรทัศน์วงจรปิดพร้อมอุปกรณ์และติดตั้ง อำเภอจะนะ เขตพื้นที่อำเภอจะนะ จังหวัดสงขลา โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":1,"s":"ACTAI"},{"i":"62037282420","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ ควบคุมการส่งน้ำมันเชื้อเพลิงออกนอกราชอาณาจักรทางรถยนต์ แบบออนไลน์ จากต้นทางโรงกลั่นน้ำมันบริษัท ไทยออยล์ จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":23270000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62037282351","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ ควบคุมการส่งน้ำมันเชื้อเพลิงออกนอกราชอาณาจักรทางรถยนต์แบบออนไลน์ จากต้นทางโรงกลั่นน้ำมันบริษัท เอสโซ่ (ประเทศไทย) จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":27311000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62037282638","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบป้องกันและปราบปรามการนำน้ำมันหล่อลื่นและน้ำมันที่คล้ายกันออกจากคลังน้ำมันไออาร์พีซี พระประแดง จังหวัดสมุทรปราการ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":27100000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62037282483","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบ ควบคุมการส่งน้ำมันเชื้อเพลิงออกนอกราชอาณาจักรทางรถยนต์แบบออนไลน์ จากต้นทางบริษัท บางจาก คอร์ปอเรชั่น จำกัด (มหาชน) (คลังน้ำมันบางปะอิน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":23350000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62027360110","y":2561,"a":"กรมทรัพยากรน้ำบาดาล","n":"ประกวดราคาซื้ออุปกรณ์ระบบติดตามเฝ้าระวังสถานการณ์น้ำบาดาลแบบอัตโนมัติพร้อมติดตั้งและปรับปรุงซ่อมแซมสภาพของบ่อ/สถานีสังเกตการณ์ โครงการพัฒนาระบบสารสนเทศเพื่อติดตามเฝ้าระวังสถานการณ์น้ำบาดาล ประจำปีงบประมาณ พ.ศ. 2561 ด้วยวิธีประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","m":"ประกวดราคาอิเล็กทรอนิกส์ (e-bidding)","o":"participated","v":0,"w":"เฟล็กซ์คอม","r":1,"s":"ACTAI"},{"i":"62037438352","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการเพิ่มประสิทธิภาพด่านชั่งน้ำหนัก เพื่อชั่งสินค้าสุรา ยาสูบที่ส่งออกนอกราชอาณาจักร โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"62037392881","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการติดตั้งระบบตรวจสอบ ควบคุม และรายงานสารละลายไฮโดรคาร์บอน (Solvent) ที่ผู้แทนจำหน่ายสารละลายไฮโดรคาร์บอน (Solvent) ในพื้นที่สำนักงานสรรพสามิตภาคที่ 7 และสำนักงานสรรพสามิตภาคที่ 10 โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":2,"s":"ACTAI"},{"i":"62017518051","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบควบคุมการเติมสาร Marker (Marker Injector) ในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ บริษัท ซีออยล์ปิโตรเคมีคอล จำกัด โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":27191000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62017513373","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการเพิ่มขีดความสามารถการตรวจสอบ ป้องกันและปราบปรามสินค้าประเภทสุราแช่ (เบียร์) และยาสูบที่ส่งออกนอกราชอาณาจักร ของศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24670000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"62017134547","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการติดตั้งระบบตรวจสอบ ควบคุม ปริมาณการเติมสาร Marker ในน้ำมันดีเซลส่งออกนอกราชอาณาจักรทางรถยนต์โรงกลั่นน้ำมัน บริษัท ไทยออยล์ จำกัด (มหาชน) ของศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":26710000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":4,"s":"ACTAI"},{"i":"61117425877","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบติดตามข้อมูลการส่งออกน้ำมัน เพื่อใช้ในการตรวจสอบและดำเนินคดีผู้กระทำผิดกฎหมายสรรพสามิต โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24300000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"61067437603","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบตรวจสอบ ปริมาณการเติมสาร Marker ในน้ำมันดีเซลส่งออกนอกราชอาณาจักรทางเรือและที่นำไปจำหน่าย ให้เรือประมงในเขตต่อเนื่อง 12-24 ไมล์ทะเล โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":23467000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61117008877","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการซ่อมบำรุงรักษา สอบเทียบ พร้อมจัดหาอะไหล่ระบบฉีดสาร Marker ชนิดอัตโนมัติเพื่อฉีดสาร Marker ผสมในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":27126000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61107174894","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบป้องกันและปราบปรามการนำน้ำมันหล่อลื่นและน้ำมันที่คล้ายกันออกจาก TANK DIKE C โรงกลั่นน้ำมันบริษัท ไออาร์พีซี จำกัด (มหาชน) จังหวัดระยอง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":38288000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61097773036","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบ Real Time Surveillance เพื่อควบคุมการลักลอบนำน้ำมันและผลิตภัณฑ์น้ำมันและสินค้าอื่นที่มิชอบด้วยกฎหมายขึ้นชายฝั่งทะเลอันดามัน จังหวัดระนอง โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24369000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61107022339","y":2562,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบตรวจสอบควบคุมการเติมสาร Marker ออนไลน์ ในน้ำมันส่งออกนอกราชอาณาจักร ณ บริษัท บางจาก คอปเปอร์เรชั่น จำกัด (มหาชน) (คลังน้ำมันบางปะอิน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24779000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61057315333","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบควบคุมการเติมสาร Marker (Marker Injector) ในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ คลังน้ำมันบางจาก บางปะอิน 3 Bay โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":23460000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"61037354644","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาระบบตรวจสอบวัดแรงแอลกอฮอล์ในน้ำสุรา สำนักตรวจสอบ ป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24730000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"61057326014","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนามาตรการระบบควบคุมสารเติมแต่ง (Dye Additive) ในน้ำมันสำเร็จที่เข้าพิกัดภาษีสรรพสามิต ที่จำหน่ายภายในประเทศของโรงกลั่นน้ำมันไออาร์พีซี จำกัด (มหาชน) โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":23630000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"61067411960","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการติดตั้งระบบตรวจสอบ ควบคุม และรายงาน สารละลายไฮโดรคาร์บอน (Solvent) ณ ต้นทางผู้ผลิตสารละลายไฮโดรคาร์บอน (Solvent) จ.ชลบุรี โดยวิธีคัดเลือก","m":"คัดเลือก","o":"participated","v":0,"w":"ซิสทรอนิกส์","r":3,"s":"ACTAI"},{"i":"61057197275","y":2561,"a":"กรมสรรพสามิต","n":"จ้างโครงการพัฒนาและติดตั้งระบบควบคุม รายงานการขนย้ายน้ำมันออกจากต้นทางโรงกลั่นที่นำไปจำหน่ายภายในประเทศทางเรือ จ.ระยอง และ จ.ชลบุรี โดยวิธีคัดเลือก","m":"คัดเลือก","o":"award","v":24700000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":2,"s":"ACTAI"},{"i":"59066069399","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบเชื่อมโยงสัญญาณมิเตอร์จำหน่ายน้ำมัน (Custody Meter) ภายในประเทศของผู้ประกอบการอุตสาหกรรม เพื่อเพิ่มประสิทธิภาพการจัดเก็บภาษีกรมสรรพสามิต โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":24480000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"59046162129","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบควบคุม กำกับ ดูแลและตรวจสอบปริมาณการจ่ายสาร Marker(Marker Online) ในน้ำมันดีเซลส่งออกนอกราชอาณาจักรทางรถยนต์ ณ คลังน้ำมันไออาร์พีซี จำกัด จังหวัดชุมพร ระยะที่ 1 โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":22115000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"59046094331","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบฉีดสาร Marker ชนิดอัตโนมัติ เพื่อฉีดสาร Marker ผสมในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ ณ โรงกลั่นน้ำมันบริษัท เอสโซ่ (ประเทศไทย) จำกัด (หมาชน) ระยะที่ 2 โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":23690000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"59036122631","y":2559,"a":"กรมสรรพสามิต","n":"จ้างเปลี่ยนอุปกรณ์หลักของระบบฉีดสาร Marker ทางเรือ ณ โรงกลั่นน้ำมันบริษัท ไออาร์พีซี จำกัด (มหาชน) โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":18800000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"59036103733","y":2559,"a":"กรมสรรพสามิต","n":"จ้างโครงการตรวจสอบและควบคุมการส่งออกน้ำมันทางบก ด้วยระบบรหัสอิเล็กทรอนิกส์ โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":23400000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58116195714","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบตรวจสอบ ควบคุม และรายงานน้ำมันส่งออกนอกราชอาณาจักรและจำหน่ายในเขตต่อเนื่อง ของศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต ระยะที่ 1 ณ โรงกลั่นน้ำมัน บริษัท ไทยออยล์ จำกัด จังหวัดชลบุรี โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":17258000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58116195525","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบฉีดสาร Marker ชนิดอัตโนมัติ เพื่อฉีดสาร Marker ผสมในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ ณ คลังน้ำมัน ไออาร์พีซี จำกัด จังหวัดชุมพร ระยะที่ 2 โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":23578000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58116042596","y":2559,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบสถานีเรดาร์ชายฝั่งทะเลอ่าวไทย เพื่อควบคุมป้องกันการกระทำผิดพื้นที่ชายฝั่งอ่าวไทย (Radar Coastal Surveillance) ระยะที่ 2 ณ คลังน้ำมัน จังหวัดสุราษฎร์ธานี โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":24200000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58116202466","y":2558,"a":"กรมสรรพสามิต","n":"จ้างบริการจัดการข้อมูลศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":694000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58086050673","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบ Real Time Surveillance เพื่อควบคุมการลักลอบนำน้ำมันและผลิตภัณฑ์น้ำมันที่มิชอบด้วยกฎหมายออกจากต้นทางโรงกลั่นน้ำมันจังหวัดระยอง ณ โรงกลั่นน้ำมันบริษัท ไออาร์พีซี จำกัด (มหาชน) โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":21020000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58076045827","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบ Real Time Surveillance เพื่อควบคุมการลักลอบนำน้ำมันและผลิตภัณฑ์น้ำมันที่มิชอบด้วยกฎหมาย ออกจากต้นทางโรงกลั่นน้ำมัน จังหวัดชลบุรี ณ โรงงานกลั่นน้ำมัน บริษัท ไทยออยล์ จำกัด (มหาชน) โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":19720000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58076068399","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งอุปกรณ์พร้อมซ่อมบำรุงรักษาระบบศูนย์ปฏิบัติการป้องกันและปราบปราม กรมสรรพสามิต โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":8550000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58046002289","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบเรดาห์ (Radar Coastal) เพื่อควบคุมการลักลอบนำเข้าและขนย้ายสินค้าที่หลีกเลี่ยงภาษีสรรพสามิต ณ จังหวัดเพชรบุรี โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":24800000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58026000740","y":2558,"a":"กรมสรรพสามิต","n":"จ้างเครื่องติดตั้งระบบเครื่องฉีดสาร Marker ชนิดอัตโนมัติ เพื่อฉีดสาร Marker ผสมในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ ณ คลังน้ำมัน ไออาร์พีซี จำกัด จังหวัดชุมพร โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":18410000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"58025045737","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบ Real Time Surveillance เพื่อควบคุมการลักลอบนำน้ำมันและผลิตภัณฑ์น้ำมันและสินค้าอื่นที่มิชอบด้วยกฎหมายขึ้นชายฝั่ง จังหวัดนครศรีธรรมราช โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":23120000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57125214555","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบเครื่องฉีดสาร Marker ชนิดอัตโนมัติ เพื่อฉีดสาร Marker ผสมในน้ำมันดีเซลที่ส่งออกนอกราชอาณาจักรทางรถยนต์ จำนวน 1 ระบบ 3 หัวจ่าย โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":19500000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57125162768","y":2558,"a":"กรมสรรพสามิต","n":"จ้างโครงการติดตั้งระบบ ควบคุม กำกับ ดูแลและตรวจสอบปริมาณการจ่ายสารMarker ในน้ำมันดีเซลส่งออกนอกราชอาณาจักรทางเรือ โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":19550000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57115131958","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบ Real Time Surveillance เพื่อควบคุมการลักลอบนำน้ำมันและผลิตภัณฑ์น้ำมันและสินค้าอื่นที่มิชอบด้วยกฎหมายขึ้นชายฝั่ง จังหวัดชุมพร โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":21350000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57115283782","y":2558,"a":"กรมสรรพสามิต","n":"ซื้อเครื่องตรวจสอบสินค้าและยาสูบที่ส่งออกนอกราชการอาณาจักรและลักลอบนำเข้าผิดกฎหมาย จำนวน 25 ชุด โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":12100000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57115284025","y":2558,"a":"กรมสรรพสามิต","n":"จ้างซ่อมบำรุง รักษา สอบเทียบ พร้อมจัดหาอะไหล่ เครื่องฉีดสาร MARKER โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":16750000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"},{"i":"57095339387","y":2558,"a":"กรมสรรพสามิต","n":"จ้างติดตั้งระบบ ควบคุม กำกับ ดูแลและตรวจสอบปริมาณการจ่ายสาร Marker ในน้ำมันดีเซลส่งออกนอกราชอาณาจักรทางเรือ ระยะที่ 2 โดยวิธีพิเศษ","m":"พิเศษ","o":"award","v":21450000,"w":"เปรม กรุ๊ป เอ็นจิเนียริ่ง","r":0,"s":"ACTAI"}];
+
         // CLUSTER DATA (Updated with Family)
         const clusterData = {
             family: {
@@ -744,15 +924,15 @@
                 entities: ['n1', 'n6', 'n43', 'n4', 'n44', 'n5', 'n7'],
                 description: 'Patikorn (หนุ่ย) and wife Suwanee (เกียง) control the business empire. Company "เปรม กรุ๊ป" named after middle son ธนเทพ (เปรม). Wife holds 98% of Phoenix Corp and was partner in dissolved Prem Engineering with Jeerapong (K Technology).',
                 descriptionTh: 'ปฏิกร (หนุ่ย) และภรรยา สุวรรณี (เกียง) ควบคุมอาณาจักรธุรกิจ บริษัท "เปรม กรุ๊ป" ตั้งชื่อตามลูกคนกลาง ธนเทพ (เปรม) ภรรยาถือ 98% ฟีนิกซ์ และเป็นหุ้นส่วนในเปรม เอ็นจิเนียริ่งที่เลิกกิจการกับจีรพงษ์ (K Technology)',
-                keyFindings: ['Wife controls Phoenix Corp (98%)', 'Company named after son "เปรม"', 'Wife enrolled in elite gov finance programs (บงส./นงส.)', '3 sons: ปลื้ม, เปรม, ปั้น'],
-                keyFindingsTh: ['ภรรยาควบคุม Phoenix Corp (98%)', 'บริษัทตั้งชื่อตามลูก "เปรม"', 'ภรรยาเรียนหลักสูตรการเงินภาครัฐระดับสูง (บงส./นงส.)', 'ลูก 3 คน: ปลื้ม, เปรม, ปั้น']
+                keyFindings: ['Wife controls Phoenix Corp (98%)', 'Company named after son "เปรม"', 'Budget Bureau roster: matching name selected for นงส. 13 at No. 146', '3 sons: ปลื้ม, เปรม, ปั้น'],
+                keyFindingsTh: ['ภรรยาควบคุม Phoenix Corp (98%)', 'บริษัทตั้งชื่อตามลูก "เปรม"', 'บัญชีสำนักงบประมาณ: ชื่อตรงกัน ได้รับคัดเลือก นงส.13 ลำดับ 146', 'ลูก 3 คน: ปลื้ม, เปรม, ปั้น']
             },
             central: {
                 title: 'Central Hub',
                 risk: 'Critical',
                 entities: ['n1', 'n2', 'n3', 'n4'],
-                description: 'Patikorn controls 97.8% of Pram Group. Son Thanathep (เปรม) holds 2.1%. CEO Peerapol (0.1%) creates corporate governance facade while power remains concentrated in family.',
-                descriptionTh: 'ปฏิกรถือหุ้น 97.8% ในเปรม กรุ๊ป ลูกชาย ธนเทพ (เปรม) ถือ 2.1% CEO พีรพล (0.1%) สร้างภาพธรรมาภิบาลในขณะที่อำนาจยังรวมศูนย์ในครอบครัว',
+                description: 'Patikorn controls 97.8% of Prem Group. Son Thanathep (เปรม) holds 2.1% and CEO Peerapol holds 0.1%; disclosed ownership is therefore highly concentrated in Patikorn and his family.',
+                descriptionTh: 'ปฏิกรถือหุ้น 97.8% ในเปรม กรุ๊ป ลูกชาย ธนเทพ (เปรม) ถือ 2.1% และ CEO พีรพลถือ 0.1% โครงสร้างการถือหุ้นที่เปิดเผยจึงกระจุกตัวสูงในปฏิกรและครอบครัว',
                 keyFindings: ['97.8% single-person ownership', 'Son holds 2.1% stake', 'CEO holds minimal stake (0.1%)'],
                 keyFindingsTh: ['ถือหุ้น 97.8% โดยคนเดียว', 'ลูกถือหุ้น 2.1%', 'CEO ถือหุ้นน้อยมาก (0.1%)']
             },
@@ -760,17 +940,17 @@
                 title: 'Phoenix-Prem Chain',
                 risk: 'High',
                 entities: ['n5', 'n6', 'n7', 'n8', 'n9'],
-                description: 'Wife Suwanee (98% Phoenix) was partner in dissolved "Prem Engineering" with Jeerapong (K Technology). K Tech shows 100% loss rate (0/9 wins) against Pram - classic support bidder pattern via family connection.',
-                descriptionTh: 'ภรรยา สุวรรณี (98% ฟีนิกซ์) เป็นหุ้นส่วนในห้างหุ้นส่วน "เปรม เอ็นจิเนียริ่ง" ที่เลิกกิจการกับจีรพงษ์ (K Technology) K Tech แพ้ 100% (0/9 ครั้ง) กับ Pram - รูปแบบผู้สนับสนุนผ่านความสัมพันธ์ครอบครัว',
-                keyFindings: ['Wife was partner with Jeerapong', '100% loss rate (0/9) against Pram', 'Hidden family ownership chain'],
-                keyFindingsTh: ['ภรรยาเป็นหุ้นส่วนกับจีรพงษ์', 'อัตราแพ้ 100% (0/9) กับ Pram', 'ห่วงโซ่การถือหุ้นครอบครัวซ่อน']
+                description: 'The legacy dossier links Suwannee (98% Phoenix) and Jeerapong (K Technology) through dissolved Prem Engineering. K Technology appears in nine bidder-detail records with PGE, with PGE holding the contracts in this set. This pattern warrants source-document review and does not establish a support-bidder role.',
+                descriptionTh: 'แฟ้มเดิมเชื่อมสุวรรณี (ถือ 98% ฟีนิกซ์) กับจีรพงษ์ (K Technology) ผ่านเปรม เอ็นจิเนียริ่งที่เลิกกิจการ K Technology ปรากฏในระเบียนรายละเอียดผู้เสนอราคา 9 รายการร่วมกับ PGE และ PGE ได้รับสัญญาในชุดนี้ รูปแบบดังกล่าวควรตรวจเอกสารต้นทางและยังไม่ยืนยันบทบาทผู้เสนอราคาสนับสนุน',
+                keyFindings: ['Legacy partnership link requires primary-source confirmation', 'Nine repeat co-bid records with PGE', 'No support-bidder conclusion from pattern alone'],
+                keyFindingsTh: ['ลิงก์ห้างหุ้นส่วนเดิมต้องยืนยันกับแหล่งต้นทาง', 'ร่วมเสนอราคาซ้ำกับ PGE 9 ระเบียน', 'รูปแบบเพียงอย่างเดียวยังไม่ยืนยันว่าเป็นผู้เสนอราคาสนับสนุน']
             },
             systronics: {
                 title: 'Systronics Bridge',
                 risk: 'Critical',
                 entities: ['n10', 'n11', 'n12', 'n13', 'n14'],
-                description: 'Kriangsak Imsri bridges Pram (via Krungthep Brew House) to Systronics (50% ownership). Combined 28+ projects with price clustering.',
-                descriptionTh: 'เกรียงศักดิ์ อิ่มศรี เชื่อม Pram (ผ่านกรุงเทพ บริว เฮาส์) กับ Systronics (ถือ 50%) รวม 28+ โครงการที่มีราคาเกาะกลุ่ม',
+                description: 'The legacy network links Kriangsak Imsri to Prem through Krungthep Brew House and to Systronics through ownership. ACTAI bidder details show Systronics alongside PGE 28 times; any implication of coordination requires tender-level evidence.',
+                descriptionTh: 'เครือข่ายเดิมเชื่อมเกรียงศักดิ์ อิ่มศรีกับ Prem ผ่านกรุงเทพ บริว เฮาส์ และกับ Systronics ผ่านการถือหุ้น รายละเอียดผู้เสนอราคาของ ACTAI แสดง Systronics ร่วมกับ PGE 28 ครั้ง นัยเรื่องการประสานราคาต้องมีหลักฐานระดับแฟ้มประกวดราคา',
                 keyFindings: ['28+ projects with alternating wins', 'Bridge director connects both entities', 'Price clustering in government contracts'],
                 keyFindingsTh: ['28+ โครงการที่ชนะสลับกัน', 'กรรมการเชื่อมทั้งสองบริษัท', 'ราคาเกาะกลุ่มในสัญญาภาครัฐ']
             },
@@ -778,8 +958,8 @@
                 title: 'CCTV Ring',
                 risk: 'High',
                 entities: ['n12', 'n26', 'n27', 'n38'],
-                description: 'Bangkok CCTV: Genius (88.6M), Vision (88.87M), Systronics (88.86M). Price difference <0.3% - statistically improbable.',
-                descriptionTh: 'CCTV กทม.: Genius (88.6M), Vision (88.87M), Systronics (88.86M) ราคาต่างกัน <0.3% - ไม่น่าจะเป็นไปได้ทางสถิติ',
+                description: 'Bangkok CCTV: Genius (88.6M), Vision (88.87M), Systronics (88.86M). The spread is under 0.3% and should be contextualized against the estimate, specifications, bid timing, and full competition record.',
+                descriptionTh: 'CCTV กทม.: Genius (88.6M), Vision (88.87M), Systronics (88.86M) ส่วนต่างต่ำกว่า 0.3% และควรพิจารณาร่วมกับราคากลาง TOR เวลายื่นข้อเสนอ และข้อมูลการแข่งขันฉบับเต็ม',
                 keyFindings: ['Three-way price clustering (<0.3%)', 'Winner by 0.26M margin', 'Statistical impossibility'],
                 keyFindingsTh: ['ราคาเกาะกลุ่ม 3 ทาง (<0.3%)', 'ชนะด้วยส่วนต่าง 0.26M', 'ไม่น่าจะเป็นความบังเอิญ']
             },
@@ -789,8 +969,8 @@
                 entities: ['n9', 'n23', 'n24', 'n25'],
                 description: 'K Technology (0/9 wins) connected via wife. Expert Engineering (0/6 wins). I-3 Creation and TA Systems act as validators.',
                 descriptionTh: 'K Technology (0/9 ครั้ง) เชื่อมผ่านภรรยา Expert Engineering (0/6 ครั้ง) I-3 Creation และ TA Systems ทำหน้าที่ผู้ตรวจสอบ',
-                keyFindings: ['100% loss rate against Pram', 'K Tech connected via wife', 'Validators legitimize bid process'],
-                keyFindingsTh: ['อัตราแพ้ 100% กับ Pram', 'K Tech เชื่อมผ่านภรรยา', 'ผู้ตรวจสอบทำให้การประมูลดูถูกต้อง']
+                keyFindings: ['Repeat co-bid patterns require tender-file review', 'Legacy dossier records an indirect K Tech family link', 'Do not infer bidder role from outcomes alone'],
+                keyFindingsTh: ['รูปแบบร่วมเสนอราคาซ้ำควรตรวจแฟ้มประกวดราคา', 'แฟ้มเดิมบันทึกลิงก์ทางอ้อมระหว่าง K Tech กับครอบครัว', 'ไม่ควรอนุมานบทบาทผู้เสนอราคาจากผลลัพธ์เพียงอย่างเดียว']
             }
         };
 
@@ -1051,6 +1231,8 @@
         const APP = {
             lang: 'en',
             currentCluster: 'family',
+            ledgerFilter: 'all',
+            ledgerQuery: '',
             
             init: () => {
                 document.getElementById('loading-overlay').classList.add('opacity-0', 'pointer-events-none');
@@ -1073,6 +1255,7 @@
                 APP.renderCharts();
                 APP.renderEntityTable();
                 APP.renderProcurementTimeline();
+                APP.renderActaiLedger();
                 APP.showCluster('family');
                 initNetwork();
                 new AntigravityEngine();
@@ -1081,12 +1264,13 @@
             toggleLang: () => {
                 APP.lang = APP.lang === 'en' ? 'th' : 'en';
                 document.body.dataset.lang = APP.lang;
+                APP.renderActaiLedger();
                 APP.showCluster(APP.currentCluster);
             },
             
             renderCharts: () => {
                 ChartManager.render('radarChart', 'radar', {
-                    labels: ['Ownership', 'Family Control', 'Gov Exposure', 'Cross-Share', 'Collusion', 'Support Bid'],
+                    labels: ['Ownership', 'Family Control', 'Gov Exposure', 'Cross-Share', 'Risk Links', 'Repeat Co-bid'],
                     datasets: [{ label: 'Risk', data: [98, 95, 92, 78, 95, 88], backgroundColor: 'rgba(236, 72, 153, 0.2)', borderColor: '#ec4899', borderWidth: 2 }]
                 }, { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { r: { min: 0, max: 100, ticks: { display: false }, grid: { color: 'rgba(255,255,255,0.08)' }, pointLabels: { color: '#86868b', font: { size: 8 } } } } });
                 
@@ -1148,6 +1332,54 @@
                         ${p.bidders.map(b => `<div class="text-xs flex justify-between ${b.name.includes('เปรม') ? 'text-neon' : 'text-muted'}"><span>${b.name}</span><span class="font-mono">${(b.price/1000000).toFixed(2)}M</span></div>`).join('')}
                     </div>`;
                 }).join('');
+            },
+
+            escapeHTML: (value) => String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[char])),
+
+            formatBaht: (value) => value ? `฿${Number(value).toLocaleString('en-US')}` : '—',
+
+            setLedgerQuery: (value) => {
+                APP.ledgerQuery = value || '';
+                APP.renderActaiLedger();
+            },
+
+            setLedgerFilter: (value) => {
+                APP.ledgerFilter = value;
+                ['all','award','participated'].forEach(key => {
+                    document.getElementById(`ledger-filter-${key}`)?.classList.toggle('active', key === value);
+                });
+                APP.renderActaiLedger();
+            },
+
+            renderActaiLedger: () => {
+                const tbody = document.getElementById('actai-ledger-body');
+                if(!tbody) return;
+                const query = APP.ledgerQuery.trim().toLocaleLowerCase('th-TH');
+                const rows = actaiLedgerData.filter(row => {
+                    const filterMatch = APP.ledgerFilter === 'all' || row.o === APP.ledgerFilter;
+                    const haystack = [row.i,row.y,row.a,row.n,row.m,row.w,row.s].join(' ').toLocaleLowerCase('th-TH');
+                    return filterMatch && (!query || haystack.includes(query));
+                });
+                document.getElementById('ledger-visible-count').textContent = rows.length.toLocaleString('en-US');
+                tbody.innerHTML = rows.map(row => {
+                    const official = row.s !== 'ACTAI';
+                    const role = row.o === 'award'
+                        ? (APP.lang === 'th' ? 'ผู้ชนะ/มีสัญญา' : 'PGE award')
+                        : (APP.lang === 'th' ? 'ร่วมเสนอ/ไม่ได้สัญญา' : 'Bid-only / no PGE contract');
+                    return `<tr>
+                        <td style="max-width:360px;">
+                            <div class="flex items-center gap-2 mb-1"><a class="project-link font-mono" href="https://procurement.actai.co/project/${APP.escapeHTML(row.i)}" target="_blank" rel="noopener">${APP.escapeHTML(row.i)} ↗</a><span class="provenance-tag">${APP.escapeHTML(row.s)}</span></div>
+                            <div class="text-xs text-silver" style="white-space:normal; line-height:1.45;">${APP.escapeHTML(row.n)}</div>
+                        </td>
+                        <td>${APP.escapeHTML(row.y)}</td>
+                        <td style="white-space:normal;">${APP.escapeHTML(row.a)}</td>
+                        <td><span class="${row.o === 'award' ? 'outcome-award' : 'outcome-participated'}">${APP.escapeHTML(role)}</span></td>
+                        <td style="white-space:normal;">${APP.escapeHTML(row.m)}</td>
+                        <td class="${row.v ? 'text-emerald' : 'text-muted'}">${APP.formatBaht(row.v)}</td>
+                        <td style="white-space:normal;">${APP.escapeHTML(row.w)}</td>
+                        <td>${official ? '<span class="badge badge-low">OFFICIAL</span>' : (row.r ? `<span class="badge badge-medium">ACTAI ${row.r}</span>` : '<span class="text-muted">—</span>')}</td>
+                    </tr>`;
+                }).join('') || `<tr><td colspan="8" class="text-center text-muted">${APP.lang === 'th' ? 'ไม่พบรายการที่ตรงกับตัวกรอง' : 'No rows match the current filter'}</td></tr>`;
             },
             
             searchEntities: (q) => APP.renderEntityTable(q),
@@ -1222,6 +1454,7 @@
                         <span class="badge ${typeBadge}">${e.isFamily ? 'Family' : e.type}</span>
                         <span class="badge badge-${e.risk.toLowerCase()}">${e.risk}</span>
                     </div>
+                    ${e.birthYear ? `<div class="text-xs text-muted mb-1">Birth year: <span class="text-gold">${e.birthYear}</span></div>` : ''}
                     ${e.dob ? `<div class="text-xs text-muted mb-1">DOB: <span class="text-pink">${e.dob}</span></div>` : ''}
                     <div class="text-xs text-muted mb-1">Category: <span class="text-silver">${e.category.replace(/_/g, ' ')}</span></div>
                     <div class="text-xs text-muted mb-4">Connections: <span class="text-neon font-bold">${conns.length}</span></div>
