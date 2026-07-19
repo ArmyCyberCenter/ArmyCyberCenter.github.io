@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS INTEL v12.2 // PGE Procurement Evidence - 91 Tracked Activities</title>
+    <title>NEXUS INTEL v12.3 // PGE Corporate &amp; Procurement Evidence</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='10' y1='10' x2='54' y2='54'%3E%3Cstop stop-color='%233b82f6'/%3E%3Cstop offset='1' stop-color='%238b5cf6'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%23030305'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='url(%23g)' stroke-width='3'/%3E%3Cpath d='M18 18 46 46M46 18 18 46' stroke='%2386868b' stroke-width='2'/%3E%3Ccircle cx='18' cy='18' r='4' fill='%233b82f6'/%3E%3Ccircle cx='46' cy='18' r='4' fill='%238b5cf6'/%3E%3Ccircle cx='18' cy='46' r='4' fill='%238b5cf6'/%3E%3Ccircle cx='46' cy='46' r='4' fill='%233b82f6'/%3E%3Cpath d='m32 23 9 9-9 9-9-9z' fill='%23f59e0b' stroke='%23f5f5f7' stroke-width='2'/%3E%3Ccircle cx='32' cy='32' r='2' fill='%23030305'/%3E%3C/svg%3E">
+    <meta name="theme-color" content="#030305">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
@@ -174,10 +176,46 @@
             .year-bar { height: 100%; min-width: 2px; border-radius: inherit; background: linear-gradient(90deg, var(--neon-core), var(--accent-violet)); }
             .year-row.gap .year-bar { width: 0 !important; min-width: 0; }
             .evidence-note { padding: 0.8rem; border-left: 3px solid var(--accent-gold); border-radius: 0 8px 8px 0; background: rgba(245,158,11,0.075); color: var(--titanium-light); font-size: 0.72rem; line-height: 1.6; }
+            .corporate-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.75rem; }
+            .corporate-kpi { padding: 0.85rem; border: 1px solid var(--glass-border); border-radius: 10px; background: rgba(0,0,0,0.25); }
+            .corporate-kpi strong { display: block; color: var(--silver); font: 700 1.12rem 'Orbitron', sans-serif; margin-bottom: 0.25rem; }
+            .corporate-kpi span { color: var(--titanium-light); font-size: 0.66rem; line-height: 1.4; }
+            .corporate-facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.55rem 1rem; }
+            .corporate-fact { display: grid; grid-template-columns: minmax(120px, 0.42fr) 1fr; gap: 0.6rem; padding: 0.58rem 0; border-bottom: 1px solid rgba(255,255,255,0.045); }
+            .corporate-fact dt { color: var(--titanium); font-size: 0.68rem; }
+            .corporate-fact dd { color: var(--silver); font-size: 0.76rem; line-height: 1.5; }
+            .capital-timeline { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.45rem; }
+            .capital-step { position: relative; padding: 0.72rem; border: 1px solid var(--glass-border); border-radius: 9px; background: rgba(59,130,246,0.055); }
+            .capital-step::after { content: '→'; position: absolute; right: -0.48rem; top: 50%; color: var(--accent-gold); transform: translate(50%,-50%); z-index: 2; }
+            .capital-step:last-child::after { display: none; }
+            .capital-step strong { display: block; color: var(--silver); font: 700 0.82rem 'Orbitron', sans-serif; }
+            .capital-step span { color: var(--titanium); font-size: 0.61rem; }
+            .corporate-details { border: 1px solid var(--glass-border); border-radius: 10px; background: rgba(0,0,0,0.17); overflow: hidden; }
+            .corporate-details > summary { cursor: pointer; padding: 0.8rem 0.95rem; color: var(--silver); font: 600 0.72rem 'Orbitron', sans-serif; letter-spacing: 0.08em; }
+            .corporate-details[open] > summary { border-bottom: 1px solid var(--glass-border); background: rgba(59,130,246,0.055); }
+            .corporate-details-body { padding: 0.85rem; }
+            .financial-scroll { overflow: auto; border: 1px solid var(--glass-border); border-radius: 9px; }
+            .dbd-table { min-width: 930px; }
+            .dbd-table td:first-child, .dbd-table th:first-child { position: sticky; left: 0; z-index: 3; background: #101018; min-width: 220px; }
+            .dbd-table .delta { display: block; margin-top: 0.16rem; color: var(--titanium); font-size: 0.54rem; }
+            .dbd-table .delta.up { color: #6ee7b7; }
+            .dbd-table .delta.down { color: #fdba74; }
+            .financial-chart { position: relative; height: 280px; }
+            .methodology-card { padding: 0.8rem; border: 1px dashed rgba(59,130,246,0.38); border-radius: 10px; background: rgba(59,130,246,0.055); }
             .ledger-controls { display: grid; grid-template-columns: minmax(220px, 1fr) auto; gap: 0.75rem; align-items: center; }
             .ledger-scroll { max-height: 560px; overflow: auto; border: 1px solid var(--glass-border); border-radius: 10px; }
-            .ledger-scroll .data-table { min-width: 1050px; }
+            .ledger-scroll .data-table { min-width: 1231px; table-layout: fixed; }
             .ledger-scroll .data-table tr { cursor: default; }
+            .ledger-spacer td { height: var(--spacer-height, 0px); padding: 0 !important; border: 0 !important; background: transparent !important; }
+            .ledger-virtual-row td { overflow: hidden; vertical-align: top; }
+            .ledger-virtual-row:focus-within td { background: rgba(59,130,246,0.09); }
+            .ledger-dom-status { display: inline-flex; gap: 0.35rem; align-items: center; color: var(--titanium-light); font: 0.6rem 'JetBrains Mono', monospace; }
+            .ledger-dom-status strong { color: var(--accent-emerald); }
+            .ledger-accessible { display: inline-flex; align-items: center; gap: 0.35rem; }
+            @media print {
+                .ledger-scroll { max-height: none; overflow: visible; }
+                .ledger-scroll .data-table { min-width: 100%; }
+            }
             .project-link { color: #93c5fd; text-decoration: none; }
             .project-link:hover { text-decoration: underline; }
             .outcome-award { color: #6ee7b7; }
@@ -185,7 +223,11 @@
             .provenance-tag { display: inline-block; padding: 0.18rem 0.4rem; border-radius: 5px; background: rgba(255,255,255,0.05); color: var(--titanium-light); font: 0.58rem 'JetBrains Mono', monospace; }
             @media (max-width: 900px) {
                 .portfolio-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+                .corporate-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
                 .evidence-grid { grid-template-columns: 1fr; }
+                .corporate-facts { grid-template-columns: 1fr; }
+                .capital-timeline { grid-template-columns: 1fr; }
+                .capital-step::after { content: '↓'; right: 50%; top: auto; bottom: -0.6rem; transform: translate(50%,50%); }
                 .ledger-controls { grid-template-columns: 1fr; }
                 .year-row { grid-template-columns: 42px minmax(80px, 1fr) 128px; font-size: 0.56rem; }
             }
@@ -247,8 +289,8 @@
     <div id="loading-overlay" class="fixed inset-0 z-9999 flex flex-col items-center justify-center transition-opacity" style="background: var(--space-void);">
         <div class="loader mb-4"></div>
         <div class="font-display text-lg text-peach animate-pulse tracking-wider mb-2">
-            <span lang="en">INITIALIZING NEXUS INTEL v12.2...</span>
-            <span lang="th">กำลังเริ่มต้น NEXUS INTEL v12.2...</span>
+            <span lang="en">INITIALIZING NEXUS INTEL v12.3...</span>
+            <span lang="th">กำลังเริ่มต้น NEXUS INTEL v12.3...</span>
         </div>
         <div class="text-xs text-muted font-mono">
             <span lang="en">Loading 47 entities, 91 tracked procurement activities, 75+ connections</span>
@@ -261,10 +303,10 @@
                 <div class="flex items-center gap-4">
                     <div id="logo-slot" class="text-neon"></div>
                     <div>
-                        <h1 class="font-display text-lg font-bold tracking-wider text-silver">NEXUS // <span class="text-gold">INTEL</span> <span class="text-xs text-muted font-mono">v12.2</span></h1>
+                        <h1 class="font-display text-lg font-bold tracking-wider text-silver">NEXUS // <span class="text-gold">INTEL</span> <span class="text-xs text-muted font-mono">v12.3</span></h1>
                         <p class="text-xs text-muted tracking-wide">
-                            <span lang="en">PGE PROCUREMENT EVIDENCE • 91 TRACKED ACTIVITIES • RECONCILED 20 JUL 2026</span>
-                            <span lang="th">หลักฐานจัดซื้อจัดจ้าง PGE • ติดตาม 91 รายการ • กระทบยอด 20 ก.ค. 2569</span>
+                            <span lang="en">PGE CORPORATE + PROCUREMENT EVIDENCE • DBD DATA 19 JUL 2026</span>
+                            <span lang="th">หลักฐานนิติบุคคล + จัดซื้อจัดจ้าง PGE • ข้อมูล DBD 19 ก.ค. 2569</span>
                         </p>
                     </div>
                 </div>
@@ -288,7 +330,8 @@
                         <div class="evidence-grid">
                             <div class="evidence-item">
                                 <div class="text-xs text-muted font-display uppercase tracking-wider mb-2"><span lang="en">Patikorn Pitakchanuan</span><span lang="th">นายปฏิกร พิทักษ์ฉนวน</span></div>
-                                <p class="text-sm text-silver"><span lang="en">Birth year: <strong class="text-gold">2516 B.E. (1973 A.D.)</strong>. Only the requested year is reproduced here; the underlying identity document is not embedded.</span><span lang="th">ปีเกิด: <strong class="text-gold">พ.ศ. 2516 (ค.ศ. 1973)</strong> แสดงเฉพาะปีตามที่จำเป็น โดยไม่ฝังเอกสารประจำตัวต้นทางไว้ในหน้าเว็บ</span></p>
+                                <p class="text-sm text-silver mb-2"><span lang="en">Full date of birth: <strong class="text-gold">April 26th, 1973</strong> (26 April 1973 / 26 April 2516 B.E.). The underlying identity document is not embedded.</span><span lang="th">วันเดือนปีเกิดเต็ม: <strong class="text-gold">26 เมษายน พ.ศ. 2516</strong> (26 April 1973) โดยไม่ฝังเอกสารประจำตัวต้นทางไว้ในหน้าเว็บ</span></p>
+                                <p class="text-xs text-muted"><span lang="en">Evidence reconciliation: “2013” in the later instruction conflicts with both the supplied ID image and the previously specified 2516 B.E./1973 year. This page retains the evidence-supported 1973 date.</span><span lang="th">การกระทบยอดหลักฐาน: ปี “2013” ในคำสั่งภายหลังขัดกับทั้งภาพบัตรที่ให้มาและปี พ.ศ. 2516/ค.ศ. 1973 ที่ระบุก่อนหน้า หน้านี้จึงคงวันที่ตามหลักฐานคือ ค.ศ. 1973</span></p>
                             </div>
                             <div class="evidence-item">
                                 <div class="text-xs text-muted font-display uppercase tracking-wider mb-2"><span lang="en">Budget Bureau roster — name match</span><span lang="th">บัญชีรายชื่อสำนักงบประมาณ — ชื่อตรงกัน</span></div>
@@ -319,6 +362,125 @@
                         <button class="btn btn-ghost" onclick="APP.resetNetwork()"><span id="icon-reset"></span> <span lang="en">RESET</span><span lang="th">รีเซ็ต</span></button>
                         <button class="btn btn-warning" onclick="APP.highlightCollusion()"><span id="icon-alert"></span> <span lang="en">RISK SIGNALS</span><span lang="th">สัญญาณความเสี่ยง</span></button>
                         <button class="btn btn-primary" onclick="APP.highlightBridges()"><span id="icon-bridge"></span> <span lang="en">KEY LINKS</span><span lang="th">จุดเชื่อมสำคัญ</span></button>
+                    </div>
+                </div>
+            </section>
+            <!-- OFFICIAL CORPORATE REGISTRY & FINANCIAL PROFILE -->
+            <section id="corporate-registry" class="glass-panel p-4 mb-6 reveal" style="border-color: rgba(16,185,129,0.34);">
+                <div class="flex flex-col gap-4">
+                    <div>
+                        <div class="flex items-center gap-2 flex-wrap mb-2">
+                            <span class="badge badge-government">DBD DATAWAREHOUSE+</span>
+                            <span class="badge badge-low"><span lang="en">ACTIVE ENTITY</span><span lang="th">ยังดำเนินกิจการ</span></span>
+                            <span class="provenance-tag">DATA AS OF 19 JUL 2026</span>
+                        </div>
+                        <h3 class="font-display text-xl font-bold tracking-wide text-silver mb-2"><span lang="en">CORPORATE REGISTRY &amp; FINANCIAL PROFILE</span><span lang="th">ข้อมูลทะเบียนนิติบุคคลและฐานะการเงิน</span></h3>
+                        <p class="text-sm text-muted mb-3"><span lang="en">Official DBD profile, filing history and FY2564–2568 financial statements, cross-checked against the TISI-hosted government mirror and the ConnectBizs DBD-derived directory.</span><span lang="th">ข้อมูลทะเบียน ประวัติการนำส่ง และงบการเงินปี 2564–2568 จาก DBD ทางการ กระทบยอดกับหน้าสำเนาภาครัฐของ สมอ. และไดเรกทอรี ConnectBizs ที่อ้างอิง DBD</span></p>
+                        <div class="source-strip">
+                            <a class="source-link official" href="https://datawarehouse.dbd.go.th/company/profile/50105549113642" target="_blank" rel="noopener">★ DBD DATAWAREHOUSE+ · PRIMARY ↗</a>
+                            <a class="source-link official" href="https://www4.tisi.go.th/DBD/?trade=0105549113642" target="_blank" rel="noopener">TISI · GOVERNMENT DBD MIRROR ↗</a>
+                            <a class="source-link" href="https://connectbizs.com/company/biz/0105549113642" target="_blank" rel="noopener">CONNECTBIZS · DBD-DERIVED DIRECTORY ↗</a>
+                        </div>
+                    </div>
+
+                    <div class="corporate-kpis">
+                        <div class="corporate-kpi"><strong><span lang="en">ACTIVE</span><span lang="th">ดำเนินกิจการ</span></strong><span lang="en">limited company · operating since 2006</span><span lang="th">บริษัทจำกัด · ดำเนินกิจการตั้งแต่ปี 2549</span></div>
+                        <div class="corporate-kpi"><strong>฿100.0M</strong><span lang="en">registered capital · current since 13 Jan 2022</span><span lang="th">ทุนจดทะเบียน · ปัจจุบันตั้งแต่ 13 ม.ค. 2565</span></div>
+                        <div class="corporate-kpi"><strong>100% THAI</strong><span lang="en">1,000,000 shares · 3 persons · nationality aggregate; names not displayed</span><span lang="th">1,000,000 หุ้น · 3 ราย · เป็นข้อมูลรวมตามสัญชาติ ไม่แสดงชื่อผู้ถือหุ้น</span></div>
+                        <div class="corporate-kpi"><strong>M · SERVICE</strong><span lang="en">DBD business size and group classification</span><span lang="th">ขนาดและกลุ่มธุรกิจตามการจัดประเภทของ DBD</span></div>
+                    </div>
+
+                    <div class="evidence-grid">
+                        <div class="evidence-item">
+                            <div class="text-xs text-emerald font-display uppercase tracking-wider mb-2"><span lang="en">Legal identity</span><span lang="th">ตัวตนนิติบุคคล</span></div>
+                            <dl class="corporate-facts">
+                                <div class="corporate-fact"><dt><span lang="en">Thai legal name</span><span lang="th">ชื่อภาษาไทย</span></dt><dd>บริษัท เปรม กรุ๊ป เอ็นจิเนียริ่ง จำกัด</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">English legal name</span><span lang="th">ชื่อภาษาอังกฤษ</span></dt><dd>PRAM GROUP ENGINEERING COMPANY LIMITED <span class="text-xs text-gold">(registry spelling; differs from “Prem” branding)</span></dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Registration no.</span><span lang="th">เลขทะเบียน</span></dt><dd class="font-mono">0105549113642</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Entity type</span><span lang="th">ประเภท</span></dt><dd><span lang="en">Limited company</span><span lang="th">บริษัทจำกัด</span></dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Incorporated</span><span lang="th">จัดตั้ง</span></dt><dd>21 Sep 2006 · 21 ก.ย. 2549</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Head office</span><span lang="th">สำนักงานใหญ่</span></dt><dd>4 ซอยรามอินทรา 5 แยก 13 ถนนรามอินทรา แขวงอนุสาวรีย์ เขตบางเขน กรุงเทพมหานคร 10220</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Website / phone</span><span lang="th">เว็บไซต์ / โทรศัพท์</span></dt><dd><span lang="en">Not listed in the public DBD/TISI fields</span><span lang="th">ไม่ปรากฏในช่องข้อมูลสาธารณะของ DBD/สมอ.</span></dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Filed statements</span><span lang="th">ปีที่ส่งงบ</span></dt><dd>2564 · 2565 · 2566 · 2567 · 2568</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Merger / conversion</span><span lang="th">ควบ/แปรสภาพ</span></dt><dd><span lang="en">No event displayed by DBD</span><span lang="th">DBD ไม่แสดงเหตุการณ์</span></dd></div>
+                            </dl>
+                        </div>
+                        <div class="evidence-item">
+                            <div class="text-xs text-emerald font-display uppercase tracking-wider mb-2"><span lang="en">Control &amp; registered business</span><span lang="th">ผู้มีอำนาจและประเภทธุรกิจ</span></div>
+                            <dl class="corporate-facts">
+                                <div class="corporate-fact"><dt><span lang="en">Director</span><span lang="th">กรรมการ</span></dt><dd>นายปฏิกร พิทักษ์ฉนวน</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Binding authority</span><span lang="th">อำนาจลงนาม</span></dt><dd><span lang="en">Patikorn Pitakchanuan signs and affixes the company seal.</span><span lang="th">นายปฏิกร พิทักษ์ฉนวน ลงลายมือชื่อและประทับตราสำคัญของบริษัท</span></dd></div>
+                                <div class="corporate-fact"><dt>TSIC</dt><dd><span class="font-mono">58202</span> · การจัดทำซอฟต์แวร์สำเร็จรูป (ยกเว้นซอฟต์แวร์เกมสำเร็จรูป)</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Registered objective</span><span lang="th">วัตถุประสงค์ตอนจดทะเบียน</span></dt><dd>ประกอบกิจการอาชีพออกแบบและพัฒนาซอฟต์แวร์ทุกประเภท</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Latest filing activity</span><span lang="th">กิจกรรมในงบล่าสุด</span></dt><dd>การจัดทำซอฟต์แวร์สำเร็จรูป (ยกเว้นซอฟต์แวร์เกมสำเร็จรูป)</dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Awards / symbols</span><span lang="th">รางวัล / สัญลักษณ์</span></dt><dd><span lang="en">DBD displays “no data found.”</span><span lang="th">DBD แสดง “ไม่พบข้อมูล”</span></dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">External-agency data</span><span lang="th">ข้อมูลหน่วยงานภายนอก</span></dt><dd><span lang="en">Login required; not reproduced here.</span><span lang="th">ต้องเข้าสู่ระบบ จึงไม่นำมาแสดงในหน้านี้</span></dd></div>
+                                <div class="corporate-fact"><dt><span lang="en">Registry freshness</span><span lang="th">ความใหม่ของทะเบียน</span></dt><dd>DBD 19 Jul 2026 · TISI 4 Jun 2026 04:30 · ConnectBizs 8 May 2026</dd></div>
+                            </dl>
+                        </div>
+                    </div>
+
+                    <div class="evidence-item">
+                        <div class="text-xs text-neon font-display uppercase tracking-wider mb-3"><span lang="en">Registered-capital progression</span><span lang="th">พัฒนาการทุนจดทะเบียน</span></div>
+                        <div class="capital-timeline">
+                            <div class="capital-step"><strong>฿1M</strong><span>21 Sep 2006 · 21 ก.ย. 2549</span></div>
+                            <div class="capital-step"><strong>฿3M</strong><span>22 Jan 2008 · 22 ม.ค. 2551</span></div>
+                            <div class="capital-step"><strong>฿10M</strong><span>26 Mar 2013 · 26 มี.ค. 2556</span></div>
+                            <div class="capital-step"><strong>฿50M</strong><span>18 May 2021 · 18 พ.ค. 2564</span></div>
+                            <div class="capital-step"><strong>฿100M</strong><span>13 Jan 2022 · 13 ม.ค. 2565</span></div>
+                        </div>
+                        <p class="text-xs text-muted mt-3"><span lang="en">DBD's base profile says incorporation occurred on 21 September 2006, while its name-history row labels the same company “registered” on 25 September 2006. The four-day mismatch is preserved as a source inconsistency—not interpreted as a name change.</span><span lang="th">โปรไฟล์หลักของ DBD ระบุจัดตั้ง 21 กันยายน 2549 แต่แถวประวัติชื่อระบุบริษัทเดิมว่า “จดทะเบียน” 25 กันยายน 2549 จึงเก็บความต่าง 4 วันนี้ไว้เป็นความไม่สอดคล้องภายในแหล่งข้อมูล ไม่ตีความว่าเป็นการเปลี่ยนชื่อ</span></p>
+                    </div>
+
+                    <details class="corporate-details">
+                        <summary><span lang="en">FINANCIAL-FILING HISTORY · FY2564–2568</span><span lang="th">ประวัติการนำส่งงบการเงิน · ปี 2564–2568</span></summary>
+                        <div class="corporate-details-body">
+                            <div class="financial-scroll"><table class="data-table dbd-table"><thead><tr><th><span lang="en">Fiscal year</span><span lang="th">ปีงบ</span></th><th><span lang="en">Period end</span><span lang="th">วันสิ้นรอบ</span></th><th><span lang="en">Filed</span><span lang="th">วันที่นำส่ง</span></th><th><span lang="en">Auditor no.</span><span lang="th">ผู้สอบบัญชีเลขที่</span></th></tr></thead><tbody>
+                                <tr><td>2564</td><td>31 Dec 2021</td><td>25 May 2022</td><td>8010</td></tr>
+                                <tr><td>2565</td><td>31 Dec 2022</td><td>12 May 2023</td><td>8010</td></tr>
+                                <tr><td>2566</td><td>31 Dec 2023</td><td>8 May 2024</td><td>8010</td></tr>
+                                <tr><td>2567</td><td>31 Dec 2024</td><td>21 May 2025</td><td>8010</td></tr>
+                                <tr><td>2568</td><td>31 Dec 2025</td><td>19 May 2026</td><td>8010</td></tr>
+                            </tbody></table></div>
+                        </div>
+                    </details>
+
+                    <div class="corporate-kpis">
+                        <div class="corporate-kpi"><strong>฿271.183M</strong><span lang="en">FY2568 total revenue · +48.84% YoY</span><span lang="th">รายได้รวมปี 2568 · +48.84% จากปีก่อน</span></div>
+                        <div class="corporate-kpi"><strong>฿176.411M</strong><span lang="en">FY2568 net profit · +93.45% YoY</span><span lang="th">กำไรสุทธิปี 2568 · +93.45% จากปีก่อน</span></div>
+                        <div class="corporate-kpi"><strong>฿310.986M</strong><span lang="en">FY2568 total assets · +24.09% YoY</span><span lang="th">สินทรัพย์รวมปี 2568 · +24.09% จากปีก่อน</span></div>
+                        <div class="corporate-kpi"><strong>฿24.575M</strong><span lang="en">FY2568 total liabilities · −50.27% YoY</span><span lang="th">หนี้สินรวมปี 2568 · −50.27% จากปีก่อน</span></div>
+                    </div>
+
+                    <div class="evidence-grid">
+                        <div class="evidence-item">
+                            <div class="text-xs text-neon font-display uppercase tracking-wider mb-2"><span lang="en">FY2568 financial reading</span><span lang="th">ข้ออ่านฐานะการเงินปี 2568</span></div>
+                            <p class="text-sm text-silver mb-2"><span lang="en">FY2568 ended 31 December 2025 and was filed 19 May 2026. DBD reports net margin <strong class="text-emerald">65.05%</strong>, ROA <strong>62.83%</strong>, ROE <strong>72.36%</strong>, current ratio <strong>9.10×</strong>, and debt-to-equity <strong>0.09×</strong>. Profitability and liquidity increased while recorded leverage declined from FY2567.</span><span lang="th">ปีงบ 2568 สิ้นสุด 31 ธันวาคม 2568 และนำส่ง 19 พฤษภาคม 2569 DBD รายงานอัตรากำไรสุทธิ <strong class="text-emerald">65.05%</strong>, ROA <strong>62.83%</strong>, ROE <strong>72.36%</strong>, อัตราส่วนทุนหมุนเวียน <strong>9.10 เท่า</strong> และหนี้สินต่อทุน <strong>0.09 เท่า</strong> ความสามารถทำกำไรและสภาพคล่องเพิ่มขึ้น ขณะที่สัดส่วนหนี้ลดลงจากปี 2567</span></p>
+                            <p class="text-sm text-silver mb-2"><span lang="en">Against DBD's displayed same-size TSIC 58202 population of <strong>178 entities</strong>, the median revenue is ฿95.363M and median profit ฿6.533M. PGE's filed figures are approximately <strong>2.84×</strong> and <strong>27.0×</strong> those medians respectively (derived).</span><span lang="th">เมื่อเทียบกลุ่ม TSIC 58202 ขนาดเดียวกันที่ DBD แสดง <strong>178 นิติบุคคล</strong> ค่ามัธยฐานรายได้คือ 95.363 ล้านบาท และกำไร 6.533 ล้านบาท ตัวเลขที่ PGE นำส่งสูงประมาณ <strong>2.84 เท่า</strong> และ <strong>27.0 เท่า</strong> ตามลำดับ (คำนวณเพิ่มเติม)</span></p>
+                            <p class="text-xs text-gold"><span lang="en">Review lead: trade receivables rose 104.53% to ฿103.898M while receivable turnover declined from 4.01× to 3.51×. This warrants cash-collection and contract-receivable analysis, not an adverse conclusion.</span><span lang="th">ประเด็นนำตรวจ: ลูกหนี้การค้าเพิ่ม 104.53% เป็น 103.898 ล้านบาท ขณะที่อัตราหมุนเวียนลูกหนี้ลดจาก 4.01 เป็น 3.51 เท่า ควรตรวจการเก็บเงินและลูกหนี้ตามสัญญา โดยยังไม่ใช่ข้อสรุปเชิงลบ</span></p>
+                        </div>
+                        <div class="evidence-item">
+                            <div class="text-xs text-neon font-display uppercase tracking-wider mb-2"><span lang="en">Five-year scale</span><span lang="th">ขนาดกิจการย้อนหลัง 5 ปี</span></div>
+                            <div class="financial-chart"><canvas id="dbdFinancialChart"></canvas></div>
+                        </div>
+                    </div>
+
+                    <details class="corporate-details" id="dbd-balance-details">
+                        <summary><span lang="en">BALANCE SHEET · FY2564–2568 · ALL DBD LINE ITEMS</span><span lang="th">งบแสดงฐานะการเงิน · ปี 2564–2568 · ทุกรายการที่ DBD แสดง</span></summary>
+                        <div class="corporate-details-body" id="dbd-balance-table"><p class="text-xs text-muted">Open to render the five-year table.</p></div>
+                    </details>
+                    <details class="corporate-details" id="dbd-income-details">
+                        <summary><span lang="en">INCOME STATEMENT · FY2564–2568 · ALL DBD LINE ITEMS</span><span lang="th">งบกำไรขาดทุน · ปี 2564–2568 · ทุกรายการที่ DBD แสดง</span></summary>
+                        <div class="corporate-details-body" id="dbd-income-table"><p class="text-xs text-muted">Open to render the five-year table.</p></div>
+                    </details>
+                    <details class="corporate-details" id="dbd-ratios-details">
+                        <summary><span lang="en">FINANCIAL RATIOS · FY2564–2568 · ALL 15 DBD RATIOS</span><span lang="th">อัตราส่วนทางการเงิน · ปี 2564–2568 · ครบทั้ง 15 อัตราส่วนของ DBD</span></summary>
+                        <div class="corporate-details-body" id="dbd-ratios-table"><p class="text-xs text-muted">Open to render the five-year table.</p></div>
+                    </details>
+
+                    <div class="evidence-note">
+                        <span lang="en"><strong>DBD evidence boundary:</strong> DBD states that these public corporate and filed-financial data are general information for public service and cannot be used as a legal reference. The financial statements are company filings; this dossier has not independently audited them. Visible year-table values are used because several hidden API summary ratios conflict with the visible FY2568 table. The ฿2.078B procurement-award minimum spans multiple fiscal years and must not be compared directly with one year's recognized revenue.</span>
+                        <span lang="th"><strong>ขอบเขตหลักฐาน DBD:</strong> DBD ระบุว่าข้อมูลนิติบุคคลและงบที่เปิดเผยเป็นข้อมูลทั่วไปเพื่อบริการประชาชน ไม่สามารถใช้อ้างอิงทางกฎหมายได้ งบการเงินเป็นข้อมูลที่นิติบุคคลนำส่งและแฟ้มนี้ยังไม่ได้ตรวจสอบบัญชีโดยอิสระ หน้านี้ใช้ค่าจากตารางรายปีที่มองเห็นได้ เพราะอัตราส่วนบางค่าใน API สรุปที่ซ่อนอยู่ขัดกับตารางปี 2568 ส่วนมูลค่างานจัดซื้อจัดจ้างขั้นต่ำ 2.078 พันล้านบาทครอบคลุมหลายปี จึงไม่ควรเทียบตรงกับรายได้ที่รับรู้ของปีใดปีหนึ่ง</span>
                     </div>
                 </div>
             </section>
@@ -487,7 +649,7 @@
                             <div class="family-avatar">หนุ่ย</div>
                             <div class="flex-1">
                                 <div class="text-sm text-silver font-semibold">นายปฏิกร พิทักษ์ฉนวน</div>
-                                <div class="text-xs text-muted">ชื่อเล่น: หนุ่ย • ปีเกิด พ.ศ. 2516 (ค.ศ. 1973) • 97.8% เปรม กรุ๊ป</div>
+                                <div class="text-xs text-muted">ชื่อเล่น: หนุ่ย • เกิด 26 เม.ย. 2516 (26 Apr 1973) • 97.8% เปรม กรุ๊ป</div>
                                 <div class="mt-1">
                                     <a href="https://www.facebook.com/nui.pat.9" target="_blank" class="social-link">📘 Facebook</a>
                                 </div>
@@ -688,7 +850,7 @@
                 </div>
             </section>
             <footer class="text-center py-6 border-t border-glass">
-                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.2 • 91-activity cross-source minimum • Reconciled 20 Jul 2026 • For analytical review only</span><span lang="th">NEXUS INTEL v12.2 • จำนวนขั้นต่ำจากหลายแหล่ง 91 กิจกรรม • กระทบยอด 20 ก.ค. 2569 • เพื่อการวิเคราะห์ตรวจสอบเท่านั้น</span></p>
+                <p class="text-xs text-muted"><span lang="en">NEXUS INTEL v12.3 • DBD profile + 91-activity procurement minimum • Reconciled 20 Jul 2026 • For analytical review only</span><span lang="th">NEXUS INTEL v12.3 • โปรไฟล์ DBD + จำนวนขั้นต่ำ 91 กิจกรรมจัดซื้อจัดจ้าง • กระทบยอด 20 ก.ค. 2569 • เพื่อการวิเคราะห์ตรวจสอบเท่านั้น</span></p>
                 <p class="text-xs text-danger mt-2 font-display tracking-wider">⚠ <span lang="en">NOT FOR PUBLIC DISTRIBUTION</span><span lang="th">ห้ามเผยแพร่สู่สาธารณะ</span></p>
             </footer>
         </main>
@@ -910,6 +1072,53 @@
             {year:2567,project:"โครงการบำรุงรักษาระบบ Flow Meter",agency:"กรมสรรพสามิต",budget:19410000,winner:"ซิสทรอนิกส์",method:"คัดเลือก",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม"],status:"lost",bidders:[{name:"เท็คไอที",price:19363000},{name:"ซิสทรอนิกส์",price:19300000},{name:"เปรม กรุ๊ป",price:19355000}]},
             {year:2565,project:"โครงการพัฒนาระบบค้นหาและติดตามการขนส่งน้ำมัน",agency:"กรมสรรพสามิต",budget:47700000,winner:"ซิสทรอนิกส์",method:"คัดเลือก",risk:["เสนอราคาใกล้ราคากลาง","เสนอราคาเกาะกลุ่ม"],status:"lost",bidders:[{name:"บีทามส์",price:47594300},{name:"ซิสทรอนิกส์",price:47575000},{name:"เปรม กรุ๊ป",price:47610000}]}
         ];
+
+        // DBD DATAWAREHOUSE+ — PUBLIC FILED FINANCIAL DATA AS OF 19 JUL 2026
+        const dbdFinancialData = {
+            years:[2564,2565,2566,2567,2568],
+            balance:[
+                {th:"ลูกหนี้การค้าสุทธิ",en:"Net trade receivables",v:[[124923649.77,809.03],[176496960.13,41.28],[40067654.83,-77.29],[50797092.26,26.77],[103897610.45,104.53]]},
+                {th:"สินค้าคงเหลือ",en:"Inventories",v:[[403126.09,-79.03],[0,-100],[0,0],[0,0],[0,0]]},
+                {th:"สินทรัพย์หมุนเวียน",en:"Current assets",v:[[395235364.17,-4.75],[453074531.11,14.63],[92966718.07,-79.48],[163110940.68,75.45],[223739964.67,37.17]]},
+                {th:"ที่ดิน อาคารและอุปกรณ์",en:"Property, plant and equipment",v:[[6023376.87,-30.06],[8426946.40,39.90],[8666224.24,2.83],[5954181.09,-31.29],[4775075.16,-19.80]]},
+                {th:"สินทรัพย์ไม่หมุนเวียน",en:"Non-current assets",v:[[164620554.57,150.55],[163522799.25,-0.66],[163718277.28,0.11],[87497279.97,-46.55],[87246519.45,-0.28]]},
+                {th:"สินทรัพย์รวม",en:"Total assets",v:[[559855918.74,16.47],[616597330.36,10.13],[256684995.35,-58.37],[250608220.65,-2.36],[310986484.12,24.09]]},
+                {th:"หนี้สินหมุนเวียน",en:"Current liabilities",v:[[73931547.90,413.02],[90263142.31,22.09],[20523948.85,-77.26],[49418925.87,140.78],[24575092.63,-50.27]]},
+                {th:"หนี้สินไม่หมุนเวียน",en:"Non-current liabilities",v:[[0,0],[0,0],[0,0],[0,0],[0,0]]},
+                {th:"หนี้สินรวม",en:"Total liabilities",v:[[73931547.90,413.02],[90263142.31,22.09],[20523948.85,-77.26],[49418925.87,140.78],[24575092.63,-50.27]]},
+                {th:"ส่วนของผู้ถือหุ้น",en:"Shareholders' equity",v:[[485924370.84,4.21],[526334188.05,8.31],[236161046.50,-55.13],[201189294.78,-14.80],[286411391.49,42.35]]},
+                {th:"หนี้สินรวมและส่วนของผู้ถือหุ้น",en:"Total liabilities and equity",v:[[559855918.74,16.47],[616597330.36,10.13],[256684995.35,-58.37],[250608220.65,-2.36],[310986484.12,24.09]]}
+            ],
+            income:[
+                {th:"รายได้หลัก",en:"Core revenue",v:[[305655890.36,-15.10],[450024976.69,47.23],[105837933.45,-76.48],[181563761.33,71.54],[270901719.77,49.20]]},
+                {th:"รายได้รวม",en:"Total revenue",v:[[306471899.26,-15.11],[451040478.15,47.17],[107471251.29,-76.17],[182185531.92,69.52],[271182556.16,48.84]]},
+                {th:"ต้นทุนขาย",en:"Cost of sales",v:[[92376663.18,-7.70],[112078458.00,21.32],[43319858.78,-61.34],[61711303.58,42.45],[39126895.06,-36.59]]},
+                {th:"กำไร(ขาดทุน) ขั้นต้น",en:"Gross profit (loss)",v:[[null,0],[null,0],[62518074.67,0],[119852457.75,91.70],[231774824.71,93.38]]},
+                {th:"ค่าใช้จ่ายในการขายและบริหาร",en:"Selling and administrative expenses",v:[[19399815.88,-7.17],[25753975.66,32.75],[21639374.08,-15.97],[20735271.73,-4.17],[25979110.99,25.28]]},
+                {th:"รายจ่ายรวม",en:"Total expenses",v:[[111776479.06,-7.61],[137832433.66,23.31],[64959232.86,-52.87],[82446575.31,26.92],[65106006.05,-21.03]]},
+                {th:"ดอกเบี้ยจ่าย",en:"Interest expense",v:[[831385.32,116.15],[851262.12,2.39],[754362.05,-11.38],[678640.76,-10.03],[836666.99,23.28]]},
+                {th:"กำไร(ขาดทุน) ก่อนภาษี",en:"Profit (loss) before tax",v:[[193864034.88,-19.11],[312356782.37,61.12],[41757656.38,-86.63],[99060315.85,137.22],[205239883.12,107.18]]},
+                {th:"ภาษีเงินได้",en:"Income tax",v:[[34612192.33,604.04],[26368989.66,-23.81],[9288273.99,-64.77],[7871024.07,-15.25],[28828491.63,266.26]]},
+                {th:"กำไร(ขาดทุน) สุทธิ",en:"Net profit (loss)",v:[[159251842.55,-32.16],[285987792.71,79.58],[32469382.39,-88.64],[91189291.78,180.84],[176411391.49,93.45]]}
+            ],
+            ratios:[
+                {th:"อัตราผลตอบแทนจากสินทรัพย์รวม (ROA) (%)",en:"Return on assets (ROA) (%)",v:[30.61,48.62,7.44,35.95,62.83]},
+                {th:"อัตราผลตอบแทนจากส่วนของผู้ถือหุ้น (ROE) (%)",en:"Return on equity (ROE) (%)",v:[33.45,56.50,8.52,41.70,72.36]},
+                {th:"ผลตอบแทนจากกำไรขั้นต้นต่อรายได้รวม (%)",en:"Gross profit to total revenue (%)",v:[0,0,58.17,65.79,85.47]},
+                {th:"ผลตอบแทนจากการดำเนินงานต่อรายได้รวม (%)",en:"Operating return to total revenue (%)",v:[63.26,69.25,38.85,54.37,75.68]},
+                {th:"ผลตอบแทนจากกำไรสุทธิต่อรายได้รวม (%)",en:"Net profit to total revenue (%)",v:[51.96,63.41,30.21,50.05,65.05]},
+                {th:"อัตราส่วนทุนหมุนเวียน (เท่า)",en:"Current ratio (x)",v:[5.35,5.02,4.53,3.30,9.10]},
+                {th:"อัตราการหมุนเวียนของลูกหนี้ (เท่า)",en:"Receivables turnover (x)",v:[4.42,2.99,0.99,4.01,3.51]},
+                {th:"อัตราการหมุนเวียนของสินค้าคงเหลือ (เท่า)",en:"Inventory turnover (x)",v:[79.43,556.05,0,0,0]},
+                {th:"อัตราการหมุนเวียนของเจ้าหนี้ (เท่า)",en:"Payables turnover (x)",v:[2.40,1.95,1.53,8.43,2.20]},
+                {th:"อัตราการหมุนเวียนของสินทรัพย์รวม (เท่า)",en:"Total asset turnover (x)",v:[0.59,0.77,0.25,0.72,0.97]},
+                {th:"อัตราค่าใช้จ่ายการดำเนินงานต่อรายได้รวม (%)",en:"Operating expenses to total revenue (%)",v:[36.47,30.56,60.44,45.25,24.01]},
+                {th:"อัตราส่วนสินทรัพย์รวมต่อส่วนของผู้ถือหุ้น (เท่า)",en:"Total assets to equity (x)",v:[1.15,1.17,1.09,1.25,1.09]},
+                {th:"อัตราส่วนหนี้สินรวมต่อสินทรัพย์รวม (เท่า)",en:"Total liabilities to assets (x)",v:[0.13,0.15,0.08,0.20,0.08]},
+                {th:"อัตราส่วนหนี้สินรวมต่อส่วนของผู้ถือหุ้น (เท่า)",en:"Debt to equity (x)",v:[0.15,0.17,0.09,0.25,0.09]},
+                {th:"อัตราส่วนหนี้สินรวมต่อทุนดำเนินงาน (เท่า)",en:"Debt to capital (x)",v:[0.13,0.15,0.08,0.20,0.08]}
+            ]
+        };
 
         // RECONCILED PROCUREMENT LEDGER
         // Compact keys: i=id, y=budget year, a=agency, n=name, m=method,
@@ -1253,6 +1462,7 @@
                 
                 APP.initObservers();
                 APP.renderCharts();
+                APP.initDBDFinancialTables();
                 APP.renderEntityTable();
                 APP.renderProcurementTimeline();
                 APP.renderActaiLedger();
@@ -1264,7 +1474,9 @@
             toggleLang: () => {
                 APP.lang = APP.lang === 'en' ? 'th' : 'en';
                 document.body.dataset.lang = APP.lang;
+                document.documentElement.lang = APP.lang;
                 APP.renderActaiLedger();
+                APP.renderOpenDBDTables();
                 APP.showCluster(APP.currentCluster);
             },
             
@@ -1283,6 +1495,58 @@
                     labels: ['Critical', 'High', 'Medium', 'Low'],
                     datasets: [{ data: [4, 12, 20, 11], backgroundColor: ['#ef4444', '#f97316', '#eab308', '#22c55e'], borderRadius: 4 }]
                 }, { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false } }, scales: { x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#86868b' } }, y: { grid: { display: false }, ticks: { color: '#86868b', font: { size: 9 } } } } });
+
+                ChartManager.render('dbdFinancialChart', 'line', {
+                    labels: dbdFinancialData.years.map(String),
+                    datasets: [
+                        {label:'Revenue',data:[306.472,451.040,107.471,182.186,271.183],borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,0.15)',tension:0.32,borderWidth:2},
+                        {label:'Net profit',data:[159.252,285.988,32.469,91.189,176.411],borderColor:'#10b981',backgroundColor:'rgba(16,185,129,0.12)',tension:0.32,borderWidth:2},
+                        {label:'Assets',data:[559.856,616.597,256.685,250.608,310.986],borderColor:'#8b5cf6',backgroundColor:'rgba(139,92,246,0.12)',tension:0.32,borderWidth:2},
+                        {label:'Liabilities',data:[73.932,90.263,20.524,49.419,24.575],borderColor:'#f59e0b',backgroundColor:'rgba(245,158,11,0.12)',tension:0.32,borderWidth:2}
+                    ]
+                }, {responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'#a1a1a6',font:{size:9},boxWidth:10}}},scales:{x:{grid:{display:false},ticks:{color:'#86868b'}},y:{grid:{color:'rgba(255,255,255,0.05)'},ticks:{color:'#86868b',callback:v=>'฿'+v+'M'}}}});
+            },
+
+            initDBDFinancialTables: () => {
+                const bindings = [
+                    ['dbd-balance-details','balance','dbd-balance-table'],
+                    ['dbd-income-details','income','dbd-income-table'],
+                    ['dbd-ratios-details','ratios','dbd-ratios-table']
+                ];
+                bindings.forEach(([detailsId,kind,targetId]) => {
+                    const details = document.getElementById(detailsId);
+                    if(!details) return;
+                    details.addEventListener('toggle', () => {
+                        if(details.open) APP.renderDBDTable(kind,targetId);
+                    });
+                });
+            },
+
+            renderOpenDBDTables: () => {
+                [['dbd-balance-details','balance','dbd-balance-table'],['dbd-income-details','income','dbd-income-table'],['dbd-ratios-details','ratios','dbd-ratios-table']].forEach(([detailsId,kind,targetId]) => {
+                    if(document.getElementById(detailsId)?.open) APP.renderDBDTable(kind,targetId);
+                });
+            },
+
+            formatDBDNumber: (value) => value === null ? '—' : Number(value).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2}),
+
+            renderDBDTable: (kind,targetId) => {
+                const target = document.getElementById(targetId);
+                if(!target) return;
+                const rows = dbdFinancialData[kind];
+                const firstHeader = APP.lang === 'th' ? (kind === 'ratios' ? 'อัตราส่วน' : 'รายการ (หน่วย: บาท)') : (kind === 'ratios' ? 'Ratio' : 'Line item (THB)');
+                const body = rows.map((row,index) => {
+                    const label = APP.lang === 'th' ? row.th : row.en;
+                    const cells = kind === 'ratios'
+                        ? row.v.map(value => `<td>${APP.formatDBDNumber(value)}</td>`).join('')
+                        : row.v.map(([value,delta]) => {
+                            const deltaClass = delta > 0 ? 'up' : (delta < 0 ? 'down' : '');
+                            const deltaText = `${delta > 0 ? '+' : ''}${Number(delta).toFixed(2)}%`;
+                            return `<td>${APP.formatDBDNumber(value)}<span class="delta ${deltaClass}">${deltaText}</span></td>`;
+                        }).join('');
+                    return `<tr><td>${kind === 'ratios' ? `${index+1}. ` : ''}${APP.escapeHTML(label)}</td>${cells}</tr>`;
+                }).join('');
+                target.innerHTML = `<div class="financial-scroll"><table class="data-table dbd-table"><thead><tr><th>${APP.escapeHTML(firstHeader)}</th>${dbdFinancialData.years.map(year=>`<th>${year}</th>`).join('')}</tr></thead><tbody>${body}</tbody></table></div><p class="text-xs text-muted mt-2">${APP.lang === 'th' ? 'ที่มา: ตารางที่มองเห็นได้บน DBD DataWarehouse+ ณ 19 ก.ค. 2569' : 'Source: visible DBD DataWarehouse+ tables as of 19 Jul 2026'}</p>`;
             },
             
             renderEntityTable: (filter = '') => {
